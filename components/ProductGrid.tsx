@@ -1,17 +1,7 @@
 "use client";
 
 import {useEffect, useState} from "react";
-
-type Product = {
-  id: string;
-  title: string;
-  handle: string;
-  price: string;
-  image: {
-    url: string;
-    altText: string | null;
-  } | null;
-};
+import {Product} from "@/types/product";
 
 export default function ProductGrid() {
   const [products, setProducts] = useState<Product[] | null>(null);

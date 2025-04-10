@@ -1,12 +1,14 @@
 import {NextResponse} from "next/server";
-import {getAllProducts} from "@/lib/shopify";
+import {Product} from "@/types/product";
 
-export async function GET() {
-  console.log("/api/products route hit");
+export const addToCart = (product: Product) => {
+  let cart: Product[] = [];
+  cart.push(product);
+  return cart;
+};
 
-  const products = await getAllProducts();
-
-  console.log("Products:", products.length);
-
-  return NextResponse.json(products);
+export async function POST(req: Request) {
+  const product: Product = await req.json();
+  const updatedCart = addToCart(product);
+  return NextResponse.json(updatedCart);
 }

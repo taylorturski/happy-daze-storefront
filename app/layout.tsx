@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {ReactNode} from "react";
 
 export default function RootLayout({children}: {children: ReactNode}) {
@@ -31,10 +32,10 @@ export default function RootLayout({children}: {children: ReactNode}) {
                   flexDirection: "column",
                   gap: "0.25rem",
                 }}>
-                <a href="#">Custom Shop</a>
-                <a href="#">Workshop</a>
-                <a href="#">Journal</a>
-                <a href="#">Contact</a>
+                <Link href="/custom-shop">Custom Shop</Link>
+                <Link href="/workshop">Workshop</Link>
+                <Link href="/journal">Journal</Link>
+                <Link href="/contact">Contact</Link>
               </nav>
             </div>
 
@@ -60,7 +61,6 @@ export default function RootLayout({children}: {children: ReactNode}) {
 
           {/* Main content */}
           <main style={{flex: 1}}>
-            {/* Header */}
             <header
               style={{
                 display: "flex",
@@ -69,17 +69,19 @@ export default function RootLayout({children}: {children: ReactNode}) {
                 padding: "1rem",
                 borderBottom: "2px solid black",
               }}>
-              <h1>Happy Daze Golf</h1>
+              <Link href="/" style={{fontWeight: "bold", fontSize: "1.5rem"}}>
+                Happy Daze Golf
+              </Link>
               <nav style={{display: "flex", gap: "1rem"}}>
-                <a style={navLinkStyle} href="#">
+                <Link href="/custom-shop" style={navLinkStyle}>
                   CUSTOM SHOP
-                </a>
-                <a style={navLinkStyle} href="#">
+                </Link>
+                <Link href="/journal" style={navLinkStyle}>
                   JOURNAL
-                </a>
-                <a style={navLinkStyle} href="#">
+                </Link>
+                <Link href="/about" style={navLinkStyle}>
                   ABOUT
-                </a>
+                </Link>
               </nav>
             </header>
 

@@ -16,20 +16,36 @@ export default function RootLayout({children}: {children: ReactNode}) {
   const [total, setTotal] = useState<number>(0);
 
   useEffect(() => {
-    // Fetch cart data when the component mounts
-    async function fetchCart() {
+    const interval = setInterval(async () => {
       const res = await fetch("/api/cart");
       const data = await res.json();
       setCart(data.cart);
       setTotal(data.total);
+    }, 1000); // Poll cart every second (quick fix)
+
+    return () => clearInterval(interval); // cleanup
+  }, []);
+
+  const handleCheckout = async () => {
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cart),
+      });
+
+      const data = await res.json();
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Failed to start checkout.");
+      }
+    } catch (err) {
+      console.error("Checkout error:", err);
+      alert("Error processing checkout.");
     }
-
-    fetchCart();
-  }, [cart]);
-
-  const handleCheckout = () => {
-    // Simulating checkout for now
-    alert("Proceeding to checkout...");
   };
 
   return (

@@ -31,37 +31,44 @@ export async function shopifyFetch(query: string, variables = {}) {
 
 export async function getAllProducts() {
   const query = `
-    query Products {
-      products(first: 10) {
-        edges {
-          node {
-            id
-            title
-            handle
-            images(first: 1) {
-              edges {
-                node {
-                  url
-                  altText
-                }
+  query Products {
+    products(first: 10) {
+      edges {
+        node {
+          id
+          title
+          handle
+          variants(first: 1) {
+            edges {
+              node {
+                id
               }
             }
-            priceRange {
-              minVariantPrice {
-                amount
-                currencyCode
+          }
+          images(first: 1) {
+            edges {
+              node {
+                url
+                altText
               }
+            }
+          }
+          priceRange {
+            minVariantPrice {
+              amount
+              currencyCode
             }
           }
         }
       }
     }
-  `;
+  }
+`;
 
   const data = await shopifyFetch(query);
 
   return data.products.edges.map(({node}: any) => ({
-    id: node.id,
+    id: node.variants.edges[0]?.node.id, // ✅ variant ID (for checkout)
     title: node.title,
     handle: node.handle,
     image: node.images.edges[0]?.node || null,

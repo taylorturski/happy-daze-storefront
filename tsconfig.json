@@ -16,7 +16,8 @@
     "incremental": true,
     "baseUrl": ".", // ✅ Needed for @/ alias
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@types/*": ["types/*"]
     },
     "plugins": [
       {

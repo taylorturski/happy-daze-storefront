@@ -1,10 +1,9 @@
-export type Article = {
+export type BlogArticle = {
   id: string;
   title: string;
   handle: string;
-  excerpt?: string;
-  publishedAt: string;
-  image?: {
+  excerpt: string;
+  image: {
     url: string;
     altText: string | null;
   } | null;

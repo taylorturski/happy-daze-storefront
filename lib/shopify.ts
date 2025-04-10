@@ -75,3 +75,27 @@ export async function getAllProducts() {
     price: `${node.priceRange.minVariantPrice.amount} ${node.priceRange.minVariantPrice.currencyCode}`,
   }));
 }
+
+// lib/shopify.ts (after getAllProducts)
+
+export async function getBlogArticles() {
+  const query = `
+    query {
+      blog(handle: "journal") {
+        articles(first: 10) {
+          edges {
+            node {
+              id
+              title
+              excerpt
+              publishedAt
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const data = await shopifyFetch(query);
+  return data.blog.articles.edges.map((edge: any) => edge.node);
+}

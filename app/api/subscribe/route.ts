@@ -35,13 +35,13 @@ export async function POST(req: Request) {
 
     if (!res.ok) {
       const errText = await res.text();
-      console.error("❌ Shopify Admin API error:", errText);
+      console.error("Shopify Admin API error:", errText);
       return NextResponse.json({error: "Failed to subscribe"}, {status: 500});
     }
 
     return NextResponse.json({success: true});
   } catch (err) {
-    console.error("🔥 Error subscribing customer:", err);
+    console.error("Error subscribing customer:", err);
     return NextResponse.json({error: "Unexpected error"}, {status: 500});
   }
 }

@@ -38,7 +38,7 @@ export async function POST(req: Request) {
 
     if (!cart?.checkoutUrl) {
       console.error(
-        "❌ Shopify returned no checkout URL",
+        "Shopify returned no checkout URL",
         res.cartCreate.userErrors
       );
       return NextResponse.json({error: "Shopify cart error"}, {status: 500});

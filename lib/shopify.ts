@@ -68,7 +68,7 @@ export async function getAllProducts() {
   const data = await shopifyFetch(query);
 
   return data.products.edges.map(({node}: any) => ({
-    id: node.variants.edges[0]?.node.id, // ✅ variant ID (for checkout)
+    id: node.variants.edges[0]?.node.id, // variant ID (for checkout)
     title: node.title,
     handle: node.handle,
     image: node.images.edges[0]?.node || null,
@@ -128,9 +128,10 @@ export async function getBlogArticleByHandle(handle: string) {
   return data.blog.articleByHandle;
 }
 
+// this function is used to get the page by handle
 export async function getPageByHandle(handle: string) {
   const query = `
-    query getPageByHandle($handle: String!) {
+    query GetPage($handle: String!) {
       page(handle: $handle) {
         title
         body
@@ -139,7 +140,6 @@ export async function getPageByHandle(handle: string) {
   `;
 
   const variables = {handle};
-
   const data = await shopifyFetch(query, variables);
   return data.page;
 }

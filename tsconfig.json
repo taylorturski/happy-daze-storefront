@@ -14,7 +14,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": ".", // ✅ Needed for @/ alias
+    "baseUrl": ".", //Needed for @/ alias
     "paths": {
       "@/*": ["./*"],
       "@types/*": ["types/*"]

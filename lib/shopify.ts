@@ -127,3 +127,19 @@ export async function getBlogArticleByHandle(handle: string) {
   const data = await shopifyFetch(query, variables);
   return data.blog.articleByHandle;
 }
+
+export async function getPageByHandle(handle: string) {
+  const query = `
+    query getPageByHandle($handle: String!) {
+      page(handle: $handle) {
+        title
+        body
+      }
+    }
+  `;
+
+  const variables = {handle};
+
+  const data = await shopifyFetch(query, variables);
+  return data.page;
+}

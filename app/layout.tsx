@@ -3,6 +3,7 @@
 import {ReactNode, useState, useEffect} from "react";
 import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
+import GoogleAnalytics from "@/app/analytics/GoogleAnalytics";
 
 type CartItem = {
   id: string;
@@ -51,6 +52,7 @@ export default function RootLayout({children}: {children: ReactNode}) {
   return (
     <html lang="en">
       <body style={{margin: 0, fontFamily: "monospace"}}>
+        <GoogleAnalytics />
         <div style={{display: "flex", minHeight: "100vh"}}>
           <Sidebar total={total} onCheckout={handleCheckout} />
           {/* Main content */}

@@ -200,6 +200,52 @@ export async function getProductsByTag(tag: string) {
   }));
 }
 
+export async function getProductByHandle(handle: string) {
+  const query = `
+    query getProductByHandle($handle: String!) {
+      productByHandle(handle: $handle) {
+        title
+        handle
+        tags
+        images(first: 1) {
+          edges {
+            node {
+              url
+              altText
+            }
+          }
+        }
+        variants(first: 1) {
+          edges {
+            node {
+              id
+              price {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const variables = {handle};
+  const data = await shopifyFetch(query, variables);
+  const product = data.productByHandle;
+
+  if (!product) return null;
+
+  return {
+    id: product.variants.edges[0]?.node.id,
+    title: product.title,
+    handle: product.handle,
+    image: product.images.edges[0]?.node || null,
+    price: `${product.variants.edges[0]?.node.price.amount} ${product.variants.edges[0]?.node.price.currencyCode}`,
+    tags: product.tags,
+  };
+}
+
 // export async function getAllProducts() {
 //   const query = `
 //   query Products {

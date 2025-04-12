@@ -28,7 +28,7 @@ export default async function CustomShopPage() {
           )}
           <h2>{product.title}</h2>
           <p>{product.price}</p>
-          <Link href={`/products/${product.handle}`}>Customize →</Link>
+          <Link href={`/putters/${product.handle}`}>Customize →</Link>
         </div>
       ))}
     </div>

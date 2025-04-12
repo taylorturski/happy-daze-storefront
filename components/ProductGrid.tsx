@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {Product} from "@/types/product";
 
 export default function ProductGrid({products}: {products: Product[]}) {
@@ -18,23 +19,30 @@ export default function ProductGrid({products}: {products: Product[]}) {
           style={{
             padding: "1rem",
             fontFamily: "monospace",
+            border: "1px solid black",
           }}>
-          {product.image ? (
-            <img
-              src={
-                typeof product.image === "string"
-                  ? product.image
-                  : product.image?.url || ""
-              }
-              alt={product.title || "Product image"}
-              style={{width: "100%", height: "auto", marginBottom: "1rem"}}
-            />
-          ) : (
-            <div style={{height: "300px", background: "#ccc"}} />
-          )}
-          <h2>{product.title}</h2>
-          <p>{product.price}</p>
-          <button>Add to Cart</button>
+          <Link
+            href={`/putters/${product.handle}`}
+            style={{textDecoration: "none", color: "inherit"}}>
+            {product.image ? (
+              <img
+                src={
+                  typeof product.image === "string"
+                    ? product.image
+                    : product.image?.url || ""
+                }
+                alt={product.title || "Product image"}
+                style={{width: "100%", height: "auto", marginBottom: "1rem"}}
+              />
+            ) : (
+              <div style={{height: "300px", background: "#ccc"}} />
+            )}
+            <h2>{product.title}</h2>
+            <p>{product.price}</p>
+          </Link>
+
+          {/* Only show Add to Cart for non-"blanks" products */}
+          {!product.tags?.includes("blanks") && <button>Add to Cart</button>}
         </div>
       ))}
     </div>

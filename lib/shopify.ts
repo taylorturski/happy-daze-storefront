@@ -202,11 +202,13 @@ export async function getProductsByTag(tag: string) {
 
 export async function getProductByHandle(handle: string) {
   const query = `
-    query getProductByHandle($handle: String!) {
+    query GetProductByHandle($handle: String!) {
       productByHandle(handle: $handle) {
+        id
         title
         handle
         tags
+        description
         images(first: 1) {
           edges {
             node {
@@ -231,10 +233,10 @@ export async function getProductByHandle(handle: string) {
   `;
 
   const variables = {handle};
-  const data = await shopifyFetch(query, variables);
-  const product = data.productByHandle;
 
-  if (!product) return null;
+  const data = await shopifyFetch(query, variables);
+
+  const product = data.productByHandle;
 
   return {
     id: product.variants.edges[0]?.node.id,
@@ -243,6 +245,7 @@ export async function getProductByHandle(handle: string) {
     image: product.images.edges[0]?.node || null,
     price: `${product.variants.edges[0]?.node.price.amount} ${product.variants.edges[0]?.node.price.currencyCode}`,
     tags: product.tags,
+    description: product.description,
   };
 }
 

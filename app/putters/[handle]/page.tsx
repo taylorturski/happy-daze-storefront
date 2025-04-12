@@ -1,30 +1,33 @@
 import {getProductByHandle} from "@/lib/shopify";
-import {notFound} from "next/navigation";
 
-export default async function PutterPage({params}: {params: {handle: string}}) {
-  const product = await getProductByHandle(params.handle);
+export default async function PutterPage(props: {params: {handle: string}}) {
+  const {handle} = await props.params; // ✅ Await the whole `params` object
 
-  if (!product) return notFound();
+  const product = await getProductByHandle(handle);
+
+  if (!product) {
+    return <div style={{padding: "2rem"}}>Product not found.</div>;
+  }
 
   return (
-    <main style={{padding: "2rem", fontFamily: "monospace"}}>
+    <div style={{padding: "2rem", fontFamily: "monospace"}}>
       <h1>{product.title}</h1>
-      <img
-        src={
-          typeof product.image === "string"
-            ? product.image
-            : product.image?.url || ""
-        }
-        alt={product.title}
-        style={{
-          width: "100%",
-          maxWidth: 500,
-          height: "auto",
-          marginBottom: "1rem",
-        }}
-      />
+      {product.image ? (
+        <img
+          src={
+            typeof product.image === "string"
+              ? product.image
+              : product.image?.url || ""
+          }
+          alt={product.title}
+          style={{width: "100%", maxWidth: "600px", marginBottom: "1rem"}}
+        />
+      ) : (
+        <div style={{height: "300px", background: "#ccc"}} />
+      )}
       <p>{product.price}</p>
-      <p style={{marginTop: "2rem"}}>Customization options coming soon.</p>
-    </main>
+      <p>[Customization form goes here]</p>
+    </div>
   );
 }
+// Note: The customization form is a placeholder.

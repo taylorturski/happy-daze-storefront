@@ -49,12 +49,29 @@ export default function RootLayout({children}: {children: ReactNode}) {
     }
   };
 
+  const handleRemoveItem = async (id: string) => {
+    try {
+      await fetch(`/api/cart?id=${id}`, {method: "DELETE"});
+      const res = await fetch("/api/cart");
+      const data = await res.json();
+      setCart(data.cart);
+      setTotal(data.total);
+    } catch (err) {
+      console.error("Failed to remove item", err);
+    }
+  };
+
   return (
     <html lang="en">
       <body style={{margin: 0, fontFamily: "monospace"}}>
         <GoogleAnalytics />
         <div style={{display: "flex", minHeight: "100vh"}}>
-          <Sidebar total={total} onCheckout={handleCheckout} />
+          <Sidebar
+            cart={cart}
+            total={total}
+            onCheckout={handleCheckout}
+            onRemoveItem={handleRemoveItem}
+          />
           {/* Main content */}
           <main style={{flex: 1}}>
             <header

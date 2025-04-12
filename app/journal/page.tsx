@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import {getBlogArticles} from "@/lib/shopify";
 import {BlogArticle} from "@/types/blogs";

@@ -29,6 +29,7 @@ export async function shopifyFetch(query: string, variables = {}) {
   }
 }
 
+// ** This function is used to get all products from the Shopify store
 export async function getAllProducts() {
   const query = `
   query Products {
@@ -76,7 +77,7 @@ export async function getAllProducts() {
   }));
 }
 
-// lib/shopify.ts (after getAllProducts)
+// ** This function is used to get a single product by handle
 
 export async function getBlogArticles() {
   const query = `
@@ -106,6 +107,7 @@ export async function getBlogArticles() {
   return data.blog.articles.edges.map((edge: any) => edge.node);
 }
 
+// ** This function is used to get a single Blog article by handle
 export async function getBlogArticleByHandle(handle: string) {
   const query = `
     query GetArticle($handle: String!) {
@@ -128,7 +130,7 @@ export async function getBlogArticleByHandle(handle: string) {
   return data.blog.articleByHandle;
 }
 
-// this function is used to get the page by handle
+// ** This function is used to get the page by handle
 export async function getPageByHandle(handle: string) {
   const query = `
     query GetPage($handle: String!) {
@@ -142,4 +144,56 @@ export async function getPageByHandle(handle: string) {
   const variables = {handle};
   const data = await shopifyFetch(query, variables);
   return data.page;
+}
+
+// ** This function is used to get products by tag
+export async function getProductsByTag(tag: string) {
+  const query = `
+    query ProductsByTag($query: String!) {
+      products(first: 20, query: $query) {
+        edges {
+          node {
+            id
+            title
+            handle
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
+            images(first: 1) {
+              edges {
+                node {
+                  url
+                  altText
+                }
+              }
+            }
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    query: `tag:${tag}`,
+  };
+
+  const data = await shopifyFetch(query, variables);
+
+  return data.products.edges.map(({node}: any) => ({
+    id: node.variants.edges[0]?.node.id,
+    title: node.title,
+    handle: node.handle,
+    image: node.images.edges[0]?.node || null,
+    price: `${node.priceRange.minVariantPrice.amount} ${node.priceRange.minVariantPrice.currencyCode}`,
+  }));
 }

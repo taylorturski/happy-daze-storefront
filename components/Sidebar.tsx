@@ -54,9 +54,9 @@ export default function Sidebar({
         {cart.length === 0 ? (
           <p>No items yet.</p>
         ) : (
-          cart.map((item) => (
+          cart.map((item, index) => (
             <div
-              key={item.id}
+              key={`${item.id}-${index}`} // Unique key using ID and index
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -82,9 +82,11 @@ export default function Sidebar({
                   border: "none",
                   background: "none",
                   cursor: "pointer",
-                  fontSize: "1rem",
+                  fontSize: "1.25rem",
+                  lineHeight: "1",
+                  padding: 0,
                 }}>
-                🗑️
+                ×
               </button>
             </div>
           ))

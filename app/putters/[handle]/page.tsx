@@ -1,13 +1,54 @@
-import {getProductByHandle} from "@/lib/shopify";
+"use client";
 
-export default async function PutterPage(props: {params: {handle: string}}) {
-  const {handle} = await props.params; // ✅ Await the whole `params` object
+import {useState} from "react";
+import {useParams} from "next/navigation";
+import {Product} from "@/types/product";
+import {useEffect} from "react";
 
-  const product = await getProductByHandle(handle);
+export default function PutterPage() {
+  const {handle} = useParams();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [added, setAdded] = useState(false);
 
-  if (!product) {
-    return <div style={{padding: "2rem"}}>Product not found.</div>;
-  }
+  // fetch product client-side (since we're using useParams here)
+  useEffect(() => {
+    async function fetchProduct() {
+      const res = await fetch(`/api/products/${handle}`);
+      const data = await res.json();
+      setProduct(data);
+    }
+
+    if (handle) fetchProduct();
+  }, [handle]);
+
+  const handleAddToCart = async () => {
+    if (!product) return;
+
+    const payload = {
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      image:
+        typeof product.image === "string"
+          ? product.image
+          : product.image?.url || "",
+    };
+
+    const res = await fetch("/api/cart", {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (res.ok) {
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
+    }
+  };
+
+  if (!product) return <p style={{padding: "2rem"}}>Loading...</p>;
 
   return (
     <div style={{padding: "2rem", fontFamily: "monospace"}}>
@@ -26,8 +67,21 @@ export default async function PutterPage(props: {params: {handle: string}}) {
         <div style={{height: "300px", background: "#ccc"}} />
       )}
       <p>{product.price}</p>
-      <p>[Customization form goes here]</p>
+
+      <button
+        onClick={handleAddToCart}
+        style={{
+          marginTop: "1rem",
+          padding: "0.75rem 1.5rem",
+          fontWeight: "bold",
+          backgroundColor: "#000",
+          color: "#fff",
+          border: "2px solid black",
+        }}>
+        {added ? "✓ Added" : "Add to Cart"}
+      </button>
+
+      <p style={{marginTop: "2rem"}}>[Customization form goes here]</p>
     </div>
   );
 }
-// Note: The customization form is a placeholder.

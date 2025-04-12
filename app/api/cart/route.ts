@@ -24,3 +24,18 @@ export async function POST(req: Request) {
 export async function GET() {
   return NextResponse.json({cart, total: getCartTotal()});
 }
+
+export async function DELETE(req: Request) {
+  const {searchParams} = new URL(req.url);
+  const id = searchParams.get("id");
+
+  if (!id) {
+    return NextResponse.json({error: "Missing product ID"}, {status: 400});
+  }
+
+  const index = cart.findIndex((item) => item.id === id);
+  if (index !== -1) {
+    cart.splice(index, 1); // remove one instance from cart only
+  }
+  return NextResponse.json({cart, total: getCartTotal()});
+}

@@ -51,11 +51,16 @@ export default function RootLayout({children}: {children: ReactNode}) {
 
   const handleRemoveItem = async (id: string) => {
     try {
-      await fetch(`/api/cart?id=${id}`, {method: "DELETE"});
-      const res = await fetch("/api/cart");
+      setCart((prev) => prev.filter((item) => item.id !== id));
+
+      const res = await fetch(`/api/cart?id=${id}`, {method: "DELETE"});
+
+      if (!res.ok) {
+        console.error("Failed to delete item");
+      }
+
       const data = await res.json();
-      setCart(data.cart);
-      setTotal(data.total);
+      setTotal(data.total); // still get fresh total
     } catch (err) {
       console.error("Failed to remove item", err);
     }

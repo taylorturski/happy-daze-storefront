@@ -1,40 +1,8 @@
 "use client";
 
-import {useEffect, useState} from "react";
 import {Product} from "@/types/product";
 
-export default function ProductGrid() {
-  const [products, setProducts] = useState<Product[] | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchProducts() {
-      const res = await fetch("/api/products");
-      const data = await res.json();
-      setProducts(data);
-      setLoading(false);
-    }
-
-    fetchProducts();
-  }, []);
-
-  const addToCart = async (product: Product) => {
-    const response = await fetch("/api/cart", {
-      method: "POST",
-      body: JSON.stringify(product),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      console.error("Failed to add product to cart");
-    } else {
-      console.log("Product added to cart");
-    }
-  };
-
-  if (loading) return <p>Loading products...</p>;
+export default function ProductGrid({products}: {products: Product[]}) {
   if (!products || products.length === 0) return <p>No products found.</p>;
 
   return (
@@ -53,8 +21,12 @@ export default function ProductGrid() {
           }}>
           {product.image ? (
             <img
-              src={product.image.url}
-              alt={product.image.altText || product.title}
+              src={
+                typeof product.image === "string"
+                  ? product.image
+                  : product.image?.url || ""
+              }
+              alt={product.title || "Product image"}
               style={{width: "100%", height: "auto", marginBottom: "1rem"}}
             />
           ) : (
@@ -62,7 +34,7 @@ export default function ProductGrid() {
           )}
           <h2>{product.title}</h2>
           <p>{product.price}</p>
-          <button onClick={() => addToCart(product)}>Add to Cart</button>
+          <button>Add to Cart</button>
         </div>
       ))}
     </div>

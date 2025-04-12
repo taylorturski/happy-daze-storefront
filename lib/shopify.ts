@@ -156,6 +156,7 @@ export async function getProductsByTag(tag: string) {
             id
             title
             handle
+            tags
             variants(first: 1) {
               edges {
                 node {
@@ -195,5 +196,55 @@ export async function getProductsByTag(tag: string) {
     handle: node.handle,
     image: node.images.edges[0]?.node || null,
     price: `${node.priceRange.minVariantPrice.amount} ${node.priceRange.minVariantPrice.currencyCode}`,
+    tags: node.tags,
   }));
 }
+
+// export async function getAllProducts() {
+//   const query = `
+//   query Products {
+//     products(first: 10) {
+//       edges {
+//         node {
+//           id
+//           title
+//           handle
+//           tags
+//           variants(first: 1) {
+//             edges {
+//               node {
+//                 id
+//               }
+//             }
+//           }
+//           images(first: 1) {
+//             edges {
+//               node {
+//                 url
+//                 altText
+//               }
+//             }
+//           }
+//           priceRange {
+//             minVariantPrice {
+//               amount
+//               currencyCode
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+//   `;
+
+//   const data = await shopifyFetch(query);
+
+//   return data.products.edges.map(({node}: any) => ({
+//     id: node.variants.edges[0]?.node.id,
+//     title: node.title,
+//     handle: node.handle,
+//     image: node.images.edges[0]?.node || null,
+//     price: `${node.priceRange.minVariantPrice.amount} ${node.priceRange.minVariantPrice.currencyCode}`,
+//     tags: node.tags,
+//   }));
+// }

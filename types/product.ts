@@ -7,4 +7,5 @@ export type Product = {
     url: string;
     altText: string | null;
   } | null;
+  tags?: string[];
 };

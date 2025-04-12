@@ -1,6 +1,6 @@
 import {getProductsByTag} from "@/lib/shopify";
-import Link from "next/link";
 import {Product} from "@/types/product";
+import Link from "next/link";
 
 export default async function CustomShopPage() {
   const products = await getProductsByTag("blanks");

@@ -44,13 +44,13 @@ export default function ProductPage() {
         {/* Image section */}
         <div className="w-full lg:w-1/2">
           {product.images.length > 0 ? (
-            <div className="flex flex-col gap-3 max-h-[100vh] overflow-y-scroll pr-2 scrollbar-hide">
+            <div className="flex flex-col gap-4 lg:max-h-[90vh] lg:overflow-y-scroll lg:pr-2 scrollbar-hide">
               {product.images.map((image, i) => (
                 <img
                   key={i}
                   src={image.url}
                   alt={image.altText || `${product.title} ${i + 1}`}
-                  className="w-full max-w-[400px] border-2 border-black"
+                  className="w-full max-w-[500px] border-2 border-black"
                 />
               ))}
             </div>

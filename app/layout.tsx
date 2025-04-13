@@ -1,7 +1,6 @@
 "use client";
 
 import "@/styles/globals.css";
-
 import {ReactNode} from "react";
 import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
@@ -11,7 +10,7 @@ import {CartProvider} from "@/app/context/CartContext";
 export default function RootLayout({children}: {children: ReactNode}) {
   return (
     <html lang="en">
-      <body style={{margin: 0, fontFamily: "monospace"}}>
+      <body className="m-0 font-mono">
         <GoogleAnalytics />
         <CartProvider>
           <LayoutContent>{children}</LayoutContent>
@@ -21,45 +20,31 @@ export default function RootLayout({children}: {children: ReactNode}) {
   );
 }
 
-// LayoutContent preserves your styling exactly
 function LayoutContent({children}: {children: ReactNode}) {
   return (
-    <div style={{display: "flex", minHeight: "100vh"}}>
+    <div className="flex min-h-screen">
       <Sidebar />
-      <main style={{flex: 1}}>
-        <header
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "1rem",
-            borderBottom: "2px solid black",
-          }}>
-          <Link href="/" style={{fontWeight: "bold", fontSize: "1.5rem"}}>
+      <main className="flex-1">
+        <header className="flex justify-between items-center px-4 py-3 border-b-2 border-black">
+          <Link href="/" className="font-bold text-xl">
             Happy Daze Golf
           </Link>
-          <nav style={{display: "flex", gap: "1rem"}}>
-            <Link href="/custom-shop" style={navLinkStyle}>
+          <nav className="flex gap-3">
+            <Link href="/custom-shop" className={navLinkClasses}>
               CUSTOM SHOP
             </Link>
-            <Link href="/journal" style={navLinkStyle}>
+            <Link href="/journal" className={navLinkClasses}>
               JOURNAL
             </Link>
-            <Link href="/about" style={navLinkStyle}>
+            <Link href="/about" className={navLinkClasses}>
               ABOUT
             </Link>
           </nav>
         </header>
-
         {children}
       </main>
     </div>
   );
 }
 
-const navLinkStyle = {
-  border: "2px solid black",
-  padding: "0.5rem 1rem",
-  textDecoration: "none",
-  fontWeight: "bold",
-};
+const navLinkClasses = "border-2 border-black px-4 py-2 font-bold no-underline";

@@ -1,5 +1,7 @@
 "use client";
 
+import "@/styles/globals.css";
+
 import {ReactNode} from "react";
 import Link from "next/link";
 import Sidebar from "@/components/Sidebar";

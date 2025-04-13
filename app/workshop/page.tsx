@@ -1,16 +1,15 @@
 import {getPageByHandle} from "@/lib/shopify";
+import PageSection from "@/components/PageSection";
 
 export default async function WorkshopPage() {
   const page = await getPageByHandle("workshop");
 
-  // Extract only the images from the HTML
   const imageUrls = Array.from(
     page.body.matchAll(/<img[^>]+src="([^">]+)"/g) as Iterable<RegExpMatchArray>
   ).map((match) => match[1]);
 
   return (
-    <div>
-      <h1>Workshop</h1>
+    <PageSection title="Workshop">
       <div
         style={{
           display: "grid",
@@ -27,6 +26,6 @@ export default async function WorkshopPage() {
           />
         ))}
       </div>
-    </div>
+    </PageSection>
   );
 }

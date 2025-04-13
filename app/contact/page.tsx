@@ -1,11 +1,11 @@
 import {getPageByHandle} from "@/lib/shopify";
+import PageSection from "@/components/PageSection";
 
 export default async function ContactPage() {
   const page = await getPageByHandle("contact");
 
   return (
-    <div>
-      <h1>{page.title}</h1>
+    <PageSection title={page.title}>
       <div
         dangerouslySetInnerHTML={{__html: page.body}}
         style={{fontFamily: "monospace", marginBottom: "2rem"}}
@@ -52,6 +52,6 @@ export default async function ContactPage() {
           Send Message
         </button>
       </form>
-    </div>
+    </PageSection>
   );
 }

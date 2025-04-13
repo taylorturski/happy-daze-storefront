@@ -6,6 +6,8 @@ export async function shopifyFetch(query: string, variables = {}) {
   const endpoint = `https://${domain}/api/${apiVersion}/graphql.json`;
 
   try {
+    // console.log("SHOPIFY endpoint:", endpoint);
+    // console.log("Token present?", Boolean(accessToken));
     const res = await fetch(endpoint, {
       method: "POST",
       headers: {
@@ -15,11 +17,17 @@ export async function shopifyFetch(query: string, variables = {}) {
       body: JSON.stringify({query, variables}),
     });
 
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("Shopify fetch failed:", errorText);
+      throw new Error("Shopify API fetch failed");
+    }
+
     const json = await res.json();
 
     if (json.errors) {
       console.error("Shopify API Error:", JSON.stringify(json.errors));
-      throw new Error("Shopify API error");
+      throw new Error("Shopify API returned errors");
     }
 
     return json.data;

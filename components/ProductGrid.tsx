@@ -2,14 +2,11 @@
 
 import Link from "next/link";
 import {Product} from "@/types/product";
+import {useCart} from "@/app/context/CartContext";
 
-export default function ProductGrid({
-  products,
-  onAddToCart,
-}: {
-  products: Product[];
-  onAddToCart: (product: Product) => void;
-}) {
+export default function ProductGrid({products}: {products: Product[]}) {
+  const {addToCart} = useCart();
+
   if (!products || products.length === 0) return <p>No products found.</p>;
 
   return (
@@ -48,7 +45,20 @@ export default function ProductGrid({
           </Link>
 
           {!product.tags?.includes("blanks") && (
-            <button onClick={() => onAddToCart(product)}>Add to Cart</button>
+            <button
+              onClick={() =>
+                addToCart({
+                  ...product,
+                  price: parseFloat(product.price), // 👈 convert string to number
+                  image:
+                    typeof product.image === "string"
+                      ? product.image
+                      : product.image?.url || "",
+                  quantity: 1,
+                })
+              }>
+              Add to Cart
+            </button>
           )}
         </div>
       ))}

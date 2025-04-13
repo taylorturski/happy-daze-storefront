@@ -31,12 +31,29 @@ export default function MobileMenu() {
 
       {open && (
         <div className="fixed inset-0 bg-white text-black z-50 flex flex-col p-6 border-t-4 border-black font-mono overflow-y-auto">
-          <button
-            onClick={() => setOpen(false)}
-            className="self-end text-xl font-bold border-2 border-black px-3 py-1 mb-6">
-            X
-          </button>
+          {/* Header row with logo and close button */}
+          <div className="flex justify-between items-center mb-6">
+            <Link
+              href="/"
+              onClick={() => setOpen(false)}
+              className="w-[170px] h-[80px] relative">
+              <Image
+                src="/happy_daze_logo.svg"
+                alt="Happy Daze Golf"
+                fill
+                className="object-contain"
+                priority
+              />
+            </Link>
 
+            <button
+              onClick={() => setOpen(false)}
+              className="text-xl font-bold border-2 border-black px-3 py-1">
+              X
+            </button>
+          </div>
+
+          {/* Navigation links */}
           <nav className="flex flex-col gap-4 text-lg font-bold uppercase mb-6">
             <Link href="/custom-shop" onClick={() => setOpen(false)}>
               Custom Shop
@@ -93,6 +110,7 @@ export default function MobileMenu() {
             </button>
           </div>
 
+          {/* Email Signup */}
           <EmailSignup />
         </div>
       )}

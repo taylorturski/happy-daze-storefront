@@ -6,7 +6,7 @@ export default async function HomePage() {
   const products = await getProductsByTag("blanks");
 
   return (
-    <PageSection title="Happy Daze Golf">
+    <PageSection title="Custom Blanks">
       {products.length > 0 ? (
         <ProductGrid products={products} />
       ) : (

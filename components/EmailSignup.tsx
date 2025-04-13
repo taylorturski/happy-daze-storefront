@@ -26,7 +26,7 @@ export default function EmailSignup() {
   };
 
   return (
-    <div className="mt-6">
+    <div className="mt-5 md:pl-3">
       <p className="text-xs mb-1 uppercase">Refuse the ordinary</p>
       <h3 className="text-lg font-bold uppercase">UNDERGROUND GC</h3>
       <p className="text-sm text-blue-600">Get a discount code :)</p>
@@ -37,7 +37,7 @@ export default function EmailSignup() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Your email"
           required
-          className="flex-1 border border-black px-2 py-1 text-sm bg-black text-white"
+          className="flex-1 border-2 border-white px-2 py-1 text-sm bg-black text-white"
         />
         <button
           type="submit"

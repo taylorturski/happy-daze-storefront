@@ -13,7 +13,7 @@ export default async function JournalPage() {
           <Link
             key={article.handle}
             href={`/journal/${article.handle}`}
-            className="border-2 border-black p-4 no-underline text-black font-mono hover:bg-gray-100 transition">
+            className="border-2 border-black p-4 no-underline text-white hover:text-black font-mono hover:bg-gray-100 transition">
             {article.image ? (
               <img
                 src={article.image.url}

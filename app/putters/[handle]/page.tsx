@@ -66,18 +66,24 @@ export default function ProductPage() {
           </h1>
           <p className="text-lg mb-6">${product.price}</p>
 
-          <button
-            onClick={onAddToCart}
-            className="border-2 border-black px-4 py-2 font-bold bg-black text-white hover:bg-white hover:text-black transition-all w-fit">
-            {added ? "✓ Added" : "Add to Cart"}
-          </button>
+          {product.description && (
+            <div
+              className="text-sm leading-relaxed mb-6"
+              dangerouslySetInnerHTML={{__html: product.description}}
+            />
+          )}
 
-          <div className="mt-10 border-t-2 border-black pt-6">
+          <div className="mt-5 border-t-2 border-black pt-6">
             <h2 className="uppercase text-sm font-bold mb-2">Customization</h2>
             <p className="text-sm text-gray-700">
               [Customization form goes here — coming soon.]
             </p>
           </div>
+          <button
+            onClick={onAddToCart}
+            className="border-2 border-black mt-3 px-4 py-2 font-bold text-black bg-white w-fit">
+            {added ? "✓ Added" : "Add to Cart"}
+          </button>
         </div>
       </div>
     </div>

@@ -14,7 +14,19 @@ export default function Sidebar() {
 
   return (
     <aside className="w-[240px] border-r-2 border-black p-4 flex flex-col gap-6 font-mono">
-      <div>
+      {/* Logo */}
+      <Link href="/" className="block w-[200px] h-[80px] relative mb-2">
+        <Image
+          src="/happy_daze_logo.svg"
+          alt="Happy Daze Golf"
+          fill
+          className="object-contain invert"
+          priority
+        />
+      </Link>
+
+      {/* Cart */}
+      <div className="md:pl-3">
         <h3 className="mb-2 text-lg font-bold">MY CART</h3>
         {!cart || cart.length === 0 ? (
           <p>No items yet.</p>
@@ -45,12 +57,13 @@ export default function Sidebar() {
         </p>
         <button
           onClick={handleCheckout}
-          className="mt-2 border-2 border-black px-3 py-1 font-bold">
+          className="mt-2 border-2 border-white px-3 py-1 font-bold">
           CHECK OUT
         </button>
       </div>
 
-      <div>
+      {/* Nav */}
+      <div className="md:pl-3">
         <h3 className="mb-2 text-lg font-bold">CATEGORIES</h3>
         <nav className="flex flex-col gap-1">
           <Link href="/custom-shop" className="hover:underline">
@@ -68,6 +81,7 @@ export default function Sidebar() {
         </nav>
       </div>
 
+      {/* Email form */}
       <EmailSignup />
     </aside>
   );

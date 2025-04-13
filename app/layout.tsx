@@ -3,6 +3,7 @@
 import "@/styles/globals.css";
 import {ReactNode} from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Sidebar from "@/components/Sidebar";
 import MobileMenu from "@/components/MobileMenu";
 import GoogleAnalytics from "@/app/analytics/GoogleAnalytics";
@@ -24,19 +25,15 @@ export default function RootLayout({children}: {children: ReactNode}) {
 function LayoutContent({children}: {children: ReactNode}) {
   return (
     <div className="flex min-h-screen">
-      {/* Show sidebar only on desktop (sm and up) */}
+      {/* Sidebar on desktop */}
       <aside className="hidden sm:block">
         <Sidebar />
       </aside>
 
-      {/* Main content area */}
+      {/* Main */}
       <main className="flex-1">
         {/* Desktop Header */}
-        <header className="hidden sm:flex justify-between items-center border-b-2 border-black px-4 py-3">
-          <Link href="/" className="font-bold text-xl">
-            Happy Daze Golf
-          </Link>
-
+        <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-4">
           <nav className="flex gap-2">
             <Link href="/custom-shop" className={navLinkClasses}>
               CUSTOM SHOP
@@ -52,8 +49,14 @@ function LayoutContent({children}: {children: ReactNode}) {
 
         {/* Mobile Header */}
         <div className="flex sm:hidden justify-between items-center border-b-2 border-black px-4 py-3">
-          <Link href="/" className="font-bold text-sm">
-            Happy Daze Golf
+          <Link href="/" className="block w-[160px] h-[60px] relative">
+            <Image
+              src="/happy_daze_logo.svg"
+              alt="Happy Daze Golf"
+              fill
+              className="pt-2 object-contain invert"
+              priority
+            />
           </Link>
           <MobileMenu />
         </div>

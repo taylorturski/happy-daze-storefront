@@ -10,15 +10,17 @@ export const addToCart = (product: Product) => {
 
 export const getCartTotal = () => {
   return cart.reduce((total, product) => {
-    const price = parseFloat(product.price.split(" ")[0]); // Assuming price is in the format "650.0 USD"
-    return total + price;
+    return total + Number(product.price);
   }, 0);
 };
 
 export async function POST(req: Request) {
   const product: Product = await req.json();
   const updatedCart = addToCart(product);
-  return NextResponse.json(updatedCart);
+  return NextResponse.json({
+    cart: updatedCart,
+    total: getCartTotal(), // <-- Important addition
+  });
 }
 
 export async function GET() {
@@ -35,7 +37,8 @@ export async function DELETE(req: Request) {
 
   const index = cart.findIndex((item) => item.id === id);
   if (index !== -1) {
-    cart.splice(index, 1); // remove one instance from cart only
+    cart.splice(index, 1);
   }
+
   return NextResponse.json({cart, total: getCartTotal()});
 }

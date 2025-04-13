@@ -1,43 +1,77 @@
-import {getAllProducts} from "@/lib/shopify";
+"use client";
 
-type Product = {
-  id: string;
-  title: string;
-  handle: string;
-  price: string;
-  image: {
-    url: string;
-    altText: string | null;
-  } | null;
-};
+import {useState, useEffect} from "react";
+import {useParams} from "next/navigation";
+import {useCart} from "@/app/context/CartContext";
+import {Product} from "@/types/product";
 
-interface ProductPageProps {
-  params: {handle: string};
-}
+export default function ProductPage() {
+  const {handle} = useParams();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [added, setAdded] = useState(false);
 
-export default async function ProductPage({params}: ProductPageProps) {
-  // Fetch all products (this will run on the server)
-  const allProducts = await getAllProducts();
+  const {addToCart} = useCart();
 
-  // Find the specific product by handle
-  const product = allProducts.find(
-    (prod: Product) => prod.handle === params.handle
-  );
+  useEffect(() => {
+    async function fetchProduct() {
+      const res = await fetch(`/api/products/${handle}`);
+      const data = await res.json();
+      setProduct(data);
+    }
 
-  if (!product) {
-    return <p>Product not found</p>;
-  }
+    if (handle) fetchProduct();
+  }, [handle]);
+
+  const onAddToCart = async () => {
+    if (!product) return;
+
+    await addToCart({
+      id: product.id,
+      title: product.title,
+      price: parseFloat(product.price),
+      image:
+        typeof product.image === "string"
+          ? product.image
+          : product.image?.url || "",
+      quantity: 1,
+    });
+
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
+
+  if (!product) return <p>Loading...</p>;
 
   return (
-    <div>
+    <div style={{padding: "2rem", fontFamily: "monospace"}}>
       <h1>{product.title}</h1>
-      <img
-        src={product.image?.url || ""}
-        alt={product.image?.altText || product.title}
-        style={{width: "100%", height: "auto"}}
-      />
+      {product.image && (
+        <img
+          src={
+            typeof product.image === "string"
+              ? product.image
+              : product.image.url
+          }
+          alt={product.title}
+          style={{width: "100%", maxWidth: "600px", marginBottom: "1rem"}}
+        />
+      )}
       <p>{product.price}</p>
-      {/* Add more details like description, customization options, etc. */}
+
+      <button
+        onClick={onAddToCart}
+        style={{
+          marginTop: "1rem",
+          padding: "0.75rem 1.5rem",
+          fontWeight: "bold",
+          backgroundColor: "#000",
+          color: "#fff",
+          border: "2px solid black",
+        }}>
+        {added ? "✓ Added" : "Add to Cart"}
+      </button>
+
+      <p style={{marginTop: "2rem"}}>[Customization form goes here]</p>
     </div>
   );
 }

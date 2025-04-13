@@ -3,21 +3,16 @@
 import {useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {CartItem} from "@/types/product";
+import {useCart} from "@/app/context/CartContext";
 
-export default function Sidebar({
-  cart,
-  total,
-  onCheckout,
-  onRemoveItem,
-}: {
-  cart: CartItem[];
-  total: number;
-  onCheckout: () => void;
-  onRemoveItem: (id: string) => void;
-}) {
+export default function Sidebar() {
+  const {cart, total, removeFromCart} = useCart();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+
+  const handleCheckout = () => {
+    window.location.href = "/api/cart/checkout";
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,33 +46,35 @@ export default function Sidebar({
       <div>
         <h3 style={{marginBottom: "0.5rem"}}>MY CART</h3>
 
-        {cart.length === 0 ? (
+        {!cart || cart.length === 0 ? (
           <p>No items yet.</p>
         ) : (
           cart.map((item, index) => (
             <div
-              key={`${item.id}-${index}`} // Unique key using ID and index
+              key={`${item.id}-${index}`}
               style={{
                 display: "flex",
                 alignItems: "center",
                 marginBottom: "1rem",
               }}>
-              <img
+              <Image
                 src={item.image}
                 alt={item.title}
+                width={40}
+                height={40}
                 style={{
-                  width: "40px",
-                  height: "40px",
                   objectFit: "cover",
                   marginRight: "0.5rem",
                 }}
               />
               <div style={{flex: 1}}>
                 <p style={{margin: 0, fontSize: "0.85rem"}}>{item.title}</p>
-                <p style={{margin: 0, fontSize: "0.85rem"}}>{item.price}</p>
+                <p style={{margin: 0, fontSize: "0.85rem"}}>
+                  ${Number(item.price).toFixed(2)}
+                </p>
               </div>
               <button
-                onClick={() => onRemoveItem(item.id)}
+                onClick={() => removeFromCart(item.id)}
                 style={{
                   border: "none",
                   background: "none",
@@ -93,9 +90,9 @@ export default function Sidebar({
         )}
 
         <p>
-          Total: <strong>${total.toFixed(2)}</strong>
+          Total: <strong>${total?.toFixed(2) ?? "0.00"}</strong>
         </p>
-        <button onClick={onCheckout}>CHECK OUT</button>
+        <button onClick={handleCheckout}>CHECK OUT</button>
       </div>
 
       <div>

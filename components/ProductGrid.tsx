@@ -3,7 +3,13 @@
 import Link from "next/link";
 import {Product} from "@/types/product";
 
-export default function ProductGrid({products}: {products: Product[]}) {
+export default function ProductGrid({
+  products,
+  onAddToCart,
+}: {
+  products: Product[];
+  onAddToCart: (product: Product) => void;
+}) {
   if (!products || products.length === 0) return <p>No products found.</p>;
 
   return (
@@ -41,8 +47,9 @@ export default function ProductGrid({products}: {products: Product[]}) {
             <p>{product.price}</p>
           </Link>
 
-          {/* Only show Add to Cart for non-"blanks" products */}
-          {!product.tags?.includes("blanks") && <button>Add to Cart</button>}
+          {!product.tags?.includes("blanks") && (
+            <button onClick={() => onAddToCart(product)}>Add to Cart</button>
+          )}
         </div>
       ))}
     </div>

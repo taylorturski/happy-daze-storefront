@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {getBlogArticles} from "@/lib/shopify";
+import {getBlogArticles} from "@/lib/shopify/blog";
 import {BlogArticle} from "@/types/blogs";
 import PageSection from "@/components/PageSection";
 

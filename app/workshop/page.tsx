@@ -1,4 +1,4 @@
-import {getPageByHandle} from "@/lib/shopify";
+import {getPageByHandle} from "@/lib/shopify/pages";
 import PageSection from "@/components/PageSection";
 
 export default async function WorkshopPage() {

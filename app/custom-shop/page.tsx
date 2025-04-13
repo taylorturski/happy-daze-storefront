@@ -1,4 +1,4 @@
-import {getProductsByTag} from "@/lib/shopify";
+import {getProductsByTag} from "@/lib/shopify/product";
 import {Product} from "@/types/product";
 import Link from "next/link";
 import PageSection from "@/components/PageSection";

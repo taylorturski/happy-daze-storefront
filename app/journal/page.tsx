@@ -8,41 +8,24 @@ export default async function JournalPage() {
 
   return (
     <PageSection title="Journal">
-      <div
-        style={{
-          display: "grid",
-          gap: "2rem",
-          gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-        }}>
+      <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {articles.map((article) => (
           <Link
             key={article.handle}
             href={`/journal/${article.handle}`}
-            style={{
-              border: "2px solid black",
-              padding: "1rem",
-              fontFamily: "monospace",
-              color: "inherit",
-              textDecoration: "none",
-            }}>
+            className="border-2 border-black p-4 no-underline text-black font-mono hover:bg-gray-100 transition">
             {article.image ? (
               <img
                 src={article.image.url}
                 alt={article.image.altText || article.title}
-                style={{width: "100%", height: "auto", marginBottom: "1rem"}}
+                className="w-full h-auto mb-4"
               />
             ) : (
-              <div
-                style={{
-                  height: "200px",
-                  background: "#ccc",
-                  marginBottom: "1rem",
-                }}
-              />
+              <div className="h-[200px] bg-gray-300 mb-4" />
             )}
-            <h2 style={{marginBottom: "0.5rem"}}>{article.title}</h2>
-            <p style={{fontSize: "0.9rem"}}>{article.excerpt}</p>
-            <p style={{fontWeight: "bold", marginTop: "1rem"}}>Read More →</p>
+            <h2 className="mb-2 text-lg font-bold">{article.title}</h2>
+            <p className="text-sm">{article.excerpt}</p>
+            <p className="font-bold mt-4">Read More →</p>
           </Link>
         ))}
       </div>

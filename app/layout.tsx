@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import {ReactNode} from "react";
 import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
+import MobileMenu from "@/components/MobileMenu";
 import GoogleAnalytics from "@/app/analytics/GoogleAnalytics";
 import {CartProvider} from "@/app/context/CartContext";
 
@@ -23,13 +24,20 @@ export default function RootLayout({children}: {children: ReactNode}) {
 function LayoutContent({children}: {children: ReactNode}) {
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
+      {/* Show sidebar only on desktop (sm and up) */}
+      <aside className="hidden sm:block">
+        <Sidebar />
+      </aside>
+
+      {/* Main content area */}
       <main className="flex-1">
-        <header className="flex justify-between items-center px-4 py-3 border-b-2 border-black">
+        {/* Desktop Header */}
+        <header className="hidden sm:flex justify-between items-center border-b-2 border-black px-4 py-3">
           <Link href="/" className="font-bold text-xl">
             Happy Daze Golf
           </Link>
-          <nav className="flex gap-3">
+
+          <nav className="flex gap-2">
             <Link href="/custom-shop" className={navLinkClasses}>
               CUSTOM SHOP
             </Link>
@@ -41,10 +49,20 @@ function LayoutContent({children}: {children: ReactNode}) {
             </Link>
           </nav>
         </header>
+
+        {/* Mobile Header */}
+        <div className="flex sm:hidden justify-between items-center border-b-2 border-black px-4 py-3">
+          <Link href="/" className="font-bold text-sm">
+            Happy Daze Golf
+          </Link>
+          <MobileMenu />
+        </div>
+
         {children}
       </main>
     </div>
   );
 }
 
-const navLinkClasses = "border-2 border-black px-4 py-2 font-bold no-underline";
+const navLinkClasses =
+  "border-2 border-black px-3 py-1 font-bold no-underline text-xs uppercase";

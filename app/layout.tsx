@@ -4,7 +4,6 @@ import {ReactNode} from "react";
 import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
 import GoogleAnalytics from "@/app/analytics/GoogleAnalytics";
-import React from "react";
 import {CartProvider} from "@/app/context/CartContext";
 
 export default function RootLayout({children}: {children: ReactNode}) {

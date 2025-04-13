@@ -19,7 +19,7 @@ export async function POST(req: Request) {
   const updatedCart = addToCart(product);
   return NextResponse.json({
     cart: updatedCart,
-    total: getCartTotal(), // <-- Important addition
+    total: getCartTotal(),
   });
 }
 

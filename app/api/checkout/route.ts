@@ -1,6 +1,6 @@
 // app/api/checkout/route.ts
 import {NextResponse} from "next/server";
-import {shopifyFetch} from "@/lib/shopify";
+import {shopifyFetch} from "@/lib/shopify/client";
 import {Product} from "@/types/product";
 
 export async function POST(req: Request) {

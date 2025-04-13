@@ -1,4 +1,4 @@
-import {getBlogArticleByHandle} from "@/lib/shopify";
+import {getBlogArticleByHandle} from "@/lib/shopify/blog";
 import {notFound} from "next/navigation";
 
 type Props = {

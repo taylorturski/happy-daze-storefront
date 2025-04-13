@@ -10,23 +10,14 @@ export default function ProductGrid({products}: {products: Product[]}) {
   if (!products || products.length === 0) return <p>No products found.</p>;
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-        gap: "2rem",
-      }}>
+    <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 font-mono">
       {products.map((product) => (
         <div
           key={product.id}
-          style={{
-            padding: "1rem",
-            fontFamily: "monospace",
-            border: "1px solid black",
-          }}>
+          className="border border-black p-4 flex flex-col justify-between">
           <Link
             href={`/putters/${product.handle}`}
-            style={{textDecoration: "none", color: "inherit"}}>
+            className="text-black no-underline hover:underline">
             {product.image ? (
               <img
                 src={
@@ -35,12 +26,12 @@ export default function ProductGrid({products}: {products: Product[]}) {
                     : product.image?.url || ""
                 }
                 alt={product.title || "Product image"}
-                style={{width: "100%", height: "auto", marginBottom: "1rem"}}
+                className="w-full h-auto mb-4"
               />
             ) : (
-              <div style={{height: "300px", background: "#ccc"}} />
+              <div className="h-[300px] bg-gray-300 mb-4" />
             )}
-            <h2>{product.title}</h2>
+            <h2 className="text-lg font-bold">{product.title}</h2>
             <p>{product.price}</p>
           </Link>
 
@@ -48,15 +39,17 @@ export default function ProductGrid({products}: {products: Product[]}) {
             <button
               onClick={() =>
                 addToCart({
-                  ...product,
-                  price: parseFloat(product.price), // 👈 convert string to number
+                  id: product.id,
+                  title: product.title,
+                  price: parseFloat(product.price),
                   image:
                     typeof product.image === "string"
                       ? product.image
                       : product.image?.url || "",
                   quantity: 1,
                 })
-              }>
+              }
+              className="mt-4 border-2 border-black px-3 py-1 font-bold">
               Add to Cart
             </button>
           )}

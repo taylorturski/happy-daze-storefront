@@ -1,41 +1,19 @@
 "use client";
 
-import {useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {useCart} from "@/app/context/CartContext";
+import EmailSignup from "./EmailSignup";
 
 export default function Sidebar() {
   const {cart, total, removeFromCart} = useCart();
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
 
   const handleCheckout = () => {
     window.location.href = "/api/cart/checkout";
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setMessage("");
-
-    const res = await fetch("/api/subscribe", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({email}),
-    });
-
-    if (res.ok) {
-      setMessage("Thanks for signing up!");
-      setEmail("");
-    } else {
-      const data = await res.json();
-      setMessage(data.error || "Something went wrong.");
-    }
-  };
-
   return (
     <aside className="w-[240px] border-r-2 border-black p-4 flex flex-col gap-6 font-mono">
-      {/* Cart */}
       <div>
         <h3 className="mb-2 text-lg font-bold">MY CART</h3>
         {!cart || cart.length === 0 ? (
@@ -72,7 +50,6 @@ export default function Sidebar() {
         </button>
       </div>
 
-      {/* Nav */}
       <div>
         <h3 className="mb-2 text-lg font-bold">CATEGORIES</h3>
         <nav className="flex flex-col gap-1">
@@ -91,25 +68,7 @@ export default function Sidebar() {
         </nav>
       </div>
 
-      {/* Email form */}
-      <div>
-        <h3 className="text-lg font-bold">UNDERGROUND GC</h3>
-        <p className="text-sm text-blue-600">Get a discount code :)</p>
-        <form onSubmit={handleSubmit} className="flex mt-2">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Your email"
-            required
-            className="flex-1 border border-black px-2 py-1 text-sm"
-          />
-          <button type="submit" className="ml-2 text-lg">
-            →
-          </button>
-        </form>
-        {message && <p className="text-green-600 text-sm mt-2">{message}</p>}
-      </div>
+      <EmailSignup />
     </aside>
   );
 }

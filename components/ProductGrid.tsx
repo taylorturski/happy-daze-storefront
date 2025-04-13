@@ -10,14 +10,12 @@ export default function ProductGrid({products}: {products: Product[]}) {
   if (!products || products.length === 0) return <p>No products found.</p>;
 
   return (
-    <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 font-mono">
+    <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 font-mono text-white">
       {products.map((product) => (
         <div
           key={product.id}
-          className="border border-black p-4 flex flex-col justify-between">
-          <Link
-            href={`/putters/${product.handle}`}
-            className="text-black no-underline hover:underline">
+          className="border-2 border-black p-4 flex flex-col justify-between bg-black hover:bg-white hover:text-black transition-all duration-200 ease-in-out">
+          <Link href={`/putters/${product.handle}`} className="no-underline">
             {product.image ? (
               <img
                 src={
@@ -26,13 +24,13 @@ export default function ProductGrid({products}: {products: Product[]}) {
                     : product.image?.url || ""
                 }
                 alt={product.title || "Product image"}
-                className="w-full h-auto mb-4"
+                className="w-full h-auto mb-4 border border-black"
               />
             ) : (
               <div className="h-[300px] bg-gray-300 mb-4" />
             )}
             <h2 className="text-lg font-bold">{product.title}</h2>
-            <p>{product.price}</p>
+            <p className="text-sm">${product.price}</p>
           </Link>
 
           {!product.tags?.includes("blanks") && (
@@ -49,7 +47,7 @@ export default function ProductGrid({products}: {products: Product[]}) {
                   quantity: 1,
                 })
               }
-              className="mt-4 border-2 border-black px-3 py-1 font-bold">
+              className="mt-4 border-2 border-black px-3 py-1 font-bold bg-white text-black hover:bg-black hover:text-white transition-all duration-150">
               Add to Cart
             </button>
           )}

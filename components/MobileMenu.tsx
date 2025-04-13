@@ -2,39 +2,42 @@
 
 import {useState} from "react";
 import Link from "next/link";
+import Image from "next/image";
+import {useCart} from "@/app/context/CartContext";
+import EmailSignup from "./EmailSignup";
 
 export default function MobileMenu() {
   const [open, setOpen] = useState(false);
+  const {cart, total, removeFromCart} = useCart();
+
+  const handleCheckout = () => {
+    window.location.href = "/api/cart/checkout";
+  };
 
   return (
     <>
-      {/* Trigger buttons */}
-      <div className="flex items-center gap-3 sm:hidden">
+      <div className="flex items-center gap-2 sm:hidden">
         <button
           onClick={() => setOpen(true)}
-          className="text-xs font-bold uppercase border-2 border-black px-3 py-1">
-          Menu
+          className="text-sm font-bold uppercase border-2 border-black px-2 py-1">
+          MENU
         </button>
         <button
           onClick={() => setOpen(true)}
-          className="text-xs font-bold uppercase border-2 border-black px-3 py-1">
-          Cart
+          className="text-sm font-bold uppercase border-2 border-black px-2 py-1">
+          CART
         </button>
       </div>
 
-      {/* Fullscreen Overlay */}
       {open && (
-        <div className="fixed inset-0 bg-white z-50 flex flex-col justify-between p-6 font-mono border-t-4 border-black">
-          <div className="flex justify-between items-start">
-            <h2 className="text-xl font-black">Menu</h2>
-            <button
-              onClick={() => setOpen(false)}
-              className="text-xl font-bold border-2 border-black px-3 py-1">
-              X
-            </button>
-          </div>
+        <div className="fixed inset-0 bg-white text-black z-50 flex flex-col p-6 border-t-4 border-black font-mono overflow-y-auto">
+          <button
+            onClick={() => setOpen(false)}
+            className="self-end text-xl font-bold border-2 border-black px-3 py-1 mb-6">
+            X
+          </button>
 
-          <nav className="flex flex-col gap-6 text-lg font-bold uppercase mt-10">
+          <nav className="flex flex-col gap-4 text-lg font-bold uppercase mb-6">
             <Link href="/custom-shop" onClick={() => setOpen(false)}>
               Custom Shop
             </Link>
@@ -49,9 +52,48 @@ export default function MobileMenu() {
             </Link>
           </nav>
 
-          <div className="text-sm uppercase font-bold mt-10">
-            REFUSE THE ORDINARY.
+          {/* Cart */}
+          <div className="mb-6">
+            <h3 className="mb-2 text-lg font-bold">MY CART</h3>
+            {!cart || cart.length === 0 ? (
+              <p>No items yet.</p>
+            ) : (
+              cart.map((item, index) => (
+                <div
+                  key={`${item.id}-${index}`}
+                  className="flex items-center mb-4">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    width={40}
+                    height={40}
+                    className="object-cover mr-2"
+                  />
+                  <div className="flex-1">
+                    <p className="m-0 text-sm">{item.title}</p>
+                    <p className="m-0 text-sm">
+                      ${Number(item.price).toFixed(2)}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => removeFromCart(item.id)}
+                    className="text-xl font-bold leading-none">
+                    ×
+                  </button>
+                </div>
+              ))
+            )}
+            <p>
+              Total: <strong>${total?.toFixed(2) ?? "0.00"}</strong>
+            </p>
+            <button
+              onClick={handleCheckout}
+              className="mt-2 border-2 border-black px-3 py-1 font-bold">
+              CHECK OUT
+            </button>
           </div>
+
+          <EmailSignup />
         </div>
       )}
     </>

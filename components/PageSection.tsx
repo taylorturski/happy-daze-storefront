@@ -1,16 +1,14 @@
-import {ReactNode} from "react";
-
 export default function PageSection({
   title,
   children,
 }: {
   title: string;
-  children: ReactNode;
+  children: React.ReactNode;
 }) {
   return (
-    <div style={{padding: "2rem", fontFamily: "monospace"}}>
-      <h1 style={{marginBottom: "2rem"}}>{title}</h1>
+    <section className="p-8 font-mono">
+      <h1 className="text-2xl font-bold mb-6">{title}</h1>
       {children}
-    </div>
+    </section>
   );
 }

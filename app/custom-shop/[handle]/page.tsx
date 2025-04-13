@@ -2,14 +2,13 @@
 
 import {useState, useEffect} from "react";
 import {useParams} from "next/navigation";
-import {useCart} from "@/app/context/CartContext";
 import {Product} from "@/types/product";
+import {useCart} from "@/app/context/CartContext";
 
-export default function ProductPage() {
+export default function CustomProductPage() {
   const {handle} = useParams();
   const [product, setProduct] = useState<Product | null>(null);
   const [added, setAdded] = useState(false);
-
   const {addToCart} = useCart();
 
   useEffect(() => {
@@ -29,10 +28,7 @@ export default function ProductPage() {
       id: product.id,
       title: product.title,
       price: parseFloat(product.price),
-      image:
-        typeof product.image === "string"
-          ? product.image
-          : product.image?.url || "",
+      image: product.images?.[0]?.url || "",
       quantity: 1,
     });
 
@@ -43,28 +39,45 @@ export default function ProductPage() {
   if (!product) return <p className="p-8 font-mono">Loading...</p>;
 
   return (
-    <div className="p-8 font-mono">
-      <h1 className="text-2xl font-bold mb-4">{product.title}</h1>
-      {product.image && (
-        <img
-          src={
-            typeof product.image === "string"
-              ? product.image
-              : product.image.url
-          }
-          alt={product.title}
-          className="w-full max-w-2xl mb-4"
-        />
-      )}
-      <p className="text-lg mb-4">{product.price}</p>
+    <div className="flex flex-col lg:flex-row gap-12 p-8 font-mono">
+      {/* Image gallery */}
+      <div className="w-full lg:w-1/2">
+        {product.images.length > 0 ? (
+          <div className="flex flex-col gap-4">
+            {product.images.map((image, i) => (
+              <img
+                key={i}
+                src={image.url}
+                alt={image.altText || `${product.title} ${i + 1}`}
+                className="w-full border-2 border-black"
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="h-[400px] w-full bg-gray-300 border-2 border-black" />
+        )}
+      </div>
 
-      <button
-        onClick={onAddToCart}
-        className="mt-4 border-2 border-black px-4 py-2 font-bold bg-black text-white">
-        {added ? "✓ Added" : "Add to Cart"}
-      </button>
+      {/* Info section */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-start">
+        <h1 className="text-2xl lg:text-3xl font-bold uppercase mb-4">
+          {product.title}
+        </h1>
+        <p className="text-lg mb-6">${product.price}</p>
 
-      <p className="mt-8 text-sm">[Customization form goes here]</p>
+        <button
+          onClick={onAddToCart}
+          className="border-2 border-black px-4 py-2 font-bold bg-black text-white hover:bg-white hover:text-black transition-all w-fit">
+          {added ? "✓ Added" : "Add to Cart"}
+        </button>
+
+        <div className="mt-10 border-t-2 border-black pt-6">
+          <h2 className="uppercase text-sm font-bold mb-2">Customization</h2>
+          <p className="text-sm text-gray-700">
+            [Customization form goes here — coming soon.]
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

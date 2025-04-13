@@ -16,7 +16,7 @@ export async function getAllProducts() {
                 }
               }
             }
-            images(first: 1) {
+            images(first: 10) {
               edges {
                 node {
                   url
@@ -42,7 +42,7 @@ export async function getAllProducts() {
     id: node.variants.edges[0]?.node.id,
     title: node.title,
     handle: node.handle,
-    image: node.images.edges[0]?.node || null,
+    images: node.images.edges.map((edge: any) => edge.node) || [],
     price: `${node.priceRange.minVariantPrice.amount} ${node.priceRange.minVariantPrice.currencyCode}`,
   }));
 }
@@ -64,7 +64,7 @@ export async function getProductsByTag(tag: string) {
                 }
               }
             }
-            images(first: 1) {
+            images(first: 10) {
               edges {
                 node {
                   url
@@ -92,7 +92,7 @@ export async function getProductsByTag(tag: string) {
     id: node.variants.edges[0]?.node.id,
     title: node.title,
     handle: node.handle,
-    image: node.images.edges[0]?.node || null,
+    images: node.images.edges.map((edge: any) => edge.node) || [],
     price: `${node.priceRange.minVariantPrice.amount} ${node.priceRange.minVariantPrice.currencyCode}`,
     tags: node.tags,
   }));
@@ -107,7 +107,7 @@ export async function getProductByHandle(handle: string) {
         handle
         tags
         description
-        images(first: 1) {
+        images(first: 10) {
           edges {
             node {
               url
@@ -137,7 +137,7 @@ export async function getProductByHandle(handle: string) {
     id: product.variants.edges[0]?.node.id,
     title: product.title,
     handle: product.handle,
-    image: product.images.edges[0]?.node || null,
+    images: product.images.edges.map((edge: any) => edge.node) || [],
     price: `${product.variants.edges[0]?.node.price.amount} ${product.variants.edges[0]?.node.price.currencyCode}`,
     tags: product.tags,
     description: product.description,

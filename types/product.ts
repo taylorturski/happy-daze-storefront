@@ -3,9 +3,10 @@ export type Product = {
   title: string;
   handle: string;
   price: string;
-  image: {
+  images: {
     url: string;
-    altText: string | null;
-  } | null;
+    altText?: string | null;
+  }[];
   tags?: string[];
+  description?: string;
 };

@@ -34,104 +34,81 @@ export default function Sidebar() {
   };
 
   return (
-    <aside
-      style={{
-        width: "240px",
-        borderRight: "2px solid black",
-        padding: "1rem",
-        display: "flex",
-        flexDirection: "column",
-        gap: "1.5rem",
-      }}>
+    <aside className="w-[240px] border-r-2 border-black p-4 flex flex-col gap-6 font-mono">
+      {/* Cart */}
       <div>
-        <h3 style={{marginBottom: "0.5rem"}}>MY CART</h3>
-
+        <h3 className="mb-2 text-lg font-bold">MY CART</h3>
         {!cart || cart.length === 0 ? (
           <p>No items yet.</p>
         ) : (
           cart.map((item, index) => (
-            <div
-              key={`${item.id}-${index}`}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "1rem",
-              }}>
+            <div key={`${item.id}-${index}`} className="flex items-center mb-4">
               <Image
                 src={item.image}
                 alt={item.title}
                 width={40}
                 height={40}
-                style={{
-                  objectFit: "cover",
-                  marginRight: "0.5rem",
-                }}
+                className="object-cover mr-2"
               />
-              <div style={{flex: 1}}>
-                <p style={{margin: 0, fontSize: "0.85rem"}}>{item.title}</p>
-                <p style={{margin: 0, fontSize: "0.85rem"}}>
-                  ${Number(item.price).toFixed(2)}
-                </p>
+              <div className="flex-1">
+                <p className="m-0 text-sm">{item.title}</p>
+                <p className="m-0 text-sm">${Number(item.price).toFixed(2)}</p>
               </div>
               <button
                 onClick={() => removeFromCart(item.id)}
-                style={{
-                  border: "none",
-                  background: "none",
-                  cursor: "pointer",
-                  fontSize: "1.25rem",
-                  lineHeight: "1",
-                  padding: 0,
-                }}>
+                className="text-xl font-bold leading-none">
                 ×
               </button>
             </div>
           ))
         )}
-
         <p>
           Total: <strong>${total?.toFixed(2) ?? "0.00"}</strong>
         </p>
-        <button onClick={handleCheckout}>CHECK OUT</button>
+        <button
+          onClick={handleCheckout}
+          className="mt-2 border-2 border-black px-3 py-1 font-bold">
+          CHECK OUT
+        </button>
       </div>
 
+      {/* Nav */}
       <div>
-        <h3 style={{marginBottom: "0.5rem"}}>CATEGORIES</h3>
-        <nav style={{display: "flex", flexDirection: "column", gap: "0.25rem"}}>
-          <Link href="/custom-shop">Custom Shop</Link>
-          <Link href="/workshop">Workshop</Link>
-          <Link href="/journal">Journal</Link>
-          <Link href="/contact">Contact</Link>
+        <h3 className="mb-2 text-lg font-bold">CATEGORIES</h3>
+        <nav className="flex flex-col gap-1">
+          <Link href="/custom-shop" className="hover:underline">
+            Custom Shop
+          </Link>
+          <Link href="/workshop" className="hover:underline">
+            Workshop
+          </Link>
+          <Link href="/journal" className="hover:underline">
+            Journal
+          </Link>
+          <Link href="/contact" className="hover:underline">
+            Contact
+          </Link>
         </nav>
       </div>
 
+      {/* Email form */}
       <div>
-        <h3>UNDERGROUND GC</h3>
-        <p style={{fontSize: "0.8rem", color: "blue"}}>
-          Get a discount code :)
-        </p>
-        <form
-          onSubmit={handleSubmit}
-          style={{display: "flex", marginTop: "0.5rem"}}>
+        <h3 className="text-lg font-bold">UNDERGROUND GC</h3>
+        <p className="text-sm text-blue-600">Get a discount code :)</p>
+        <form onSubmit={handleSubmit} className="flex mt-2">
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Your email"
             required
-            style={{
-              flex: 1,
-              padding: "0.25rem",
-              border: "1px solid black",
-            }}
+            className="flex-1 border border-black px-2 py-1 text-sm"
           />
-          <button style={{marginLeft: "0.5rem"}}>→</button>
+          <button type="submit" className="ml-2 text-lg">
+            →
+          </button>
         </form>
-        {message && (
-          <p style={{fontSize: "0.8rem", color: "green", marginTop: "0.5rem"}}>
-            {message}
-          </p>
-        )}
+        {message && <p className="text-green-600 text-sm mt-2">{message}</p>}
       </div>
     </aside>
   );

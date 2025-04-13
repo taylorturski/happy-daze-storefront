@@ -37,11 +37,11 @@ export default function PutterPage() {
     setTimeout(() => setAdded(false), 2000);
   };
 
-  if (!product) return <p style={{padding: "2rem"}}>Loading...</p>;
+  if (!product) return <p className="p-8 font-mono">Loading...</p>;
 
   return (
-    <div style={{padding: "2rem", fontFamily: "monospace"}}>
-      <h1>{product.title}</h1>
+    <div className="p-8 font-mono">
+      <h1 className="text-2xl font-bold mb-4">{product.title}</h1>
       {product.image && (
         <img
           src={
@@ -50,23 +50,16 @@ export default function PutterPage() {
               : product.image.url
           }
           alt={product.title}
-          style={{width: "100%", maxWidth: "600px", marginBottom: "1rem"}}
+          className="w-full max-w-2xl mb-4"
         />
       )}
-      <p>{product.price}</p>
+      <p className="text-lg mb-4">{product.price}</p>
       <button
         onClick={onAdd}
-        style={{
-          marginTop: "1rem",
-          padding: "0.75rem 1.5rem",
-          fontWeight: "bold",
-          backgroundColor: "#000",
-          color: "#fff",
-          border: "2px solid black",
-        }}>
+        className="mt-4 border-2 border-black px-4 py-2 font-bold bg-black text-white">
         {added ? "✓ Added" : "Add to Cart"}
       </button>
-      <p style={{marginTop: "2rem"}}>[Customization form goes here]</p>
+      <p className="mt-8 text-sm">[Customization form goes here]</p>
     </div>
   );
 }

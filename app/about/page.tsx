@@ -11,8 +11,8 @@ export default async function AboutPage() {
   return (
     <PageSection title={page.title}>
       <div
+        className="max-w-xl font-mono"
         dangerouslySetInnerHTML={{__html: page.body}}
-        style={{maxWidth: "640px"}}
       />
     </PageSection>
   );

@@ -10,19 +10,13 @@ export default async function WorkshopPage() {
 
   return (
     <PageSection title="Workshop">
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-          gap: "1rem",
-          marginTop: "2rem",
-        }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8">
         {imageUrls.map((src, idx) => (
           <img
             key={idx}
             src={src}
             alt={`Workshop Image ${idx + 1}`}
-            style={{width: "100%", height: "auto", border: "2px solid black"}}
+            className="w-full h-auto border-2 border-black"
           />
         ))}
       </div>

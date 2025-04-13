@@ -1,4 +1,3 @@
-// app/components/Cart.tsx
 "use client";
 
 import {useState, useEffect} from "react";
@@ -15,7 +14,6 @@ export default function Cart() {
   const [total, setTotal] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
-  // Fetch cart and total price from API
   useEffect(() => {
     async function fetchCart() {
       const res = await fetch("/api/cart");
@@ -34,15 +32,15 @@ export default function Cart() {
   };
 
   const handleCheckout = () => {
-    // Simulating the checkout process
     alert("Proceeding to checkout...");
   };
 
-  if (loading) return <p>Loading cart...</p>;
+  if (loading) return <p className="p-8 font-mono">Loading cart...</p>;
 
   return (
-    <div style={{padding: "2rem"}}>
-      <h3>My Cart</h3>
+    <div className="p-8 font-mono">
+      <h3 className="text-xl font-bold mb-4">My Cart</h3>
+
       {cart.length === 0 ? (
         <p>Your cart is empty</p>
       ) : (
@@ -50,31 +48,30 @@ export default function Cart() {
           {cart.map((item) => (
             <div
               key={item.id}
-              style={{
-                borderBottom: "1px solid #ddd",
-                marginBottom: "1rem",
-                paddingBottom: "1rem",
-              }}>
+              className="flex items-center border-b border-gray-300 mb-4 pb-4">
               <img
                 src={item.image}
                 alt={item.title}
-                style={{width: "50px", height: "50px", marginRight: "1rem"}}
+                className="w-12 h-12 object-cover mr-4 border"
               />
-              <span>{item.title}</span>
-              <span>{item.price}</span>
+              <div className="flex-1">
+                <p className="text-sm font-semibold">{item.title}</p>
+                <p className="text-sm">{item.price}</p>
+              </div>
               <button
                 onClick={() => handleRemoveItem(item.id)}
-                style={{marginLeft: "1rem"}}>
+                className="ml-4 text-sm text-red-600 underline">
                 Remove
               </button>
             </div>
           ))}
-          <div style={{marginTop: "1rem"}}>
-            <strong>Total: ${total.toFixed(2)}</strong>
-          </div>
+          <div className="mt-4 font-bold">Total: ${total.toFixed(2)}</div>
         </div>
       )}
-      <button onClick={handleCheckout} style={{marginTop: "1rem"}}>
+
+      <button
+        onClick={handleCheckout}
+        className="mt-6 border-2 border-black px-4 py-2 font-bold bg-black text-white">
         Proceed to Checkout
       </button>
     </div>

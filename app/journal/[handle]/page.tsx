@@ -22,18 +22,18 @@ export default async function BlogArticlePage({params}: Props) {
   if (!article) return notFound();
 
   return (
-    <div style={{maxWidth: "700px", margin: "0 auto", fontFamily: "monospace"}}>
-      <h1>{article.title}</h1>
+    <div className="max-w-2xl mx-auto p-8 font-mono">
+      <h1 className="text-2xl font-bold mb-4">{article.title}</h1>
       {article.image && (
         <img
           src={article.image.url}
           alt={article.image.altText || article.title}
-          style={{width: "100%", height: "auto", marginBottom: "1rem"}}
+          className="w-full h-auto mb-4"
         />
       )}
       <div
+        className="leading-7"
         dangerouslySetInnerHTML={{__html: article.contentHtml}}
-        style={{lineHeight: "1.6rem"}}
       />
     </div>
   );

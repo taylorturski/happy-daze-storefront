@@ -8,28 +8,23 @@ export default async function CustomShopPage() {
 
   return (
     <PageSection title="Custom Shop">
-      <div
-        style={{
-          display: "grid",
-          gap: "2rem",
-          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-        }}>
+      <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 font-mono">
         {products.map((product: Product) => (
-          <div
-            key={product.id}
-            style={{border: "2px solid black", padding: "1rem"}}>
+          <div key={product.id} className="border-2 border-black p-4">
             {product.image ? (
               <img
                 src={product.image.url}
                 alt={product.image.altText || product.title}
-                style={{width: "100%", height: "auto", marginBottom: "1rem"}}
+                className="w-full h-auto mb-4"
               />
             ) : (
-              <div style={{height: "300px", background: "#ccc"}} />
+              <div className="h-[300px] bg-gray-300 mb-4" />
             )}
-            <h2>{product.title}</h2>
-            <p>{product.price}</p>
-            <Link href={`/putters/${product.handle}`}>Customize →</Link>
+            <h2 className="text-lg font-bold">{product.title}</h2>
+            <p className="text-sm">{product.price}</p>
+            <Link href={`/putters/${product.handle}`} className="underline">
+              Customize →
+            </Link>
           </div>
         ))}
       </div>

@@ -1,16 +1,28 @@
 import {NextResponse} from "next/server";
 import {Product} from "@/types/product";
 
-let cart: Product[] = [];
+type CartItem = Product & {quantity: number};
+
+let cart: CartItem[] = [];
 
 export const addToCart = (product: Product) => {
-  cart.push(product);
+  const existingIndex = cart.findIndex((item) => item.id === product.id);
+
+  const quantityToAdd = product.quantity ?? 1;
+
+  if (existingIndex !== -1) {
+    cart[existingIndex].quantity =
+      (cart[existingIndex].quantity ?? 1) + quantityToAdd;
+  } else {
+    cart.push({...product, quantity: quantityToAdd});
+  }
+
   return cart;
 };
 
 export const getCartTotal = () => {
-  return cart.reduce((total, product) => {
-    return total + Number(product.price);
+  return cart.reduce((total, item) => {
+    return total + Number(item.price) * (item.quantity ?? 1);
   }, 0);
 };
 

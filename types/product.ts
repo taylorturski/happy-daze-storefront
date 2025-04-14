@@ -9,4 +9,5 @@ export type Product = {
   }[];
   tags?: string[];
   description?: string;
+  quantity?: number;
 };

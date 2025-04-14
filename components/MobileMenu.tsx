@@ -107,7 +107,7 @@ export default function MobileMenu() {
                   <div className="flex-1">
                     <p className="m-0 text-sm">{item.title}</p>
                     <p className="m-0 text-sm">
-                      ${Number(item.price).toFixed(2)}
+                      ${Number(item.price).toFixed(2)} × {item.quantity}
                     </p>
                   </div>
                   <button

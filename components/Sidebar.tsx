@@ -61,7 +61,9 @@ export default function Sidebar() {
               />
               <div className="flex-1">
                 <p className="m-0 text-sm">{item.title}</p>
-                <p className="m-0 text-sm">${Number(item.price).toFixed(2)}</p>
+                <p className="m-0 text-sm">
+                  ${Number(item.price).toFixed(2)} × {item.quantity}
+                </p>
               </div>
               <button
                 onClick={() => removeFromCart(item.id)}

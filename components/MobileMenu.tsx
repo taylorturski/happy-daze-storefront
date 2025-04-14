@@ -10,8 +10,26 @@ export default function MobileMenu() {
   const [open, setOpen] = useState(false);
   const {cart, total, removeFromCart} = useCart();
 
-  const handleCheckout = () => {
-    window.location.href = "/api/cart/checkout";
+  const handleCheckout = async () => {
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cart),
+      });
+
+      const data = await res.json();
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Failed to start checkout.");
+      }
+    } catch (err) {
+      console.error("Checkout error:", err);
+      alert("Error processing checkout.");
+    }
   };
 
   return (

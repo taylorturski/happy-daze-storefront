@@ -29,7 +29,7 @@ export default function Sidebar() {
       <div className="md:pl-3">
         <h3 className="mb-2 text-lg font-bold">MY CART</h3>
         {!cart || cart.length === 0 ? (
-          <p>No items yet.</p>
+          <p className="text-xs mb-2">No items yet.</p>
         ) : (
           cart.map((item, index) => (
             <div key={`${item.id}-${index}`} className="flex items-center mb-4">

@@ -37,8 +37,8 @@ export default async function ContactPage() {
         />
         <button
           type="submit"
-          className="border-2 border-black px-4 py-2 font-bold bg-white">
-          Send Message
+          className="border-2 border-white px-4 py-2 font-bold bg-black">
+          SEND MESSAGE
         </button>
       </form>
     </PageSection>

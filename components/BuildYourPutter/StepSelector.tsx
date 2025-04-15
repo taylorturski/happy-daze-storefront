@@ -6,6 +6,9 @@ import {materials} from "./data/materials";
 import {headshapes} from "./data/headshapes";
 import {finishes} from "./data/finishOptions";
 import {BuildContext} from "./BuildContext";
+import {faceOptions} from "./data/face";
+import {neckOptions} from "./data/neckOptions";
+import {alignmentOptions} from "./data/alignmentOptions";
 
 type StepSelectorProps = {
   step: "material" | "headshape" | "finish" | "face" | "neck" | "alignment";
@@ -30,6 +33,15 @@ export default function StepSelector({step}: StepSelectorProps) {
       } else if (material === "stainless") {
         options = finishes.filter((f) => f.material === "stainless");
       }
+      break;
+    case "face":
+      options = faceOptions;
+      break;
+    case "neck":
+      options = neckOptions;
+      break;
+    case "alignment":
+      options = alignmentOptions;
       break;
     default:
       options = [];

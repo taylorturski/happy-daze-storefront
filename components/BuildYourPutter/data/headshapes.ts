@@ -3,17 +3,17 @@ import {BuildOption} from "../types";
 export const headshapes: BuildOption[] = [
   {
     id: "blade",
-    label: "Blade",
+    label: "Carman",
     image: "/putter-options/headshapes/blade-front.jpg",
   },
   {
     id: "midmallet",
-    label: "Mid Mallet",
+    label: "Wesley",
     image: "/putter-options/headshapes/midmallet-front.jpg",
   },
   {
     id: "mallet",
-    label: "Mallet",
+    label: "Trebek",
     image: "/putter-options/headshapes/mallet-front.jpg",
   },
 ];

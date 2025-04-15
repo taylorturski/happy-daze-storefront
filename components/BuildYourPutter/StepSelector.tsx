@@ -1,24 +1,52 @@
 "use client";
 
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {BuildOption} from "./types";
 import {headshapes} from "./data/headshapes";
+import {finishes} from "./data/finishOptions";
+import {materials} from "./data/materials";
 
 type StepSelectorProps = {
-  step: "headshape" | "finish" | "face" | "neck" | "alignment";
+  step: "material" | "headshape" | "finish" | "face" | "neck" | "alignment";
 };
 
 export default function StepSelector({step}: StepSelectorProps) {
   const [selected, setSelected] = useState<string | null>(null);
+  const [materialChoice, setMaterialChoice] = useState<string | null>(null); // controls finish filtering
 
-  const options: BuildOption[] = (() => {
-    switch (step) {
-      case "headshape":
-        return headshapes;
-      default:
-        return [];
+  useEffect(() => {
+    // Clear selected if step is material (ensures reset)
+    if (step === "material") {
+      setSelected(null);
     }
-  })();
+  }, [step]);
+
+  let options: BuildOption[] = [];
+
+  switch (step) {
+    case "material":
+      options = materials;
+      break;
+    case "headshape":
+      options = headshapes;
+      break;
+    case "finish":
+      if (materialChoice === "carbon") {
+        options = finishes.filter((f) => f.material === "carbon");
+      } else if (materialChoice === "stainless") {
+        options = finishes.filter((f) => f.material === "stainless");
+      }
+      break;
+    default:
+      options = [];
+  }
+
+  const handleSelect = (id: string) => {
+    setSelected(id);
+    if (step === "material") {
+      setMaterialChoice(id);
+    }
+  };
 
   return (
     <section className="p-8 border-t border-white">
@@ -27,7 +55,7 @@ export default function StepSelector({step}: StepSelectorProps) {
         {options.map((option) => (
           <div
             key={option.id}
-            onClick={() => setSelected(option.id)}
+            onClick={() => handleSelect(option.id)}
             className={`cursor-pointer p-4 border-2 ${
               selected === option.id ? "border-green-500" : "border-white"
             }`}>

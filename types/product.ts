@@ -10,4 +10,10 @@ export type Product = {
   tags?: string[];
   description?: string;
   quantity?: number;
+  material?: string;
+  headshape?: string;
+  finish?: string;
+  face?: string;
+  neck?: string;
+  alignment?: string;
 };

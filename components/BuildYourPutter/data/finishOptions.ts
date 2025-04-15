@@ -2,13 +2,13 @@ import {BuildOption} from "../types";
 
 export const finishes: (BuildOption & {material: "carbon" | "stainless"})[] = [
   {
-    id: "satin-carbon",
+    id: "Satin Carbon",
     label: "Satin",
     image: "/build/finishes/satin_carbon.png",
     material: "carbon",
   },
   {
-    id: "oil-quench",
+    id: "Torched Oil Quench",
     label: "Torched Oil Quench (+$100)",
     image: "/build/finishes/torched_oil_quench.png",
     material: "carbon",

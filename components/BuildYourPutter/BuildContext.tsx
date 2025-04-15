@@ -1,50 +1,32 @@
 "use client";
 
-import {createContext, useContext, useState, ReactNode} from "react";
+import {createContext, useState} from "react";
+
+type Step = "material" | "headshape" | "finish" | "face" | "neck" | "alignment";
 
 type BuildSelections = {
-  material: string | null;
-  headshape: string | null;
-  finish: string | null;
-  face: string | null;
-  neck: string | null;
-  alignment: string | null;
+  [key in Step]?: string;
 };
 
 type BuildContextType = {
   selections: BuildSelections;
-  updateSelection: (step: keyof BuildSelections, value: string) => void;
+  setSelection: (step: Step, value: string) => void;
 };
 
-const BuildContext = createContext<BuildContextType | undefined>(undefined);
+export const BuildContext = createContext<BuildContextType>({
+  selections: {},
+  setSelection: () => {},
+});
 
-export function useBuild() {
-  const context = useContext(BuildContext);
-  if (!context) {
-    throw new Error("useBuild must be used within a BuildProvider");
-  }
-  return context;
-}
+export function BuildProvider({children}: {children: React.ReactNode}) {
+  const [selections, setSelections] = useState<BuildSelections>({});
 
-export function BuildProvider({children}: {children: ReactNode}) {
-  const [selections, setSelections] = useState<BuildSelections>({
-    material: null,
-    headshape: null,
-    finish: null,
-    face: null,
-    neck: null,
-    alignment: null,
-  });
-
-  const updateSelection = (step: keyof BuildSelections, value: string) => {
-    setSelections((prev) => ({
-      ...prev,
-      [step]: value,
-    }));
+  const setSelection = (step: Step, value: string) => {
+    setSelections((prev) => ({...prev, [step]: value}));
   };
 
   return (
-    <BuildContext.Provider value={{selections, updateSelection}}>
+    <BuildContext.Provider value={{selections, setSelection}}>
       {children}
     </BuildContext.Provider>
   );

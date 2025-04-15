@@ -1,6 +1,6 @@
 export default function Overview() {
   return (
-    <section className="p-8 border-b border-white">
+    <section className="p-8 border-b">
       <h1 className="text-3xl font-bold mb-4 uppercase">Build Your Putter</h1>
       <p className="mb-6 max-w-xl">
         Start from scratch and build a custom putter. Choose your head shape,

@@ -1,6 +1,7 @@
 "use client";
 
-import {createContext, useState} from "react";
+import {createContext, useEffect, useState} from "react";
+import {useSearchParams} from "next/navigation";
 
 type Step = "material" | "headshape" | "finish" | "face" | "neck" | "alignment";
 
@@ -20,10 +21,19 @@ export const BuildContext = createContext<BuildContextType>({
 
 export function BuildProvider({children}: {children: React.ReactNode}) {
   const [selections, setSelections] = useState<BuildSelections>({});
+  const searchParams = useSearchParams();
 
   const setSelection = (step: Step, value: string) => {
     setSelections((prev) => ({...prev, [step]: value}));
   };
+
+  // ✅ Preload headshape from URL query param (if present)
+  useEffect(() => {
+    const headshapeParam = searchParams.get("headshape");
+    if (headshapeParam && !selections.headshape) {
+      setSelection("headshape", headshapeParam);
+    }
+  }, [searchParams, selections.headshape]);
 
   return (
     <BuildContext.Provider value={{selections, setSelection}}>

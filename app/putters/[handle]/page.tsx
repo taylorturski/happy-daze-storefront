@@ -1,14 +1,16 @@
 "use client";
 
 import {useState, useEffect} from "react";
-import {useParams} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import {useCart} from "@/app/context/CartContext";
 import {Product} from "@/types/product";
 
 export default function ProductPage() {
   const {handle} = useParams();
+  const router = useRouter();
   const [product, setProduct] = useState<Product | null>(null);
   const [added, setAdded] = useState(false);
+  const [activeImage, setActiveImage] = useState(0);
   const {addToCart} = useCart();
 
   useEffect(() => {
@@ -20,6 +22,12 @@ export default function ProductPage() {
 
     if (handle) fetchProduct();
   }, [handle]);
+
+  const goToBuilder = () => {
+    if (!product) return;
+    const shape = encodeURIComponent(product.title);
+    router.push(`/build-your-putter?headshape=${shape}`);
+  };
 
   const onAddToCart = async () => {
     if (!product) return;
@@ -39,24 +47,35 @@ export default function ProductPage() {
   if (!product) return <p className="p-8 font-mono">Loading...</p>;
 
   return (
-    <div className="font-mono px-4 py-8">
+    <main className="font-mono px-4 py-8">
       <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row gap-12">
         {/* Image section */}
-        <div className="w-full lg:w-1/2">
-          {product.images.length > 0 ? (
-            <div className="flex flex-col gap-4 lg:max-h-[90vh] lg:overflow-y-scroll lg:pr-2 scrollbar-hide">
-              {product.images.map((image, i) => (
-                <img
-                  key={i}
-                  src={image.url}
-                  alt={image.altText || `${product.title} ${i + 1}`}
-                  className="w-full max-w-[500px] border-2 border-black"
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="h-[500px] w-full bg-gray-300 border-2 border-black" />
-          )}
+        <div className="w-full lg:w-1/2 flex flex-col lg:flex-row gap-4">
+          {/* Main image */}
+          <div className="flex-1">
+            <img
+              src={product.images[activeImage]?.url || product.images[0].url}
+              alt={product.images[activeImage]?.altText || product.title}
+              className="w-full max-w-[600px] border-2 border-black object-contain"
+            />
+          </div>
+
+          {/* Thumbnails - larger on both mobile and desktop */}
+          <div className="flex gap-3 lg:flex-col overflow-x-auto lg:overflow-visible w-full lg:w-32">
+            {product.images.map((image, i) => (
+              <img
+                key={i}
+                src={image.url}
+                alt={image.altText || `${product.title} ${i + 1}`}
+                className={`w-24 h-24 lg:w-full lg:h-28 object-contain border-2 cursor-pointer transition ${
+                  i === activeImage
+                    ? "border-black"
+                    : "border-transparent hover:border-gray-400"
+                }`}
+                onClick={() => setActiveImage(i)}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Info section */}
@@ -81,13 +100,22 @@ export default function ProductPage() {
               [Customization form goes here — coming soon.]
             </p>
           </div>
-          <button
-            onClick={onAddToCart}
-            className="border-2 border-black mt-3 px-4 py-2 font-bold text-black bg-white w-fit">
-            {added ? "✓ Added" : "Add to Cart"}
-          </button>
+
+          {product.tags?.includes("blanks") ? (
+            <button
+              onClick={goToBuilder}
+              className="border-2 border-black mt-3 px-4 py-2 font-bold text-black bg-white w-fit">
+              Customize
+            </button>
+          ) : (
+            <button
+              onClick={onAddToCart}
+              className="border-2 border-black mt-3 px-4 py-2 font-bold text-white bg-black w-fit">
+              {added ? "✓ Added" : "Add to Cart"}
+            </button>
+          )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }

@@ -45,8 +45,12 @@ export default async function CustomShopPage() {
                 <div className="h-[300px] bg-gray-300 mb-4" />
               )}
               <h2 className="text-lg font-bold">{product.title}</h2>
-              <p className="text-sm">{product.price}</p>
-              <Link href={`/putters/${product.handle}`} className="underline">
+              <p className="text-sm">Starting at ${product.price}</p>
+              <Link
+                href={`/build-your-putter?headshape=${encodeURIComponent(
+                  product.title
+                )}`}
+                className="underline">
                 Customize →
               </Link>
             </div>

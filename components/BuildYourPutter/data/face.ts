@@ -2,17 +2,17 @@ import {BuildOption} from "../types";
 
 export const faceOptions: BuildOption[] = [
   {
-    id: "smooth",
+    id: "Smooth",
     label: "Smooth",
     image: "/build/face/smooth.jpg",
   },
   {
-    id: "fine",
+    id: "Fine",
     label: "Fine Milling",
     image: "/build/face/fine.jpg",
   },
   {
-    id: "medium",
+    id: "Medium",
     label: "Medium Milling",
     image: "/build/face/medium.jpg",
   },

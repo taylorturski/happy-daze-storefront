@@ -40,3 +40,35 @@ a {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+@font-face {
+  font-family: "Pitch Sans";
+  src: url("/fonts/pitch-sans-medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pitch Sans";
+  src: url("/fonts/pitch-sans-semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-semibold;
+}
+
+p,
+span,
+li,
+blockquote {
+  @apply font-medium;
+}

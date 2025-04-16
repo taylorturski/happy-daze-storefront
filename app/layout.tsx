@@ -8,14 +8,16 @@ import Sidebar from "@/components/Sidebar";
 import MobileMenu from "@/components/MobileMenu";
 import GoogleAnalytics from "@/app/analytics/GoogleAnalytics";
 import {CartProvider} from "@/app/context/CartContext";
+import EmailPopup from "@/components/EmailPopup";
 
 export default function RootLayout({children}: {children: ReactNode}) {
   return (
     <html lang="en">
-      <body className="m-0 font-mono">
+      <body className="m-0 font-pitch text-[16px]">
         <GoogleAnalytics />
         <CartProvider>
           <LayoutContent>{children}</LayoutContent>
+          <EmailPopup />
         </CartProvider>
       </body>
     </html>

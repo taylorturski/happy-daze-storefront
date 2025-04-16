@@ -1,4 +1,5 @@
 import {NextResponse} from "next/server";
+import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
   const formData = await req.formData();
@@ -10,8 +11,32 @@ export async function POST(req: Request) {
     return NextResponse.json({error: "Missing fields"}, {status: 400});
   }
 
-  console.log("New contact submission:", {name, email, message});
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || "465"),
+    secure: true,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
 
-  // You can send this to an email provider or store in a DB
-  return NextResponse.json({success: true});
+  try {
+    await transporter.sendMail({
+      from: `"Happy Daze Contact Form" <${process.env.SMTP_USER}>`,
+      to: "hello@happydazegolf.com",
+      subject: "New Contact Form Submission",
+      html: `
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Message:</strong></p>
+        <p>${(message as string).replace(/\n/g, "<br/>")}</p>
+      `,
+    });
+
+    return NextResponse.json({success: true});
+  } catch (err) {
+    console.error("Email send error:", err);
+    return NextResponse.json({error: "Failed to send email"}, {status: 500});
+  }
 }

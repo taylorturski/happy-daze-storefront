@@ -3,6 +3,28 @@ import {getBlogArticles} from "@/lib/shopify/blog";
 import {BlogArticle} from "@/types/blogs";
 import PageSection from "@/components/PageSection";
 
+export async function generateMetadata() {
+  return {
+    title: "Journal | Happy Daze Golf",
+    description:
+      "Stories from the bench, experiments in the shop, and honest thoughts on modern golf culture. No hype. Just real.",
+    openGraph: {
+      title: "Journal | Happy Daze Golf",
+      description:
+        "Stories from the bench, experiments in the shop, and honest thoughts on modern golf culture. No hype. Just real.",
+      url: "https://www.happydazegolf.com/journal",
+      images: [
+        {
+          url: "/og/journal.jpg",
+          width: 1200,
+          height: 630,
+          alt: "Journal - Happy Daze Golf",
+        },
+      ],
+    },
+  };
+}
+
 export default async function JournalPage() {
   const articles: BlogArticle[] = await getBlogArticles();
 

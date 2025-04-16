@@ -3,6 +3,28 @@ import {Product} from "@/types/product";
 import Link from "next/link";
 import PageSection from "@/components/PageSection";
 
+export async function generateMetadata() {
+  return {
+    title: "Custom Shop | Happy Daze Golf",
+    description:
+      "This is where it starts. Choose your blank. Choose your story. Hand-stamped putters built with intention — no performance gimmicks.",
+    openGraph: {
+      title: "Custom Shop | Happy Daze Golf",
+      description:
+        "This is where it starts. Choose your blank. Choose your story. Hand-stamped putters built with intention — no performance gimmicks.",
+      url: "https://www.happydazegolf.com/custom-shop",
+      images: [
+        {
+          url: "/og/custom-shop.jpg",
+          width: 1200,
+          height: 630,
+          alt: "Custom Shop - Happy Daze Golf",
+        },
+      ],
+    },
+  };
+}
+
 export default async function CustomShopPage() {
   const products = await getProductsByTag("blanks");
 

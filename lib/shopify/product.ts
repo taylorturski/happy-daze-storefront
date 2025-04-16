@@ -57,10 +57,19 @@ export async function getProductsByTag(tag: string) {
             title
             handle
             tags
-            variants(first: 1) {
+            variants(first: 10) {
               edges {
                 node {
                   id
+                  title
+                  selectedOptions {
+                    name
+                    value
+                  }
+                  price {
+                    amount
+                    currencyCode
+                  }
                 }
               }
             }
@@ -89,12 +98,17 @@ export async function getProductsByTag(tag: string) {
   });
 
   return data.products.edges.map(({node}: any) => ({
-    id: node.variants.edges[0]?.node.id,
+    id: node.id,
     title: node.title,
     handle: node.handle,
-    images: node.images.edges.map((edge: any) => edge.node) || [],
-    price: `${node.priceRange.minVariantPrice.amount} ${node.priceRange.minVariantPrice.currencyCode}`,
     tags: node.tags,
+    images: node.images.edges.map((edge: any) => edge.node) || [],
+    variants: node.variants.edges.map(({node: variant}: any) => ({
+      id: variant.id,
+      title: variant.title,
+      price: `${variant.price.amount} ${variant.price.currencyCode}`,
+      selectedOptions: variant.selectedOptions,
+    })),
   }));
 }
 

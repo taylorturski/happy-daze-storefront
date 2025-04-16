@@ -1,3 +1,13 @@
+export type ProductVariant = {
+  id: string;
+  title: string;
+  price: string;
+  selectedOptions: {
+    name: string;
+    value: string;
+  }[];
+};
+
 export type Product = {
   id: string;
   title: string;
@@ -16,4 +26,5 @@ export type Product = {
   face?: string;
   neck?: string;
   alignment?: string;
+  variants?: ProductVariant[];
 };

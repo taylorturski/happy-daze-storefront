@@ -9,6 +9,12 @@ export async function getAllProducts() {
             id
             title
             handle
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+            }
             variants(first: 1) {
               edges {
                 node {
@@ -24,12 +30,6 @@ export async function getAllProducts() {
                 }
               }
             }
-            priceRange {
-              minVariantPrice {
-                amount
-                currencyCode
-              }
-            }
           }
         }
       }
@@ -39,11 +39,12 @@ export async function getAllProducts() {
   const data = await shopifyFetch(query);
 
   return data.products.edges.map(({node}: any) => ({
-    id: node.variants.edges[0]?.node.id,
+    id: node.id,
     title: node.title,
     handle: node.handle,
     images: node.images.edges.map((edge: any) => edge.node) || [],
-    price: `${node.priceRange.minVariantPrice.amount} ${node.priceRange.minVariantPrice.currencyCode}`,
+    price: node.priceRange.minVariantPrice.amount, // ← clean float string
+    currency: node.priceRange.minVariantPrice.currencyCode,
   }));
 }
 
@@ -103,6 +104,8 @@ export async function getProductsByTag(tag: string) {
     handle: node.handle,
     tags: node.tags,
     images: node.images.edges.map((edge: any) => edge.node) || [],
+    price: node.priceRange.minVariantPrice.amount,
+    currency: node.priceRange.minVariantPrice.currencyCode,
     variants: node.variants.edges.map(({node: variant}: any) => ({
       id: variant.id,
       title: variant.title,
@@ -114,35 +117,41 @@ export async function getProductsByTag(tag: string) {
 
 export async function getProductByHandle(handle: string) {
   const query = `
-    query GetProductByHandle($handle: String!) {
-      productByHandle(handle: $handle) {
-        id
-        title
-        handle
-        tags
-        description
-        images(first: 10) {
-          edges {
-            node {
-              url
-              altText
-            }
+  query GetProductByHandle($handle: String!) {
+    productByHandle(handle: $handle) {
+      id
+      title
+      handle
+      tags
+      description
+      images(first: 10) {
+        edges {
+          node {
+            url
+            altText
           }
         }
-        variants(first: 1) {
-          edges {
-            node {
-              id
-              price {
-                amount
-                currencyCode
-              }
+      }
+      priceRange {
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+      variants(first: 1) {
+        edges {
+          node {
+            id
+            price {
+              amount
+              currencyCode
             }
           }
         }
       }
     }
-  `;
+  }
+`;
 
   const data = await shopifyFetch(query, {handle});
   const product = data.productByHandle;
@@ -152,7 +161,8 @@ export async function getProductByHandle(handle: string) {
     title: product.title,
     handle: product.handle,
     images: product.images.edges.map((edge: any) => edge.node) || [],
-    price: `${product.variants.edges[0]?.node.price.amount} ${product.variants.edges[0]?.node.price.currencyCode}`,
+    price: product.priceRange.minVariantPrice.amount,
+    currency: product.priceRange.minVariantPrice.currencyCode,
     tags: product.tags,
     description: product.description,
   };

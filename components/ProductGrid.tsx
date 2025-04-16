@@ -28,9 +28,12 @@ export default function ProductGrid({products}: {products: Product[]}) {
                 <div className="h-[300px] bg-gray-300 mb-4" />
               )}
               <h2 className="text-lg font-bold">{product.title}</h2>
-              <p className="text-sm">${product.price}</p>
+              <p className="text-sm">
+                {product.price
+                  ? `$${parseFloat(product.price).toFixed(2)}`
+                  : "Price unavailable"}
+              </p>
             </Link>
-
             {!product.tags?.includes("blanks") && (
               <button
                 onClick={() =>

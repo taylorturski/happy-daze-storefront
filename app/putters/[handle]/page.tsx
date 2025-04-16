@@ -64,7 +64,9 @@ export default function ProductPage() {
           <h1 className="text-2xl lg:text-3xl font-bold uppercase mb-4">
             {product.title}
           </h1>
-          <p className="text-lg mb-6">Starting at ${product.price}</p>
+          <p className="text-lg mb-6">
+            Starting at ${parseFloat(product.price).toFixed(2)}
+          </p>
 
           {product.description && (
             <div

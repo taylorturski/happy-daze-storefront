@@ -3,14 +3,36 @@
 import {useContext, useState} from "react";
 import {BuildContext} from "./BuildContext";
 
+const REQUIRED_STEPS = [
+  "material",
+  "headshape",
+  "finish",
+  "face",
+  "neck",
+  "alignment",
+] as const;
+
 export default function StepCheckout() {
   const {selections} = useContext(BuildContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const missingSteps = REQUIRED_STEPS.filter((step) => !selections[step]);
+
   const handleCheckout = async () => {
-    setLoading(true);
     setError("");
+
+    if (missingSteps.length > 0) {
+      const message =
+        "Please complete: " +
+        missingSteps
+          .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+          .join(", ");
+      setError(message);
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const res = await fetch("/api/checkout", {
@@ -34,16 +56,14 @@ export default function StepCheckout() {
     }
   };
 
-  const allStepsSelected = (
-    ["material", "headshape", "finish", "face", "neck", "alignment"] as const
-  ).every((key) => selections[key]);
+  const allStepsSelected = missingSteps.length === 0;
 
   return (
     <section className="p-8 font-mono text-center">
       <button
-        disabled={!allStepsSelected || loading}
+        disabled={loading}
         onClick={handleCheckout}
-        className={`px-6 py-3 border-2 text-sm uppercase font-bold ${
+        className={`px-6 py-3 mb-3 border-2 text-sm uppercase font-bold ${
           allStepsSelected
             ? "border-white text-white"
             : "border-gray-500 text-gray-500"

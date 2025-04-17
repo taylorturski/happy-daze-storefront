@@ -4,37 +4,37 @@ export const finishes: (BuildOption & {material: "carbon" | "stainless"})[] = [
   {
     id: "Satin Carbon",
     label: "Satin",
-    image: "/build/finishes/satin_carbon.png",
+    image: "/builder/finish/satin-carbon.JPG",
     material: "carbon",
   },
   {
     id: "Torched Oil Quench",
     label: "Torched Oil Quench (+$100)",
-    image: "/build/finishes/torched_oil_quench.png",
+    image: "/builder/finish/torched-oil-quench.jpg",
     material: "carbon",
   },
   {
     id: "Japanese Brown Oxide",
     label: "Japanese Brown Oxide (+$100)",
-    image: "/build/finishes/japanese_brown.png",
+    image: "/builder/finish/japanese-brown-oxide.JPG",
     material: "carbon",
   },
   {
     id: "Black Oxide",
     label: "Black Oxide (+$100)",
-    image: "/build/finishes/black_oxide.png",
+    image: "/builder/finish/black-oxide.JPG",
     material: "carbon",
   },
   {
     id: "Satin Stainless",
     label: "Satin",
-    image: "/build/finishes/satin_stainless.png",
+    image: "/builder/finish/satin-stainless.JPG",
     material: "stainless",
   },
   {
     id: "Torched Gold",
     label: "Torched Gold (+$100)",
-    image: "/build/finishes/torched_gold.png",
+    image: "/builder/finish/torched-gold.jpg",
     material: "stainless",
   },
 ];

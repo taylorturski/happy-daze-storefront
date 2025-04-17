@@ -4,21 +4,21 @@ export const neckOptions: BuildOption[] = [
   {
     id: "plumbers",
     label: "Plumbers Neck",
-    image: "/build/neck/plumbers.png",
+    image: "/builder/neck/plumbers.jpg",
   },
   {
     id: "long-plumbers",
     label: "Long Plumbers",
-    image: "/build/neck/long_plumbers.png",
+    image: "/builder/neck/long-plumbers.jpg",
   },
   {
     id: "flowneck",
     label: "Flowneck",
-    image: "/build/neck/flowneck.png",
+    image: "/builder/neck/flowneck.jpg",
   },
   {
     id: "long-flowneck",
     label: "Long Flowneck",
-    image: "/build/neck/long_flowneck.png",
+    image: "/builder/neck/long-flowneck.jpg",
   },
 ];

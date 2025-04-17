@@ -4,16 +4,16 @@ export const faceOptions: BuildOption[] = [
   {
     id: "Smooth",
     label: "Smooth",
-    image: "/build/face/smooth.jpg",
+    image: "/builder/face/smooth.jpg",
   },
   {
     id: "Fine",
     label: "Fine Milling",
-    image: "/build/face/fine.jpg",
+    image: "/builder/face/fine.JPG",
   },
   {
     id: "Medium",
     label: "Medium Milling",
-    image: "/build/face/medium.jpg",
+    image: "/builder/face/medium.jpg",
   },
 ];

@@ -27,7 +27,6 @@ export function BuildProvider({children}: {children: React.ReactNode}) {
     setSelections((prev) => ({...prev, [step]: value}));
   };
 
-  // ✅ Preload headshape from URL query param (if present)
   useEffect(() => {
     const headshapeParam = searchParams.get("headshape");
     if (headshapeParam && !selections.headshape) {

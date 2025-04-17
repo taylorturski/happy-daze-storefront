@@ -53,7 +53,6 @@ export default function StepSelector({step}: StepSelectorProps) {
     setSelection(step, id);
   };
 
-  // Determine dynamic grid column count
   const getGridClass = () => {
     const count = options.length;
     if (count === 1) return "grid-cols-1";
@@ -67,22 +66,26 @@ export default function StepSelector({step}: StepSelectorProps) {
   const gridColsClass = getGridClass();
 
   return (
-    <section className="p-8 border-t border-white o">
+    <section className="p-8 border-t border-white">
       <h2 className="text-xl font-bold uppercase mb-4">{step}</h2>
       <div className={`grid gap-6 w-full ${gridColsClass}`}>
         {options.map((option) => (
           <div
             key={option.id}
             onClick={() => handleSelect(option.id)}
-            className={`cursor-pointer p-4 border-2 ${
+            className={`cursor-pointer border-2 ${
               selected === option.id ? "border-green-500" : "border-white"
             }`}>
-            <img
-              src={option.image}
-              alt={option.label}
-              className="w-full h-auto mb-2"
-            />
-            <p className="text-center text-sm">{option.label}</p>
+            <div className="aspect-[4/3] overflow-hidden">
+              <img
+                src={option.image}
+                alt={option.label}
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
+            <p className="text-center text-sm font-pitch font-medium py-2">
+              {option.label}
+            </p>
           </div>
         ))}
       </div>

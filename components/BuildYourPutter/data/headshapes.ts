@@ -4,16 +4,16 @@ export const headshapes: BuildOption[] = [
   {
     id: "Carman",
     label: "Carman",
-    image: "/putter-options/headshapes/blade-front.jpg",
+    image: "builder/headshape/carman.jpg",
   },
   {
     id: "Wesley",
     label: "Wesley",
-    image: "/putter-options/headshapes/midmallet-front.jpg",
+    image: "builder/headshape/Wesley.jpg",
   },
   {
     id: "Trebek",
     label: "Trebek",
-    image: "/putter-options/headshapes/mallet-front.jpg",
+    image: "builder/headshape/trebek.jpg",
   },
 ];

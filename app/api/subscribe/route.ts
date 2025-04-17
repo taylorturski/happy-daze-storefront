@@ -33,9 +33,20 @@ export async function POST(req: Request) {
       }),
     });
 
+    const data = await res.json();
+
+    if (
+      res.status === 422 &&
+      data.errors?.email?.includes("has already been taken")
+    ) {
+      return NextResponse.json(
+        {error: "Already subscribed — you’re covered."},
+        {status: 400}
+      );
+    }
+
     if (!res.ok) {
-      const errText = await res.text();
-      console.error("Shopify Admin API error:", errText);
+      console.error("Shopify Admin API error:", data);
       return NextResponse.json({error: "Failed to subscribe"}, {status: 500});
     }
 

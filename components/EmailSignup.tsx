@@ -45,7 +45,18 @@ export default function EmailSignup() {
           →
         </button>
       </form>
-      {message && <p className="text-green-600 text-sm mt-2">{message}</p>}
+      {message && (
+        <p
+          className={`text-sm mt-2 ${
+            message.toLowerCase().includes("error") ||
+            message.toLowerCase().includes("failed") ||
+            message.toLowerCase().includes("already")
+              ? "text-red-600"
+              : "text-green-600"
+          }`}>
+          {message}
+        </p>
+      )}{" "}
     </div>
   );
 }

@@ -35,10 +35,10 @@ export default function Cart() {
     alert("Proceeding to checkout...");
   };
 
-  if (loading) return <p className="p-8 font-mono">Loading cart...</p>;
+  if (loading) return <p className="p-8 font-pitch">Loading cart...</p>;
 
   return (
-    <div className="p-8 font-mono">
+    <div className="p-8 font-pitch">
       <h3 className="text-xl font-bold mb-4">My Cart</h3>
 
       {cart.length === 0 ? (
@@ -60,7 +60,7 @@ export default function Cart() {
               </div>
               <button
                 onClick={() => handleRemoveItem(item.id)}
-                className="ml-4 text-sm text-red-600 underline">
+                className="ml-4 font-vt lowercase text-sm text-red-600 underline">
                 Remove
               </button>
             </div>
@@ -71,7 +71,7 @@ export default function Cart() {
 
       <button
         onClick={handleCheckout}
-        className="mt-6 border-2 border-black px-4 py-2 font-bold bg-black text-white">
+        className="mt-6 border-2 font-vt lowercase border-black px-4 py-2 font-bold bg-black text-white">
         Proceed to Checkout
       </button>
     </div>

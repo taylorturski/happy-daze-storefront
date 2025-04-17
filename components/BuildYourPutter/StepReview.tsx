@@ -37,7 +37,7 @@ export default function StepReview() {
   ];
 
   return (
-    <section className="p-8 border-t border-white font-mono">
+    <section className="p-8 border-t border-white font-pitch">
       <h2 className="text-xl font-bold uppercase mb-4">Your Build</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {steps.map((step) => {

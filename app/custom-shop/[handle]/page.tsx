@@ -36,10 +36,10 @@ export default function CustomProductPage() {
     setTimeout(() => setAdded(false), 2000);
   };
 
-  if (!product) return <p className="p-8 font-mono">Loading...</p>;
+  if (!product) return <p className="p-8 font-pitch">Loading...</p>;
 
   return (
-    <div className="flex flex-col lg:flex-row gap-12 p-8 font-mono">
+    <div className="flex flex-col lg:flex-row gap-12 p-8 font-pitch">
       {/* Image gallery */}
       <div className="w-full lg:w-1/2">
         {product.images.length > 0 ? (
@@ -67,7 +67,7 @@ export default function CustomProductPage() {
 
         <button
           onClick={onAddToCart}
-          className="border-2 border-black px-4 py-2 font-bold bg-black text-white hover:bg-white hover:text-black transition-all w-fit">
+          className="border-2 font-vt lowercase border-black px-4 py-2 font-bold bg-black text-white hover:bg-white hover:text-black transition-all w-fit">
           {added ? "✓ Added" : "Add to Cart"}
         </button>
 

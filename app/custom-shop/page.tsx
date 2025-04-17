@@ -30,7 +30,7 @@ export default async function CustomShopPage() {
 
   return (
     <PageSection title="Custom Shop">
-      <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 font-mono">
+      <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 font-pitch">
         {products.map((product: Product) => {
           const firstImage = product.images?.[0];
           return (
@@ -42,9 +42,11 @@ export default async function CustomShopPage() {
                   className="w-full h-auto mb-4"
                 />
               ) : (
-                <div className="h-[300px] bg-gray-300 mb-4" />
+                <div className="h-[300px] bg-gray-300" />
               )}
-              <h2 className="text-lg font-bold">{product.title}</h2>
+              <h2 className="font-vt lowercase text-lg font-bold">
+                {product.title}
+              </h2>
               <p className="text-sm">Starting at ${product.price}</p>
               <Link
                 href={`/build-your-putter?headshape=${encodeURIComponent(

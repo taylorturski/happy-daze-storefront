@@ -32,7 +32,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-[240px] border-r-2 border-black p-4 flex flex-col gap-6 font-mono">
+    <aside className="w-[240px] border-r-2 border-black p-4 flex flex-col gap-6 font-pitch">
       {/* Logo */}
       <Link href="/" className="block w-[200px] h-[80px] relative mb-2">
         <Image
@@ -78,7 +78,7 @@ export default function Sidebar() {
         </p>
         <button
           onClick={handleCheckout}
-          className="mt-2 border-2 border-white px-3 py-1 font-bold">
+          className="mt-2 font-vt lowercase border-2 border-white px-3 py-1 font-bold">
           CHECK OUT
         </button>
       </div>

@@ -44,10 +44,10 @@ export default function ProductPage() {
     setTimeout(() => setAdded(false), 2000);
   };
 
-  if (!product) return <p className="p-8 font-mono">Loading...</p>;
+  if (!product) return <p className="p-8 font-pitch">Loading...</p>;
 
   return (
-    <main className="font-mono px-4 py-8">
+    <main className="font-pitch px-4 py-8">
       <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row gap-12">
         {/* Image section */}
         <div className="w-full lg:w-1/2 flex flex-col lg:flex-row gap-4">
@@ -80,10 +80,10 @@ export default function ProductPage() {
 
         {/* Info section */}
         <div className="w-full lg:w-1/2 flex flex-col justify-start">
-          <h1 className="text-2xl lg:text-3xl font-bold uppercase mb-4">
+          <h1 className="text-2xl lg:text-3xl font-bold uppercase mb-1">
             {product.title}
           </h1>
-          <p className="text-lg mb-6">
+          <p className="font-vt lowercase text-lg mb-4">
             Starting at ${parseFloat(product.price).toFixed(2)}
           </p>
 
@@ -104,13 +104,13 @@ export default function ProductPage() {
           {product.tags?.includes("blanks") ? (
             <button
               onClick={goToBuilder}
-              className="border-2 border-black mt-3 px-4 py-2 font-bold text-black bg-white w-fit">
+              className="border-2 font-vt lowercase border-black mt-3 px-4 py-2 font-bold text-black bg-white w-fit">
               Customize
             </button>
           ) : (
             <button
               onClick={onAddToCart}
-              className="border-2 border-black mt-3 px-4 py-2 font-bold text-white bg-black w-fit">
+              className="border-2 font-vt lowercase border-black mt-3 px-4 py-2 font-bold text-white bg-black w-fit">
               {added ? "✓ Added" : "Add to Cart"}
             </button>
           )}

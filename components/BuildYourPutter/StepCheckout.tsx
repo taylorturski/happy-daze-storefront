@@ -59,11 +59,11 @@ export default function StepCheckout() {
   const allStepsSelected = missingSteps.length === 0;
 
   return (
-    <section className="p-8 font-mono text-center">
+    <section className="p-8 font-pitch text-center">
       <button
         disabled={loading}
         onClick={handleCheckout}
-        className={`px-6 py-3 mb-3 border-2 text-sm uppercase font-bold ${
+        className={`px-6 font-vt lowercase py-3 mb-3 border-2 text-sm uppercase font-bold ${
           allStepsSelected
             ? "border-white text-white"
             : "border-gray-500 text-gray-500"

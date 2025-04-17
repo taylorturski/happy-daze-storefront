@@ -63,7 +63,7 @@ export default function EmailPopup() {
         <div className="w-full md:w-1/2 p-6 relative">
           <button
             onClick={handleClose}
-            className="absolute top-2 right-3 text-xl font-bold text-gray-500 hover:text-black">
+            className="absolute font-vt lowercase top-2 right-3 text-xl font-bold text-gray-500 hover:text-black">
             &times;
           </button>
 
@@ -86,8 +86,8 @@ export default function EmailPopup() {
               />
               <button
                 type="submit"
-                className="bg-black text-white px-4 py-2 font-bold border-2 border-black font-pitch font-semibold">
-                Claim Discount
+                className="bg-black text-white text-lg px-4 py-2 font-vt border-2 lowercase border-black">
+                Claim Discount :)
               </button>
               {error && (
                 <p className="text-red-600 text-sm font-pitch font-medium">
@@ -101,8 +101,8 @@ export default function EmailPopup() {
                 You're in!
               </h2>
               <p className="text-sm mb-2 font-pitch font-medium">
-                Use code <span className="font-mono font-bold">HAPPY10</span> at
-                checkout.
+                Use code <span className="font-pitch font-bold">HAPPY10</span>{" "}
+                at checkout.
               </p>
               <p className="text-xs text-gray-600 font-pitch font-medium">
                 Thanks for joining the Happy Daze underground.

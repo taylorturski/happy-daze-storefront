@@ -37,18 +37,18 @@ export default function MobileMenu() {
       <div className="flex items-center gap-2 sm:hidden">
         <button
           onClick={() => setOpen(true)}
-          className="text-sm font-bold uppercase border-2 border-black px-2 py-1">
+          className="text-lg font-bold font-pitch uppercase border-2 border-black px-2 py-1">
           MENU
         </button>
         <button
           onClick={() => setOpen(true)}
-          className="text-sm font-bold uppercase border-2 border-black px-2 py-1">
+          className="text-lg font-bold font-pitch uppercase border-2 border-black px-2 py-1">
           CART
         </button>
       </div>
 
       {open && (
-        <div className="fixed inset-0 bg-white text-black z-50 flex flex-col p-6 border-t-4 border-black font-mono overflow-y-auto">
+        <div className="fixed inset-0 bg-white text-black z-50 flex flex-col p-6 border-t-4 border-black font-pitch overflow-y-auto">
           {/* Header row with logo and close button */}
           <div className="flex justify-between items-center mb-6">
             <Link
@@ -123,7 +123,7 @@ export default function MobileMenu() {
             </p>
             <button
               onClick={handleCheckout}
-              className="mt-2 border-2 border-black px-3 py-1 font-bold">
+              className="mt-2 font-vt lowercase border-2 border-black px-3 py-1 font-bold">
               CHECK OUT
             </button>
           </div>

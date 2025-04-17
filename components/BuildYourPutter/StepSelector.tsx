@@ -67,7 +67,7 @@ export default function StepSelector({step}: StepSelectorProps) {
   const gridColsClass = getGridClass();
 
   return (
-    <section className="p-8 border-t border-white font-mono">
+    <section className="p-8 border-t border-white o">
       <h2 className="text-xl font-bold uppercase mb-4">{step}</h2>
       <div className={`grid gap-6 w-full ${gridColsClass}`}>
         {options.map((option) => (

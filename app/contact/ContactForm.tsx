@@ -48,12 +48,12 @@ export default function ContactForm({
   return (
     <PageSection title={title}>
       <div
-        className="mb-8 font-mono"
+        className="mb-8 font-pitch"
         dangerouslySetInnerHTML={{__html: content}}
       />
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 max-w-md font-mono">
+        className="flex flex-col gap-4 max-w-md font-pitch">
         <input
           type="text"
           name="name"
@@ -83,7 +83,7 @@ export default function ContactForm({
         />
         <button
           type="submit"
-          className="border-2 border-white px-4 py-2 font-bold bg-black">
+          className="border-2 font-vt lowercase border-white px-4 py-2 font-bold bg-black">
           SEND MESSAGE
         </button>
         {submitted && (

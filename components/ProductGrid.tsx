@@ -10,7 +10,7 @@ export default function ProductGrid({products}: {products: Product[]}) {
   if (!products || products.length === 0) return <p>No products found.</p>;
 
   return (
-    <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 font-mono text-white">
+    <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 font-pitch text-white">
       {products.map((product) => {
         const firstImage = product.images?.[0];
         return (
@@ -45,7 +45,7 @@ export default function ProductGrid({products}: {products: Product[]}) {
                     quantity: 1,
                   })
                 }
-                className="mt-4 border-2 border-black px-3 py-1 font-bold bg-white text-black hover:bg-black hover:text-white transition-all duration-150">
+                className="mt-4 font-vt lowercase border-2 border-black px-3 py-1 font-bold bg-white text-black hover:bg-black hover:text-white transition-all duration-150">
                 Add to Cart
               </button>
             )}

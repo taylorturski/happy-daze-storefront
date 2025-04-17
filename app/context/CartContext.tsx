@@ -33,6 +33,25 @@ export function CartProvider({children}: {children: ReactNode}) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [total, setTotal] = useState(0);
 
+  // Load from localStorage on mount
+  useEffect(() => {
+    const storedCart = localStorage.getItem("cart");
+    const storedTotal = localStorage.getItem("total");
+
+    if (storedCart && storedTotal) {
+      setCart(JSON.parse(storedCart));
+      setTotal(parseFloat(storedTotal));
+    }
+
+    fetchCart();
+  }, []);
+
+  // Save to localStorage on updates
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("total", total.toString());
+  }, [cart, total]);
+
   const fetchCart = async () => {
     const res = await fetch("/api/cart");
     if (res.ok) {
@@ -41,10 +60,6 @@ export function CartProvider({children}: {children: ReactNode}) {
       setTotal(data.total);
     }
   };
-
-  useEffect(() => {
-    fetchCart();
-  }, []);
 
   const addToCart = async (item: CartItem) => {
     const res = await fetch("/api/cart", {

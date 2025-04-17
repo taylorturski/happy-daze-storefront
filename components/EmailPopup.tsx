@@ -10,8 +10,10 @@ export default function EmailPopup() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const alreadyShown = sessionStorage.getItem("popupShown");
-    if (!alreadyShown) {
+    const hasSubscribed = localStorage.getItem("emailSubscribed");
+    const alreadyDismissed = sessionStorage.getItem("popupDismissed");
+
+    if (!hasSubscribed && !alreadyDismissed) {
       setTimeout(() => setVisible(true), 3000);
     }
   }, []);
@@ -31,8 +33,9 @@ export default function EmailPopup() {
 
       if (!res.ok) throw new Error(data?.error || "Error subscribing");
 
+      localStorage.setItem("emailSubscribed", "true");
       setSubmitted(true);
-      sessionStorage.setItem("popupShown", "true");
+      setVisible(false);
     } catch (err: any) {
       setError(err.message || "Something went wrong.");
     }
@@ -40,7 +43,7 @@ export default function EmailPopup() {
 
   const handleClose = () => {
     setVisible(false);
-    sessionStorage.setItem("popupShown", "true");
+    sessionStorage.setItem("popupDismissed", "true");
   };
 
   if (!visible) return null;
@@ -48,7 +51,6 @@ export default function EmailPopup() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
       <div className="bg-white text-black w-full max-w-2xl flex rounded shadow-xl relative font-pitch overflow-hidden">
-        {/* Image */}
         <div className="w-1/2 hidden md:flex items-center justify-center bg-black">
           <Image
             src="/email-modal-img.JPG"
@@ -59,7 +61,6 @@ export default function EmailPopup() {
           />
         </div>
 
-        {/* Content */}
         <div className="w-full md:w-1/2 p-6 relative">
           <button
             onClick={handleClose}

@@ -31,7 +31,7 @@ export async function generateMetadata() {
 export default function BuildYourPutterPage() {
   return (
     <BuildProvider>
-      <main className="font-pitch text-white bg-black">
+      <main className="font-pitch text-white bg-transparent">
         <Overview />
         <MaterialSection />
         <StepSelector step="headshape" />

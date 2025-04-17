@@ -27,10 +27,12 @@ export default function Sidebar() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(cart),
+        body: JSON.stringify(cart[0]?.properties || {}),
       });
 
       const data = await res.json();
+      console.log("[SIDEBAR CHECKOUT] Response:", data);
+
       if (data?.url) {
         window.location.href = data.url;
       } else {
@@ -43,7 +45,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-[240px] border-r-2 border-black p-4 flex flex-col gap-6 font-pitch">
+    <aside className="w-[240px] border-r-2 border-black p-4 flex flex-col gap-6 font-pitch sticky top-0 h-screen overflow-y-auto">
       {/* Logo */}
       <Link href="/" className="block w-[200px] h-[80px] relative mb-2">
         <Image

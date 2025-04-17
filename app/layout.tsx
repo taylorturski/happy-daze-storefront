@@ -28,12 +28,12 @@ function LayoutContent({children}: {children: ReactNode}) {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar on desktop */}
-      <aside className="hidden sm:block">
+      <aside className="hidden sm:block sticky top-0 z-50 h-screen bg-black">
         <Sidebar />
       </aside>
 
       {/* Main */}
-      <main className="flex-1">
+      <main className="flex-1 relative z-0 bg-transparent">
         {/* Desktop Header */}
         <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-4">
           <nav className="flex gap-2">

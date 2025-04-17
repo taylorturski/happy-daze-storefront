@@ -26,32 +26,36 @@ export default function MaterialSection() {
           <div
             key={option.id}
             onClick={() => setSelection("material", option.id)}
-            className={`cursor-pointer p-4 border-2 ${
+            className={`cursor-pointer border-2 ${
               selected === option.id ? "border-green-500" : "border-white"
             }`}>
-            <img
-              src={option.image}
-              alt={option.label}
-              className="w-full h-auto mb-2"
-            />
-            <p className="text-lg font-bold">{option.label}</p>
-            <ul className="text-sm mt-2">
-              {option.id === "carbon" && (
-                <>
-                  <li>
-                    Available finishes: Satin, Gun Blue, Oil Quench, Japanese
-                    Brown Oxide
-                  </li>
-                  <li>+ $100 for custom finish</li>
-                </>
-              )}
-              {option.id === "stainless" && (
-                <>
-                  <li>Available finishes: Satin, Torched Gold</li>
-                  <li>+ $100 for torched finish</li>
-                </>
-              )}
-            </ul>
+            <div className="aspect-[4/3] overflow-hidden">
+              <img
+                src={option.image}
+                alt={option.label}
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
+            <div className="p-4">
+              <p className="text-lg font-bold">{option.label}</p>
+              <ul className="text-sm mt-2">
+                {option.id === "carbon" && (
+                  <>
+                    <li>
+                      Available finishes: Satin, Gun Blue, Oil Quench, Japanese
+                      Brown Oxide
+                    </li>
+                    <li>+ $100 for custom finish</li>
+                  </>
+                )}
+                {option.id === "stainless" && (
+                  <>
+                    <li>Available finishes: Satin, Torched Gold</li>
+                    <li>+ $100 for torched finish</li>
+                  </>
+                )}
+              </ul>
+            </div>
           </div>
         ))}
       </div>

@@ -48,14 +48,18 @@ export default function StepReview() {
               : null
           );
           return selection ? (
-            <div key={step} className="border-2 border-white p-4">
-              <h3 className="text-sm font-bold uppercase mb-2">{step}</h3>
-              <img
-                src={selection.image}
-                alt={selection.label}
-                className="w-full h-auto border mb-2"
-              />
-              <p className="text-center text-sm">{selection.label}</p>
+            <div key={step} className="border-2 border-white">
+              <div className="aspect-[4/3] overflow-hidden">
+                <img
+                  src={selection.image}
+                  alt={selection.label}
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+              <div className="p-3">
+                <h3 className="text-sm font-bold uppercase mb-1">{step}</h3>
+                <p className="text-sm text-center">{selection.label}</p>
+              </div>
             </div>
           ) : (
             <div

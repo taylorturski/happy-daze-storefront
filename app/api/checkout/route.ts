@@ -7,7 +7,6 @@ export async function POST(req: Request) {
   const selections = await req.json();
 
   const blankProducts: Product[] = await getProductsByTag("blanks");
-
   const headshape = selections.headshape?.toLowerCase();
 
   const matchedProduct = blankProducts.find((product: Product) =>
@@ -48,54 +47,10 @@ export async function POST(req: Request) {
     );
   }
 
-  const lineItem = {
-    merchandiseId: variant.id,
-    quantity: 1,
-    attributes: [
-      {key: "Material", value: selections.material || "N/A"},
-      {key: "Finish", value: selections.finish || "N/A"},
-      {key: "Face Milling", value: selections.face || "N/A"},
-      {key: "Neck", value: selections.neck || "N/A"},
-      {key: "Alignment", value: selections.alignment || "N/A"},
-      {key: "Headshape", value: selections.headshape || "N/A"},
-    ],
-  };
-
-  const query = `
-    mutation CartCreate($input: CartInput!) {
-      cartCreate(input: $input) {
-        cart {
-          id
-          checkoutUrl
-        }
-        userErrors {
-          field
-          message
-        }
-      }
-    }
-  `;
-
-  const variables = {
-    input: {
-      lines: [lineItem],
-    },
-  };
-
-  try {
-    const res = await shopifyFetch(query, variables);
-    const cart = res.cartCreate.cart;
-
-    if (!cart?.checkoutUrl) {
-      return NextResponse.json(
-        {error: "Checkout creation failed"},
-        {status: 500}
-      );
-    }
-
-    return NextResponse.json({url: cart.checkoutUrl});
-  } catch (err) {
-    console.error("Checkout API error:", err);
-    return NextResponse.json({error: "Server error"}, {status: 500});
-  }
+  return NextResponse.json({
+    variantId: variant.id,
+    title: matchedProduct.title,
+    price: variant.price,
+    image: matchedProduct.images[0]?.url || "",
+  });
 }

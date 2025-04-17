@@ -5,6 +5,17 @@ import Image from "next/image";
 import {useCart} from "@/app/context/CartContext";
 import EmailSignup from "./EmailSignup";
 
+export type CartItem = {
+  id: string;
+  title: string;
+  price: string;
+  image: string;
+  quantity: number;
+  properties?: {
+    [key: string]: string;
+  };
+};
+
 export default function Sidebar() {
   const {cart, total, removeFromCart} = useCart();
 
@@ -64,6 +75,14 @@ export default function Sidebar() {
                 <p className="m-0 text-sm">
                   ${Number(item.price).toFixed(2)} × {item.quantity}
                 </p>
+
+                {/* Custom Build Attributes */}
+                {item.properties &&
+                  Object.entries(item.properties).map(([key, value]) => (
+                    <p key={key} className="text-[11px] text-gray-500">
+                      {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
+                    </p>
+                  ))}
               </div>
               <button
                 onClick={() => removeFromCart(item.id)}

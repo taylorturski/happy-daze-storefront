@@ -2,6 +2,8 @@
 
 import {useContext, useState} from "react";
 import {BuildContext} from "./BuildContext";
+import {useCart} from "@/app/context/CartContext";
+import {useRouter} from "next/navigation";
 
 const REQUIRED_STEPS = [
   "material",
@@ -14,12 +16,15 @@ const REQUIRED_STEPS = [
 
 export default function StepCheckout() {
   const {selections} = useContext(BuildContext);
+  const {addToCart} = useCart();
+  const router = useRouter();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const missingSteps = REQUIRED_STEPS.filter((step) => !selections[step]);
 
-  const handleCheckout = async () => {
+  const handleAddToCart = async () => {
     setError("");
 
     if (missingSteps.length > 0) {
@@ -32,6 +37,8 @@ export default function StepCheckout() {
       return;
     }
 
+    console.log("[BUILD] Sending selections to /api/checkout:", selections);
+
     setLoading(true);
 
     try {
@@ -42,14 +49,24 @@ export default function StepCheckout() {
       });
 
       const data = await res.json();
+      console.log("[BUILD] Response from /api/checkout:", data);
 
-      if (!res.ok || !data?.url) {
-        throw new Error(data?.error || "Checkout failed.");
+      if (!res.ok || !data?.variantId) {
+        throw new Error(data?.error || "Failed to match product.");
       }
 
-      window.location.href = data.url;
+      await addToCart({
+        id: data.variantId,
+        title: data.title,
+        price: parseFloat(data.price),
+        image: data.image,
+        quantity: 1,
+        properties: selections,
+      });
+
+      router.push("/");
     } catch (err: any) {
-      console.error(err);
+      console.error("[BUILD] Add to cart error:", err);
       setError(err.message || "Unexpected error.");
     } finally {
       setLoading(false);
@@ -62,13 +79,13 @@ export default function StepCheckout() {
     <section className="p-8 font-pitch text-center">
       <button
         disabled={loading}
-        onClick={handleCheckout}
+        onClick={handleAddToCart}
         className={`px-6 font-vt lowercase py-3 mb-3 border-2 text-sm uppercase font-bold ${
           allStepsSelected
             ? "border-white text-white"
             : "border-gray-500 text-gray-500"
         }`}>
-        {loading ? "Redirecting..." : "Start Order"}
+        {loading ? "Adding..." : "Add to Cart"}
       </button>
       {error && <p className="text-red-500 mt-2">{error}</p>}
     </section>

@@ -8,6 +8,9 @@ export async function POST(req: Request) {
 
   const blankProducts: Product[] = await getProductsByTag("blanks");
   const headshape = selections.headshape?.toLowerCase();
+  if (!headshape) {
+    return NextResponse.json({error: "Missing headshape"}, {status: 400});
+  }
 
   const matchedProduct = blankProducts.find((product) =>
     product.title.toLowerCase().includes(headshape || "")

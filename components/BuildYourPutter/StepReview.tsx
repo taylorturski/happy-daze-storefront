@@ -39,7 +39,7 @@ export default function StepReview() {
   return (
     <section className="p-8 border-t border-white font-pitch">
       <h2 className="text-xl font-bold uppercase mb-4">Your Build</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
         {steps.map((step) => {
           const selection = getOption(
             step,
@@ -56,9 +56,13 @@ export default function StepReview() {
                   className="w-full h-full object-cover object-center"
                 />
               </div>
-              <div className="p-3">
-                <h3 className="text-sm font-bold uppercase mb-1">{step}</h3>
-                <p className="text-sm text-center">{selection.label}</p>
+              <div className="p-3 flex flex-col items-center justify-center text-center">
+                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wide mb-1">
+                  {step}
+                </h3>
+                <p className="text-[13px] sm:text-sm leading-snug">
+                  {selection.label}
+                </p>
               </div>
             </div>
           ) : (

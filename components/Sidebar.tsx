@@ -1,5 +1,6 @@
 "use client";
 
+import {useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {useCart} from "@/app/context/CartContext";
@@ -18,9 +19,14 @@ export type CartItem = {
 
 export default function Sidebar() {
   const {cart, total, removeFromCart} = useCart();
+  const [message, setMessage] = useState("");
 
-  // direct to shopify checkout
   const handleCheckout = async () => {
+    if (!cart || cart.length === 0) {
+      setMessage("Your cart is empty.");
+      return;
+    }
+
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
@@ -36,11 +42,11 @@ export default function Sidebar() {
       if (data?.url) {
         window.location.href = data.url;
       } else {
-        alert("Failed to start checkout.");
+        setMessage("Failed to start checkout.");
       }
     } catch (err) {
       console.error("Checkout error:", err);
-      alert("Error processing checkout.");
+      setMessage("Error processing checkout.");
     }
   };
 
@@ -99,9 +105,10 @@ export default function Sidebar() {
         </p>
         <button
           onClick={handleCheckout}
-          className="mt-2 font-vt font-lg bg-[#ACFF9B] text-black px-3 py-1 font-bold">
+          className="my-2 font-vt font-lg bg-[#ACFF9B] text-black px-3 py-1 font-bold">
           CHECK OUT
         </button>
+        {message && <p className="text-xs text-red-600 mt-1">{message}</p>}
       </div>
 
       {/* Nav */}

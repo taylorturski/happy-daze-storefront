@@ -11,13 +11,25 @@ export default function MobileMenu() {
   const {cart, total, removeFromCart} = useCart();
 
   const handleCheckout = async () => {
+    if (!cart || cart.length === 0) {
+      alert("Your cart is empty.");
+      return;
+    }
+
+    const properties = cart[0]?.properties;
+
+    if (!properties || !properties.headshape) {
+      alert("Missing selection data for checkout.");
+      return;
+    }
+
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(cart),
+        body: JSON.stringify(properties),
       });
 
       const data = await res.json();

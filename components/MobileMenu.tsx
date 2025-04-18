@@ -89,7 +89,7 @@ export default function MobileMenu() {
 
           {/* Cart */}
           <div className="mb-6">
-            <h3 className="mb-2 text-lg font-bold">MY CART</h3>
+            <h3 className="mb-1 text-lg font-bold">MY CART</h3>
             {!cart || cart.length === 0 ? (
               <p>No items yet.</p>
             ) : (
@@ -123,7 +123,7 @@ export default function MobileMenu() {
             </p>
             <button
               onClick={handleCheckout}
-              className="mt-2 font-vt lowercase border-2 border-black px-3 py-1 font-bold">
+              className="mt-2 font-vt border-2 border-black px-3 py-1 font-bold">
               CHECK OUT
             </button>
           </div>

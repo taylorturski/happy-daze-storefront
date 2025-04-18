@@ -16,6 +16,15 @@ module.exports = {
         lg: "1.25rem", // 20px
         xl: "1.5rem", // 24px
       },
+      keyframes: {
+        "blink-green": {
+          "0%, 100%": {color: "white"},
+          "50%": {color: "#ACFF9B"},
+        },
+      },
+      animation: {
+        "blink-green": "blink-green 1.2s ease-in-out infinite",
+      },
     },
   },
   plugins: [],

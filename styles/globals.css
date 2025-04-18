@@ -80,3 +80,13 @@ blockquote {
   font-style: normal;
   font-display: swap;
 }
+
+@keyframes blink-green {
+  0%,
+  100% {
+    color: black;
+  }
+  50% {
+    color: #acff9b;
+  }
+}

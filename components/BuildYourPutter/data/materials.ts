@@ -4,11 +4,11 @@ export const materials: BuildOption[] = [
   {
     id: "carbon",
     label: "Carbon Steel",
-    image: "/builder/material/satin-carbon.jpg",
+    image: "/builder/material/carbon-material.jpg",
   },
   {
     id: "stainless",
     label: "Stainless Steel",
-    image: "/builder/material/satin-stainless.jpg",
+    image: "/builder/material/stainless-material.jpg",
   },
 ];

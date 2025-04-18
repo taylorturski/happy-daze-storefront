@@ -14,6 +14,15 @@ type StepSelectorProps = {
   step: "material" | "headshape" | "finish" | "face" | "neck" | "alignment";
 };
 
+const stepOrderMap: Record<string, number> = {
+  material: 1,
+  headshape: 2,
+  finish: 3,
+  face: 4,
+  neck: 5,
+  alignment: 6,
+};
+
 export default function StepSelector({step}: StepSelectorProps) {
   const {selections, setSelection} = useContext(BuildContext);
 
@@ -64,9 +73,13 @@ export default function StepSelector({step}: StepSelectorProps) {
   };
 
   const gridColsClass = getGridClass();
+  const stepNumber = stepOrderMap[step];
 
   return (
     <section className="p-8 border-t border-white">
+      <p className="text-xs text-[#ACFF9B] font-vt lowercase mb-1">
+        step {stepNumber}
+      </p>
       <h2 className="text-xl font-bold uppercase mb-4">{step}</h2>
       <div className={`grid gap-6 w-full ${gridColsClass}`}>
         {options.map((option) => (
@@ -74,7 +87,7 @@ export default function StepSelector({step}: StepSelectorProps) {
             key={option.id}
             onClick={() => handleSelect(option.id)}
             className={`cursor-pointer border-2 ${
-              selected === option.id ? "border-green-500" : "border-white"
+              selected === option.id ? "border-[#ACFF9B]" : "border-white"
             }`}>
             <div className="aspect-[4/3] overflow-hidden">
               <img

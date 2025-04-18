@@ -27,9 +27,11 @@ export default function EmailSignup() {
 
   return (
     <div className="mt-5 md:pl-3 w-full">
-      <p className="text-xs mb-1 uppercase">Refuse the ordinary</p>
+      <p className="text-sm uppercase">Refuse the ordinary</p>
       <h3 className="text-lg font-bold uppercase">UNDERGROUND GC</h3>
-      <p className="text-sm text-blue-600">Get a discount code :)</p>
+      <p className="text-sm font-bold animate-blink-green">
+        Get a discount code :)
+      </p>
       <form
         onSubmit={handleSubmit}
         className="flex gap-2 mt-2 w-full max-w-[180px]">

@@ -19,6 +19,6 @@ export const neckOptions: BuildOption[] = [
   {
     id: "long-flowneck",
     label: "Long Flowneck",
-    image: "/builder/neck/long-flowneck.jpg",
+    image: "/builder/neck/long-flowneck-1.jpg",
   },
 ];

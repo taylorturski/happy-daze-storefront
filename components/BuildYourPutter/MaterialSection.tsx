@@ -11,6 +11,7 @@ export default function MaterialSection() {
 
   return (
     <section className="p-8 border-t border-white">
+      <p className="text-lg text-[#ACFF9B] font-vt lowercase mb-1">step 1</p>
       <h2 className="text-2xl font-bold uppercase mb-4">
         Steel Type & Pricing
       </h2>
@@ -27,7 +28,7 @@ export default function MaterialSection() {
             key={option.id}
             onClick={() => setSelection("material", option.id)}
             className={`cursor-pointer border-2 ${
-              selected === option.id ? "border-green-500" : "border-white"
+              selected === option.id ? "border-[#ACFF9B]" : "border-white"
             }`}>
             <div className="aspect-[4/3] overflow-hidden">
               <img

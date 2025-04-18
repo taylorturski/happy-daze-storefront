@@ -99,7 +99,7 @@ export default function Sidebar() {
         </p>
         <button
           onClick={handleCheckout}
-          className="mt-2 font-vt lowercase border-2 border-white px-3 py-1 font-bold">
+          className="mt-2 font-vt font-lg bg-[#ACFF9B] text-black px-3 py-1 font-bold">
           CHECK OUT
         </button>
       </div>

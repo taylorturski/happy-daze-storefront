@@ -1,10 +1,11 @@
 import Overview from "@/components/BuildYourPutter/Overview";
-import MaterialSection from "@/components/BuildYourPutter/MaterialSection";
-import StepSelector from "@/components/BuildYourPutter/StepSelector";
+// import MaterialSection from "@/components/BuildYourPutter/MaterialSection";
+// import StepSelector from "@/components/BuildYourPutter/StepSelector";
 import StepReview from "@/components/BuildYourPutter/StepReview";
 import StepCheckout from "@/components/BuildYourPutter/StepCheckout";
 import {BuildProvider} from "@/components/BuildYourPutter/BuildContext";
 import "@/components/BuildYourPutter/build-your-putter.css";
+import WizardBuilder from "@/components/BuildYourPutter/WizardBuilder";
 
 export async function generateMetadata() {
   return {
@@ -31,16 +32,8 @@ export async function generateMetadata() {
 export default function BuildYourPutterPage() {
   return (
     <BuildProvider>
-      <main className="font-pitch text-white bg-transparent">
-        <Overview />
-        <MaterialSection />
-        <StepSelector step="headshape" />
-        <StepSelector step="finish" />
-        <StepSelector step="face" />
-        <StepSelector step="neck" />
-        <StepSelector step="alignment" />
-        <StepReview />
-        <StepCheckout />
+      <main className="font-pitch text-white bg-transparent px-[20px]">
+        <WizardBuilder />
       </main>
     </BuildProvider>
   );

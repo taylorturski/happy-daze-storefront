@@ -10,7 +10,7 @@ export default function MaterialSection() {
   const selected = selections.material;
 
   return (
-    <section className="p-8 border-t border-white">
+    <section className="p-8">
       <p className="text-lg text-[#ACFF9B] font-vt lowercase mb-1">step 1</p>
       <h2 className="text-2xl font-bold uppercase mb-4">
         Steel Type & Pricing

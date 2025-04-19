@@ -37,8 +37,6 @@ export default function StepCheckout() {
       return;
     }
 
-    console.log("[BUILD] Sending selections to /api/checkout:", selections);
-
     setLoading(true);
 
     try {
@@ -49,8 +47,6 @@ export default function StepCheckout() {
       });
 
       const data = await res.json();
-      console.log("[BUILD] Response from /api/checkout:", data);
-
       if (!res.ok || !data?.variantId) {
         throw new Error(data?.error || "Failed to match product.");
       }
@@ -76,18 +72,21 @@ export default function StepCheckout() {
   const allStepsSelected = missingSteps.length === 0;
 
   return (
-    <section className="p-8 font-pitch text-center">
+    <div className="flex flex-col items-end text-right">
       <button
-        disabled={loading}
+        disabled={loading || !allStepsSelected}
         onClick={handleAddToCart}
-        className={`px-6 font-vt lowercase py-3 mb-3 border-2 text-sm uppercase font-bold ${
+        className={`px-4 py-2 font-bold border-2 ${
           allStepsSelected
-            ? "border-white text-white"
-            : "border-gray-500 text-gray-500"
+            ? "bg-[#ACFF9B] text-black border-black"
+            : "border-white text-white opacity-30 cursor-not-allowed"
         }`}>
         {loading ? "Adding..." : "Add to Cart"}
       </button>
-      {error && <p className="text-red-500 mt-2">{error}</p>}
-    </section>
+
+      {error && (
+        <p className="text-red-500 mt-2 text-sm max-w-sm text-right">{error}</p>
+      )}
+    </div>
   );
 }

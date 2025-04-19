@@ -3,7 +3,13 @@
 import {createContext, useEffect, useState} from "react";
 import {useSearchParams} from "next/navigation";
 
-type Step = "material" | "headshape" | "finish" | "face" | "neck" | "alignment";
+export type Step =
+  | "material"
+  | "headshape"
+  | "finish"
+  | "face"
+  | "neck"
+  | "alignment";
 
 type BuildSelections = {
   [key in Step]?: string;

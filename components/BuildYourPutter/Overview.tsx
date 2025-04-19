@@ -2,7 +2,7 @@
 
 export default function Overview() {
   return (
-    <section className="p-8 border-b border-white font-pitch bg-black text-white">
+    <section className="p-8 font-pitch bg-black text-white">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         {/* Left Column */}
         <div>

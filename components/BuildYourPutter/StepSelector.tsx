@@ -67,21 +67,22 @@ export default function StepSelector({step}: StepSelectorProps) {
     if (count === 1) return "grid-cols-1";
     if (count === 2) return "grid-cols-2";
     if (count === 3) return "grid-cols-3";
-    if (count === 4) return "grid-cols-2";
+    if (count === 4) return "grid-cols-2 sm:grid-cols-4";
     if (count >= 5) return "grid-cols-4";
-    return "grid-cols-1";
+    return "grid-cols-2";
   };
 
   const gridColsClass = getGridClass();
   const stepNumber = stepOrderMap[step];
 
   return (
-    <section className="p-8 border-t border-white">
+    <section className="p-3">
       <p className="text-xs text-[#ACFF9B] font-vt lowercase mb-1">
         step {stepNumber}
       </p>
       <h2 className="text-xl font-bold uppercase mb-4">{step}</h2>
-      <div className={`grid gap-6 w-full ${gridColsClass}`}>
+      <div
+        className={`grid gap-4 sm:gap-6 ${gridColsClass} max-w-[1024px] mx-auto`}>
         {options.map((option) => (
           <div
             key={option.id}

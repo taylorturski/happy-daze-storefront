@@ -4,6 +4,7 @@ import {useState, useEffect} from "react";
 import {useParams} from "next/navigation";
 import {Product} from "@/types/product";
 import {useCart} from "@/app/context/CartContext";
+import Image from "next/image";
 
 export default function CustomProductPage() {
   const {handle} = useParams();
@@ -45,9 +46,11 @@ export default function CustomProductPage() {
         {product.images.length > 0 ? (
           <div className="flex flex-col gap-4">
             {product.images.map((image, i) => (
-              <img
+              <Image
                 key={i}
                 src={image.url}
+                width={800}
+                height={600}
                 alt={image.altText || `${product.title} ${i + 1}`}
                 className="w-full border-2 border-black"
               />

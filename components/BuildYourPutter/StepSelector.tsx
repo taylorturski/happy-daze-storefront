@@ -9,6 +9,7 @@ import {BuildContext} from "./BuildContext";
 import {faceOptions} from "./data/face";
 import {neckOptions} from "./data/neckOptions";
 import {alignmentOptions} from "./data/alignmentOptions";
+import Image from "next/image";
 
 type StepSelectorProps = {
   step: "material" | "headshape" | "finish" | "face" | "neck" | "alignment";
@@ -66,7 +67,7 @@ export default function StepSelector({step}: StepSelectorProps) {
     const count = options.length;
     if (count === 1) return "grid-cols-1";
     if (count === 2) return "grid-cols-2";
-    if (count === 3) return "grid-cols-3";
+    if (count === 3) return "grid-cols-2 sm:grid-cols-3";
     if (count === 4) return "grid-cols-2 sm:grid-cols-4";
     if (count >= 5) return "grid-cols-4";
     return "grid-cols-2";
@@ -76,32 +77,41 @@ export default function StepSelector({step}: StepSelectorProps) {
   const stepNumber = stepOrderMap[step];
 
   return (
-    <section className="p-3">
-      <p className="text-xs text-[#ACFF9B] font-vt lowercase mb-1">
-        step {stepNumber}
-      </p>
-      <h2 className="text-xl font-bold uppercase mb-4">{step}</h2>
-      <div
-        className={`grid gap-4 sm:gap-6 ${gridColsClass} max-w-[1024px] mx-auto`}>
-        {options.map((option) => (
-          <div
-            key={option.id}
-            onClick={() => handleSelect(option.id)}
-            className={`cursor-pointer border-2 ${
-              selected === option.id ? "border-[#ACFF9B]" : "border-white"
-            }`}>
-            <div className="aspect-[4/3] overflow-hidden">
-              <img
-                src={option.image}
-                alt={option.label}
-                className="w-full h-full object-cover object-center"
-              />
+    <section className="flex flex-col h-full font-pitch">
+      <div className="px-3 pt-3 pb-0">
+        <p className="text-xs text-[#ACFF9B] font-vt lowercase mb-1">
+          step {stepNumber}
+        </p>
+        <h2 className="text-xl font-bold uppercase mb-4">{step}</h2>
+      </div>
+
+      {/* Remove unnecessary scroll wrapper */}
+      <div className="px-3 pb-3">
+        <div
+          className={`grid gap-4 sm:gap-6 ${gridColsClass} max-w-[1024px] mx-auto`}>
+          {options.map((option) => (
+            <div
+              key={option.id}
+              onClick={() => handleSelect(option.id)}
+              className={`cursor-pointer border-2 ${
+                selected === option.id ? "border-[#ACFF9B]" : "border-white"
+              }`}>
+              <div className="aspect-[4/3] overflow-hidden">
+                <Image
+                  src={option.image}
+                  alt={option.label}
+                  height={300}
+                  width={400}
+                  priority
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+              <p className="text-center text-sm font-pitch font-medium py-2">
+                {option.label}
+              </p>
             </div>
-            <p className="text-center text-sm font-pitch font-medium py-2">
-              {option.label}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

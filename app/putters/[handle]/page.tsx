@@ -4,6 +4,7 @@ import {useState, useEffect} from "react";
 import {useParams, useRouter} from "next/navigation";
 import {useCart} from "@/app/context/CartContext";
 import {Product} from "@/types/product";
+import Image from "next/image";
 
 export default function ProductPage() {
   const {handle} = useParams();
@@ -53,9 +54,11 @@ export default function ProductPage() {
         <div className="w-full lg:w-1/2 flex flex-col lg:flex-row gap-4">
           {/* Main image */}
           <div className="flex-1">
-            <img
+            <Image
               src={product.images[activeImage]?.url || product.images[0].url}
               alt={product.images[activeImage]?.altText || product.title}
+              width={800}
+              height={600}
               className="w-full max-w-[600px] border-2 border-black object-contain"
             />
           </div>
@@ -63,10 +66,12 @@ export default function ProductPage() {
           {/* Thumbnails - larger on both mobile and desktop */}
           <div className="flex gap-3 lg:flex-col overflow-x-auto lg:overflow-visible w-full lg:w-32">
             {product.images.map((image, i) => (
-              <img
+              <Image
                 key={i}
                 src={image.url}
                 alt={image.altText || `${product.title} ${i + 1}`}
+                width={800}
+                height={600}
                 className={`w-24 h-24 lg:w-full lg:h-28 object-contain border-2 cursor-pointer transition ${
                   i === activeImage
                     ? "border-black"

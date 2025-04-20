@@ -1,6 +1,7 @@
 "use client";
 
 import {useState, useEffect} from "react";
+import Image from "next/image";
 
 type CartItem = {
   id: string;
@@ -49,9 +50,11 @@ export default function Cart() {
             <div
               key={item.id}
               className="flex items-center border-b border-gray-300 mb-4 pb-4">
-              <img
+              <Image
                 src={item.image}
                 alt={item.title}
+                width={800}
+                height={600}
                 className="w-12 h-12 object-cover mr-4 border"
               />
               <div className="flex-1">

@@ -4,6 +4,7 @@ import {useContext} from "react";
 import {BuildContext} from "./BuildContext";
 import {materials} from "./data/materials";
 import {BuildOption} from "./types";
+import Image from "next/image";
 
 export default function MaterialSection() {
   const {selections, setSelection} = useContext(BuildContext);
@@ -31,7 +32,7 @@ export default function MaterialSection() {
               selected === option.id ? "border-[#ACFF9B]" : "border-white"
             }`}>
             <div className="aspect-[4/3] overflow-hidden">
-              <img
+              <Image
                 src={option.image}
                 alt={option.label}
                 className="w-full h-full object-cover object-center"

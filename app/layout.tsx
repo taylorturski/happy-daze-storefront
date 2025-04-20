@@ -36,11 +36,11 @@ function LayoutContent({children}: {children: ReactNode}) {
         </aside>
 
         {/* Main */}
-        <main className="flex-1 relative z-0 bg-transparent sm:pl-0 pl-1">
+        <main className="flex-1 relative z-0 bg-transparent sm:pl-0">
           <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-4">
             <nav className="flex gap-2">
-              <Link href="/custom-shop" className={navLinkClasses}>
-                CUSTOM SHOP
+              <Link href="/custom-putters" className={navLinkClasses}>
+                CUSTOM PUTTERS
               </Link>
               <Link href="/journal" className={navLinkClasses}>
                 JOURNAL

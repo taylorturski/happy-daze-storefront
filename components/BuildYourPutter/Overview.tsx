@@ -26,7 +26,7 @@ export default function Overview() {
             <li>-Choose head shape, finish, milling, neck, and alignment</li>
             <li>-Review and confirm your build</li>
             <li>-Submit your order</li>
-            <li>-We'll reach out to finalize details</li>
+            <li>-We&apos;ll reach out to finalize details</li>
           </ol>
         </div>
       </div>

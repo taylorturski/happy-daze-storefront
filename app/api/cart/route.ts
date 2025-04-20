@@ -5,9 +5,8 @@ type CartItem = Product & {quantity: number};
 
 let cart: CartItem[] = [];
 
-export const addToCart = (product: Product) => {
+function addToCart(product: Product) {
   const existingIndex = cart.findIndex((item) => item.id === product.id);
-
   const quantityToAdd = product.quantity ?? 1;
 
   if (existingIndex !== -1) {
@@ -18,13 +17,13 @@ export const addToCart = (product: Product) => {
   }
 
   return cart;
-};
+}
 
-export const getCartTotal = () => {
+function getCartTotal() {
   return cart.reduce((total, item) => {
     return total + Number(item.price) * (item.quantity ?? 1);
   }, 0);
-};
+}
 
 export async function POST(req: Request) {
   const product: Product = await req.json();

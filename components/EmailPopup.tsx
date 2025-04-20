@@ -99,7 +99,7 @@ export default function EmailPopup() {
           ) : (
             <div className="text-center">
               <h2 className="text-xl font-pitch font-semibold uppercase mb-2">
-                You're in!
+                You&apos;re in!
               </h2>
               <p className="text-sm mb-2 font-pitch font-medium">
                 Use code <span className="font-pitch font-bold">HAPPY10</span>{" "}

@@ -85,11 +85,11 @@ export default function MobileMenu() {
 
           {/* Navigation links */}
           <nav className="flex flex-col gap-4 text-lg font-bold uppercase mb-6">
-            <Link href="/custom-shop" onClick={() => setOpen(false)}>
-              Custom Shop
+            <Link href="/custom-putters" onClick={() => setOpen(false)}>
+              Custom Putters
             </Link>
-            <Link href="/workshop" onClick={() => setOpen(false)}>
-              Workshop
+            <Link href="/gallery" onClick={() => setOpen(false)}>
+              Gallery
             </Link>
             <Link href="/journal" onClick={() => setOpen(false)}>
               Journal

@@ -2,6 +2,7 @@ import Link from "next/link";
 import {getBlogArticles} from "@/lib/shopify/blog";
 import {BlogArticle} from "@/types/blogs";
 import PageSection from "@/components/PageSection";
+import Image from "next/image";
 
 export async function generateMetadata() {
   return {
@@ -37,10 +38,13 @@ export default async function JournalPage() {
             href={`/journal/${article.handle}`}
             className="border-2 border-black p-4 no-underline text-white hover:text-black font-pitch hover:bg-gray-100 transition">
             {article.image ? (
-              <img
+              <Image
                 src={article.image.url}
                 alt={article.image.altText || article.title}
-                className="w-full h-auto mb-4"
+                width={800}
+                height={600}
+                className="w-full h-auto mb-2"
+                priority
               />
             ) : (
               <div className="h-[200px] bg-gray-300 mb-4" />

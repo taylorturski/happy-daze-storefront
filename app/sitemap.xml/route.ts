@@ -8,9 +8,9 @@ export async function GET() {
     "",
     "/about",
     "/contact",
-    "/custom-shop",
+    "/custom-putters",
     "/journal",
-    "/workshop",
+    "/gallery",
     "/build-your-putter",
   ];
 

@@ -10,6 +10,7 @@ import {neckOptions} from "./data/neckOptions";
 import {alignmentOptions} from "./data/alignmentOptions";
 import {BuildOption} from "./types";
 import StepCheckout from "./StepCheckout";
+import Image from "next/image";
 
 const stepMap: {[key: string]: BuildOption[]} = {
   material: materials,
@@ -38,7 +39,7 @@ export default function StepReview() {
   ];
 
   return (
-    <section className="h-full flex flex-col justify-between font-pitch">
+    <section className="flex flex-col justify-between font-pitch">
       <div className="p-3 sm:p-6">
         <h2 className="text-xl font-bold uppercase mb-4">Your Build</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
@@ -53,9 +54,12 @@ export default function StepReview() {
             return selection ? (
               <div key={step} className="border-2 border-white flex flex-col">
                 <div className="w-full h-[140px] sm:h-[160px] overflow-hidden">
-                  <img
+                  <Image
                     src={selection.image}
                     alt={selection.label}
+                    height={300}
+                    width={300}
+                    priority
                     className="w-full h-full object-cover object-center"
                   />
                 </div>
@@ -78,12 +82,10 @@ export default function StepReview() {
           })}
         </div>
       </div>
-
-      {/* ⬇️ Identical layout to WizardBuilder step buttons */}
-      <div className="flex justify-between items-center px-6 py-4">
+      <div className="flex justify-between items-center px-4 pt-2 pb-6 mt-auto">
         <button
           onClick={() => window.history.back()}
-          className="bg-white text-black px-4 py-2 font-bold border-2 border-black">
+          className="bg-white text-black px-4 py-2 font-bold border-2 border-black w-1/2 mr-2 sm:w-auto">
           Back
         </button>
         <StepCheckout />

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import {Product} from "@/types/product";
 import {useCart} from "@/app/context/CartContext";
+import Image from "next/image";
 
 export default function ProductGrid({products}: {products: Product[]}) {
   const {addToCart} = useCart();
@@ -19,9 +20,11 @@ export default function ProductGrid({products}: {products: Product[]}) {
             className="border-2 border-black p-4 flex flex-col justify-between bg-black hover:bg-white hover:text-black transition-all duration-200 ease-in-out">
             <Link href={`/putters/${product.handle}`} className="no-underline">
               {firstImage ? (
-                <img
+                <Image
                   src={firstImage.url}
                   alt={firstImage.altText || product.title}
+                  width={800}
+                  height={600}
                   className="w-full h-auto mb-4 border border-black"
                 />
               ) : (

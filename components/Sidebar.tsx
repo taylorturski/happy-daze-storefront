@@ -115,11 +115,11 @@ export default function Sidebar() {
       <div className="md:pl-3">
         <h3 className="mb-2 text-lg font-bold">CATEGORIES</h3>
         <nav className="flex flex-col gap-1">
-          <Link href="/custom-shop" className="hover:underline">
-            Custom Shop
+          <Link href="/custom-putters" className="hover:underline">
+            Custom Putters
           </Link>
-          <Link href="/workshop" className="hover:underline">
-            Workshop
+          <Link href="/gallery" className="hover:underline">
+            Gallery
           </Link>
           <Link href="/journal" className="hover:underline">
             Journal

@@ -24,7 +24,21 @@ export async function getBlogArticles() {
   `;
 
   const data = await shopifyFetch(query);
-  return data.blog.articles.edges.map((edge: any) => edge.node);
+  interface ArticleEdge {
+    node: {
+      id: string;
+      title: string;
+      handle: string;
+      excerpt: string;
+      publishedAt: string;
+      image: {
+        url: string;
+        altText: string | null;
+      };
+    };
+  }
+
+  return data.blog.articles.edges.map((edge: ArticleEdge) => edge.node);
 }
 
 export async function getBlogArticleByHandle(handle: string) {

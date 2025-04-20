@@ -23,7 +23,9 @@ export async function GET() {
 
     if (productRes.ok) {
       const products = await productRes.json();
-      productPaths = products.map((p: any) => `/putters/${p.handle}`);
+      productPaths = products.map(
+        (p: {handle: string}) => `/putters/${p.handle}`
+      );
     } else {
       console.warn("Product fetch failed:", await productRes.text());
     }
@@ -40,7 +42,9 @@ export async function GET() {
 
     if (articleRes.ok) {
       const articles = await articleRes.json();
-      articlePaths = articles.map((a: any) => `/journal/${a.handle}`);
+      articlePaths = articles.map(
+        (a: {handle: string}) => `/journal/${a.handle}`
+      );
     } else {
       console.warn("Blog fetch failed:", await articleRes.text());
     }

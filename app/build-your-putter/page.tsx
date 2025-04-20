@@ -1,8 +1,8 @@
-import Overview from "@/components/BuildYourPutter/Overview";
+// import Overview from "@/components/BuildYourPutter/Overview";
 // import MaterialSection from "@/components/BuildYourPutter/MaterialSection";
 // import StepSelector from "@/components/BuildYourPutter/StepSelector";
-import StepReview from "@/components/BuildYourPutter/StepReview";
-import StepCheckout from "@/components/BuildYourPutter/StepCheckout";
+// import StepReview from "@/components/BuildYourPutter/StepReview";
+// import StepCheckout from "@/components/BuildYourPutter/StepCheckout";
 import {BuildProvider} from "@/components/BuildYourPutter/BuildContext";
 import "@/components/BuildYourPutter/build-your-putter.css";
 import WizardBuilder from "@/components/BuildYourPutter/WizardBuilder";

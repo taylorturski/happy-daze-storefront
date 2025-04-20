@@ -55,7 +55,7 @@ export default function WizardBuilder() {
         {step === "review" && <StepReview />}
       </div>
       {step !== "review" && (
-        <div className="w-full px-6 pt-6 pb-20 sm:pb-28 flex justify-between items-center bg-black">
+        <div className="w-full px-6 pt-2 pb-8 sm:pb-20 flex justify-between items-center bg-black">
           {!isFirst ? (
             <button
               onClick={handleBack}

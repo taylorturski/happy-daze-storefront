@@ -38,14 +38,29 @@ export async function getAllProducts() {
 
   const data = await shopifyFetch(query);
 
-  return data.products.edges.map(({node}: any) => ({
-    id: node.id,
-    title: node.title,
-    handle: node.handle,
-    images: node.images.edges.map((edge: any) => edge.node) || [],
-    price: node.priceRange.minVariantPrice.amount, // ← clean float string
-    currency: node.priceRange.minVariantPrice.currencyCode,
-  }));
+  return data.products.edges.map(
+    ({
+      node,
+    }: {
+      node: {
+        id: string;
+        title: string;
+        handle: string;
+        images: {edges: {node: {url: string; altText: string | null}}[]};
+        priceRange: {minVariantPrice: {amount: string; currencyCode: string}};
+      };
+    }) => ({
+      id: node.id,
+      title: node.title,
+      handle: node.handle,
+      images:
+        node.images.edges.map(
+          (edge: {node: {url: string; altText: string | null}}) => edge.node
+        ) || [],
+      price: node.priceRange.minVariantPrice.amount, // ← clean float string
+      currency: node.priceRange.minVariantPrice.currencyCode,
+    })
+  );
 }
 
 export async function getProductsByTag(tag: string) {
@@ -98,21 +113,58 @@ export async function getProductsByTag(tag: string) {
     query: `tag:${tag}`,
   });
 
-  return data.products.edges.map(({node}: any) => ({
-    id: node.id,
-    title: node.title,
-    handle: node.handle,
-    tags: node.tags,
-    images: node.images.edges.map((edge: any) => edge.node) || [],
-    price: node.priceRange.minVariantPrice.amount,
-    currency: node.priceRange.minVariantPrice.currencyCode,
-    variants: node.variants.edges.map(({node: variant}: any) => ({
-      id: variant.id,
-      title: variant.title,
-      price: `${variant.price.amount} ${variant.price.currencyCode}`,
-      selectedOptions: variant.selectedOptions,
-    })),
-  }));
+  return data.products.edges.map(
+    ({
+      node,
+    }: {
+      node: {
+        id: string;
+        title: string;
+        handle: string;
+        tags: string[];
+        images: {edges: {node: {url: string; altText: string | null}}[]};
+        priceRange: {minVariantPrice: {amount: string; currencyCode: string}};
+        variants: {
+          edges: {
+            node: {
+              id: string;
+              title: string;
+              price: {amount: string; currencyCode: string};
+              selectedOptions: {name: string; value: string}[];
+            };
+          }[];
+        };
+      };
+    }) => ({
+      id: node.id,
+      title: node.title,
+      handle: node.handle,
+      tags: node.tags,
+      images:
+        node.images.edges.map(
+          (edge: {node: {url: string; altText: string | null}}) => edge.node
+        ) || [],
+      price: node.priceRange.minVariantPrice.amount,
+      currency: node.priceRange.minVariantPrice.currencyCode,
+      variants: node.variants.edges.map(
+        ({
+          node: variant,
+        }: {
+          node: {
+            id: string;
+            title: string;
+            price: {amount: string; currencyCode: string};
+            selectedOptions: {name: string; value: string}[];
+          };
+        }) => ({
+          id: variant.id,
+          title: variant.title,
+          price: `${variant.price.amount} ${variant.price.currencyCode}`,
+          selectedOptions: variant.selectedOptions,
+        })
+      ),
+    })
+  );
 }
 
 export async function getProductByHandle(handle: string) {
@@ -160,7 +212,10 @@ export async function getProductByHandle(handle: string) {
     id: product.variants.edges[0]?.node.id,
     title: product.title,
     handle: product.handle,
-    images: product.images.edges.map((edge: any) => edge.node) || [],
+    images:
+      product.images.edges.map(
+        (edge: {node: {url: string; altText: string | null}}) => edge.node
+      ) || [],
     price: product.priceRange.minVariantPrice.amount,
     currency: product.priceRange.minVariantPrice.currencyCode,
     tags: product.tags,

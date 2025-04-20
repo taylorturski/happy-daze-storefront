@@ -32,7 +32,7 @@ export default async function CustomShopPage() {
   return (
     <PageSection title="Custom Putters">
       <p className="text-md mb-4">
-        No pressure. Pick the head shape. We'll take care of the rest. :)
+        No pressure. Pick the head shape. We&#39;ll take care of the rest. :)
       </p>
       <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 font-pitch">
         {products.map((product: Product) => {

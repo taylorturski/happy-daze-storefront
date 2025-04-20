@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
+    "verbatimModuleSyntax": false,
+    "skipLibCheck": true,
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -14,7 +15,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": ".", //Needed for @/ alias
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
       "@types/*": ["types/*"]

@@ -7,7 +7,7 @@ import {useRouter} from "next/navigation";
 
 const REQUIRED_STEPS = [
   "material",
-  "headshape",
+  "headShape",
   "finish",
   "face",
   "neck",
@@ -61,9 +61,13 @@ export default function StepCheckout() {
       });
 
       router.push("/");
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("[BUILD] Add to cart error:", err);
-      setError(err.message || "Unexpected error.");
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Unexpected error.");
+      }
     } finally {
       setLoading(false);
     }

@@ -3,7 +3,7 @@ import {Product} from "@/types/product";
 
 type CartItem = Product & {quantity: number};
 
-let cart: CartItem[] = [];
+const cart: CartItem[] = [];
 
 function addToCart(product: Product) {
   const existingIndex = cart.findIndex((item) => item.id === product.id);

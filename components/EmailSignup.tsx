@@ -26,27 +26,24 @@ export default function EmailSignup() {
   };
 
   return (
-    <div className="mt-5 md:pl-3 w-full">
-      <p className="text-sm uppercase">Refuse the ordinary</p>
+    <div className="mt-4 md:pl-3 w-full">
       <h3 className="text-lg font-bold uppercase">UNDERGROUND GC</h3>
       <p className="text-sm font-bold animate-blink-green">
         Get a discount code :)
       </p>
-      <form
-        onSubmit={handleSubmit}
-        className="flex gap-2 mt-2 w-full max-w-[180px]">
+      <form onSubmit={handleSubmit} className="mt-2 w-full max-w-[180px]">
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Your email"
           required
-          className="w-[170px] border-2 border-white px-2 py-1 text-sm bg-black text-white"
+          className="w-full border-2 border-white px-2 py-1 text-sm bg-black text-white mb-3"
         />
         <button
           type="submit"
-          className="px-2 border-2 border-white text-black bg-white text-sm font-vt lowercase">
-          →
+          className="w-full bg-[#ACFF9B] uppercase text-black px-3 py-1 font-bold font-vt text-sm">
+          Subscribe
         </button>
       </form>
       {message && (

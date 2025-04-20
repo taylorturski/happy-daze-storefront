@@ -51,7 +51,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-[240px] border-r-2 border-black p-4 flex flex-col gap-6 font-pitch sticky top-0 h-screen overflow-y-auto">
+    <aside className="w-[240px] border-r-2 border-black p-1 flex flex-col gap-6 font-pitch sticky top-0 h-screen overflow-y-auto">
       {/* Logo */}
       <Link href="/" className="block w-[200px] h-[80px] relative mb-2">
         <Image
@@ -64,7 +64,7 @@ export default function Sidebar() {
       </Link>
 
       {/* Cart */}
-      <div className="md:pl-3">
+      <div className="md:pl-4">
         <h3 className="mb-2 text-lg font-bold">MY CART</h3>
         {!cart || cart.length === 0 ? (
           <p className="text-xs mb-2">No items yet.</p>
@@ -105,7 +105,7 @@ export default function Sidebar() {
         </p>
         <button
           onClick={handleCheckout}
-          className="my-2 font-vt font-lg bg-[#ACFF9B] text-black px-3 py-1 font-bold">
+          className="w-full max-w-[180px] bg-[#ACFF9B] uppercase text-black px-3 py-1 mt-2 font-bold font-vt text-sm">
           CHECK OUT
         </button>
         {message && <p className="text-xs text-red-600 mt-1">{message}</p>}

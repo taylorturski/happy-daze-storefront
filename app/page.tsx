@@ -1,39 +1,48 @@
-import {getProductsByTag} from "@/lib/shopify/product";
+import FullBleedImage from "@/components/home/FullBleedImage";
+import SideBySide from "@/components/home/SideBySide";
+import ProductGridIntro from "@/components/home/ProductGridIntro";
 import ProductGrid from "@/components/ProductGrid";
-import PageSection from "@/components/PageSection";
-
-export async function generateMetadata() {
-  return {
-    title: "Build Your Own Putter | Happy Daze Golf",
-    description:
-      "Happy Daze putters start as raw blanks — you choose the shape, finish, and feel. Built one-at-a-time. Stamped by hand. No two are alike.",
-    openGraph: {
-      title: "Build Your Own Putter | Happy Daze Golf",
-      description:
-        "Happy Daze putters start as raw blanks — you choose the shape, finish, and feel. Built one-at-a-time. Stamped by hand. No two are alike.",
-      url: "https://www.happydazegolf.com/",
-      images: [
-        {
-          url: "/og/home.jpg",
-          width: 1200,
-          height: 630,
-          alt: "Custom Blanks - Happy Daze Golf",
-        },
-      ],
-    },
-  };
-}
+import FeatureBlock from "@/components/home/FeatureBlock";
+import QuoteRotator from "@/components/home/QuoteRotator";
+import StoryBlock from "@/components/home/StoryBlock";
+import {getProductsByTag} from "@/lib/shopify/product";
+import {homepageContent} from "@/lib/homepageContent";
 
 export default async function HomePage() {
   const products = await getProductsByTag("blanks");
+  const hats = await getProductsByTag("hats");
+  const {hero, origin, productGridIntro, featureBlock} = homepageContent;
 
   return (
-    <PageSection title="Custom Blanks">
-      {products.length > 0 ? (
+    <main className="w-full overflow-x-hidden">
+      <FullBleedImage imageSrc={hero.imageSrc} alt={hero.alt}>
+        {hero.lines.map((line, index) => (
+          <p
+            key={index}
+            className="text-xl sm:text-3xl uppercase font-pitch font-medium mt-2">
+            {line}
+          </p>
+        ))}
+      </FullBleedImage>
+      <QuoteRotator />
+      <SideBySide
+        imageSrc={origin.imageSrc}
+        alt={origin.alt}
+        title={origin.title}
+        subtitle={origin.subtitle}
+      />
+      <ProductGridIntro
+        title={productGridIntro.title}
+        body={productGridIntro.body}
+        cta={productGridIntro.cta}>
         <ProductGrid products={products} />
-      ) : (
-        <p>No blank putters found.</p>
-      )}
-    </PageSection>
+      </ProductGridIntro>
+      <FeatureBlock
+        lines={featureBlock.lines}
+        cta={featureBlock.cta}
+        products={hats}
+      />
+      <StoryBlock />
+    </main>
   );
 }

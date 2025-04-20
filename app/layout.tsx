@@ -9,6 +9,8 @@ import MobileMenu from "@/components/MobileMenu";
 import GoogleAnalytics from "@/app/analytics/GoogleAnalytics";
 import {CartProvider} from "@/app/context/CartContext";
 import EmailPopup from "@/components/EmailPopup";
+import FooterDesktop from "@/components/FooterDesktop";
+import FooterMobile from "@/components/FooterMobile";
 
 export default function RootLayout({children}: {children: ReactNode}) {
   return (
@@ -26,48 +28,51 @@ export default function RootLayout({children}: {children: ReactNode}) {
 
 function LayoutContent({children}: {children: ReactNode}) {
   return (
-    <div className="flex min-h-screen">
-      {/* Sidebar on desktop */}
-      <aside className="hidden sm:block sticky top-0 z-50 h-screen bg-black">
-        <Sidebar />
-      </aside>
+    <div className="flex min-h-screen flex-col relative">
+      <div className="flex flex-1">
+        {/* Sidebar on desktop */}
+        <aside className="hidden sm:block sticky top-0 z-50 h-screen bg-black">
+          <Sidebar />
+        </aside>
 
-      {/* Main */}
-      <main className="flex-1 relative z-0 bg-transparent">
-        {/* Desktop Header */}
-        <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-4">
-          <nav className="flex gap-2">
-            <Link href="/custom-shop" className={navLinkClasses}>
-              CUSTOM SHOP
-            </Link>
-            <Link href="/journal" className={navLinkClasses}>
-              JOURNAL
-            </Link>
-            <Link href="/about" className={navLinkClasses}>
-              ABOUT
-            </Link>
-          </nav>
-        </header>
+        {/* Main */}
+        <main className="flex-1 relative z-0 bg-transparent sm:pl-0 pl-1">
+          <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-4">
+            <nav className="flex gap-2">
+              <Link href="/custom-shop" className={navLinkClasses}>
+                CUSTOM SHOP
+              </Link>
+              <Link href="/journal" className={navLinkClasses}>
+                JOURNAL
+              </Link>
+              <Link href="/about" className={navLinkClasses}>
+                ABOUT
+              </Link>
+            </nav>
+          </header>
 
-        {/* Mobile Header */}
-        <div className="flex sm:hidden justify-between items-center border-b-2 border-black px-4 py-3">
-          <Link href="/" className="block w-[160px] h-[60px] relative">
-            <Image
-              src="/happy_daze_logo.svg"
-              alt="Happy Daze Golf"
-              fill
-              className="pt-2 object-contain invert"
-              priority
-            />
-          </Link>
-          <MobileMenu />
-        </div>
+          {/* Mobile Header */}
+          <div className="flex sm:hidden justify-between items-center border-b-2 border-black px-4 py-3">
+            <Link href="/" className="block w-[160px] h-[60px] relative">
+              <Image
+                src="/happy_daze_logo.svg"
+                alt="Happy Daze Golf"
+                fill
+                className="pt-2 object-contain invert"
+                priority
+              />
+            </Link>
+            <MobileMenu />
+          </div>
 
-        {children}
-      </main>
+          {children}
+          <FooterMobile />
+        </main>
+      </div>
+      <FooterDesktop />
     </div>
   );
 }
 
 const navLinkClasses =
-  "border-2 border-black px-3 py-1 font-bold no-underline text-xs uppercase";
+  "border-2 border-black px-3 py-1 font-bold no-underline text-md uppercase";

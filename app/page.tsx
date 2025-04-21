@@ -16,10 +16,8 @@ export default async function HomePage() {
   return (
     <main className="w-full overflow-x-hidden">
       <FullBleedImage imageSrc={hero.imageSrc} alt={hero.alt}>
-        {hero.lines.map((line, index) => (
-          <p
-            key={index}
-            className="text-xl sm:text-3xl uppercase font-pitch font-medium mt-2">
+        {hero.lines.map((line) => (
+          <p key={line} className="text-2xl md:text-4xl leading-snug">
             {line}
           </p>
         ))}

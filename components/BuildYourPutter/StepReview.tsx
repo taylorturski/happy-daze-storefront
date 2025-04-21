@@ -39,7 +39,7 @@ export default function StepReview() {
   ];
 
   return (
-    <section className="flex flex-col justify-between font-pitch">
+    <section className="overflow-y-hidden flex flex-col justify-between font-pitch">
       <div className="p-3 sm:p-6">
         <h2 className="text-xl font-bold uppercase mb-4">Your Build</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
@@ -53,7 +53,7 @@ export default function StepReview() {
 
             return selection ? (
               <div key={step} className="border-2 border-white flex flex-col">
-                <div className="w-full h-[140px] sm:h-[160px] overflow-hidden">
+                <div className="w-full h-[100px] sm:h-[150px] overflow-hidden">
                   <Image
                     src={selection.image}
                     alt={selection.label}
@@ -63,13 +63,11 @@ export default function StepReview() {
                     className="w-full h-full object-cover object-center"
                   />
                 </div>
-                <div className="p-2 sm:p-3 flex flex-col items-center justify-center text-center">
-                  <h3 className="text-[11px] sm:text-xs font-bold uppercase tracking-wide mb-1">
-                    {step}
-                  </h3>
-                  <p className="text-[12px] sm:text-sm leading-tight">
-                    {selection.label}
-                  </p>
+                <div className="p-0 sm:p-1 text-xs sm:text-sm text-center">
+                  <span className="font-bold capitalize">{step}:</span>{" "}
+                  {step === "finish"
+                    ? selection.label.replace(/\s*\(\+\$\d+\)/g, "")
+                    : selection.label}
                 </div>
               </div>
             ) : (
@@ -82,6 +80,7 @@ export default function StepReview() {
           })}
         </div>
       </div>
+
       <div className="flex justify-between items-center px-4 pt-2 pb-6 mt-auto">
         <button
           onClick={() => window.history.back()}

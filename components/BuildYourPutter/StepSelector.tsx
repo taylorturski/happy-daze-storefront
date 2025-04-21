@@ -85,7 +85,6 @@ export default function StepSelector({step}: StepSelectorProps) {
         <h2 className="text-xl font-bold uppercase mb-4">{step}</h2>
       </div>
 
-      {/* Remove unnecessary scroll wrapper */}
       <div className="px-3 pb-3">
         <div
           className={`grid gap-4 sm:gap-6 ${gridColsClass} max-w-[1024px] mx-auto`}>
@@ -93,22 +92,23 @@ export default function StepSelector({step}: StepSelectorProps) {
             <div
               key={option.id}
               onClick={() => handleSelect(option.id)}
-              className={`cursor-pointer border-2 ${
+              className={`cursor-pointer border-2 flex flex-col justify-between ${
                 selected === option.id ? "border-[#ACFF9B]" : "border-white"
-              }`}>
-              <div className="aspect-[4/3] overflow-hidden">
+              }`}
+              style={{height: "250px"}}>
+              <div className="w-full h-[200px] overflow-hidden">
                 <Image
                   src={option.image}
                   alt={option.label}
-                  height={300}
                   width={400}
+                  height={300}
                   priority
                   className="w-full h-full object-cover object-center"
                 />
               </div>
-              <p className="text-center text-sm font-pitch font-medium py-2">
+              <div className="text-center text-sm font-pitch font-medium py-2">
                 {option.label}
-              </p>
+              </div>
             </div>
           ))}
         </div>

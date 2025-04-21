@@ -6,6 +6,7 @@
 import {BuildProvider} from "@/components/BuildYourPutter/BuildContext";
 import "@/components/BuildYourPutter/build-your-putter.css";
 import WizardBuilder from "@/components/BuildYourPutter/WizardBuilder";
+import {Suspense} from "react";
 
 export async function generateMetadata() {
   return {
@@ -31,10 +32,10 @@ export async function generateMetadata() {
 
 export default function BuildYourPutterPage() {
   return (
-    <BuildProvider>
-      <main className="font-pitch text-white bg-transparent px-[20px]">
+    <Suspense fallback={<div className="p-6 text-white">Loading...</div>}>
+      <BuildProvider>
         <WizardBuilder />
-      </main>
-    </BuildProvider>
+      </BuildProvider>
+    </Suspense>
   );
 }

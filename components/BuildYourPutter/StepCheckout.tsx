@@ -7,7 +7,7 @@ import {useRouter} from "next/navigation";
 
 const REQUIRED_STEPS = [
   "material",
-  "headShape",
+  "headshape",
   "finish",
   "face",
   "neck",

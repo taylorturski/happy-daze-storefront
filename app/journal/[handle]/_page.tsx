@@ -3,18 +3,14 @@ import {Metadata} from "next";
 import {notFound} from "next/navigation";
 import Image from "next/image";
 
-/**
- * Generates metadata for a blog article page based on the provided handle.
- *
- * @param {Object} params - The parameters object containing the article handle.
- * @param {string} params.handle - The unique identifier for the blog article.
- * @returns {Promise<Metadata>} The metadata for the blog article page.
- */
-export async function generateMetadata(
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore – Next.js type inference bug, safe to ignore
-  {params}: {params: {handle: string}}
-): Promise<Metadata> {
+type Params = {
+  params: {
+    handle: string;
+  };
+};
+
+// ✅ No workaround needed for build if declared like this
+export async function generateMetadata({params}: Params): Promise<Metadata> {
   const article = await getBlogArticleByHandle(params.handle);
   if (!article) return notFound();
 
@@ -41,11 +37,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function JournalArticlePage(
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore – same inference issue affects the page export
-  {params}: {params: {handle: string}}
-) {
+export default async function JournalArticlePage({params}: Params) {
   const article = await getBlogArticleByHandle(params.handle);
   if (!article) return notFound();
 

@@ -58,5 +58,6 @@ export async function getBlogArticleByHandle(handle: string) {
   `;
 
   const data = await shopifyFetch(query, {handle});
+  console.log("Fetched Article Data:", data); // Debugging
   return data.blog.articleByHandle;
 }

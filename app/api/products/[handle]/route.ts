@@ -1,14 +1,12 @@
 import {NextResponse} from "next/server";
 import {getProductByHandle} from "@/lib/shopify/product";
 
-interface Context {
-  params: {
-    handle: string;
-  };
-}
-
-export async function GET(_: Request, context: Context) {
-  const {handle} = context.params;
+export async function GET(req: Request) {
+  const {searchParams} = new URL(req.url);
+  const handle = searchParams.get("handle");
+  if (!handle) {
+    return NextResponse.json({error: "Handle is required"}, {status: 400});
+  }
   const product = await getProductByHandle(handle);
   return NextResponse.json(product);
 }

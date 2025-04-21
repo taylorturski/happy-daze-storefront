@@ -50,22 +50,26 @@ export default function ProductPage() {
   return (
     <main className="font-pitch px-4 py-8">
       <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row gap-12">
-        {/* Image section */}
         <div className="w-full lg:w-1/2 flex flex-col lg:flex-row gap-4">
-          {/* Main image */}
           <div className="flex-1">
             <Image
-              src={product.images[activeImage]?.url || product.images[0].url}
-              alt={product.images[activeImage]?.altText || product.title}
+              src={
+                product.images?.[activeImage]?.url ||
+                product.images?.[0]?.url ||
+                "/placeholder-image.jpg"
+              }
+              alt={
+                product.images?.[activeImage]?.altText ||
+                product.title ||
+                "Product Image"
+              }
               width={800}
               height={600}
               className="w-full max-w-[600px] border-2 border-black object-contain"
             />
           </div>
-
-          {/* Thumbnails - larger on both mobile and desktop */}
           <div className="flex gap-3 lg:flex-col overflow-x-auto lg:overflow-visible w-full lg:w-32">
-            {product.images.map((image, i) => (
+            {product.images?.map((image, i) => (
               <Image
                 key={i}
                 src={image.url}

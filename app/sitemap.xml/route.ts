@@ -1,9 +1,10 @@
 import {NextResponse} from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const baseUrl = "https://www.happydazegolf.com";
 
-  // Static pages to include
   const staticPaths = [
     "",
     "/about",
@@ -14,42 +15,33 @@ export async function GET() {
     "/build-your-putter",
   ];
 
-  // Fetch products
   let productPaths: string[] = [];
+  let articlePaths: string[] = [];
+
   try {
     const productRes = await fetch(`${baseUrl}/api/products`, {
       cache: "no-store",
     });
-
     if (productRes.ok) {
       const products = await productRes.json();
       productPaths = products.map(
         (p: {handle: string}) => `/putters/${p.handle}`
       );
-    } else {
-      console.warn("Product fetch failed:", await productRes.text());
     }
   } catch (err) {
-    console.error("Error fetching products:", err);
+    console.error("Product fetch error:", err);
   }
 
-  // Fetch blog articles
-  let articlePaths: string[] = [];
   try {
-    const articleRes = await fetch(`${baseUrl}/api/blog`, {
-      cache: "no-store",
-    });
-
+    const articleRes = await fetch(`${baseUrl}/api/blog`, {cache: "no-store"});
     if (articleRes.ok) {
       const articles = await articleRes.json();
       articlePaths = articles.map(
         (a: {handle: string}) => `/journal/${a.handle}`
       );
-    } else {
-      console.warn("Blog fetch failed:", await articleRes.text());
     }
   } catch (err) {
-    console.error("Error fetching articles:", err);
+    console.error("Blog fetch error:", err);
   }
 
   const allPaths = [...staticPaths, ...productPaths, ...articlePaths];

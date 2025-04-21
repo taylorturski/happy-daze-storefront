@@ -38,7 +38,8 @@ export function BuildProvider({children}: {children: React.ReactNode}) {
     if (headshapeParam && !selections.headshape) {
       setSelection("headshape", headshapeParam);
     }
-  }, [searchParams, selections.headshape]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   return (
     <BuildContext.Provider value={{selections, setSelection}}>

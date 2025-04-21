@@ -169,56 +169,58 @@ export async function getProductsByTag(tag: string) {
 
 export async function getProductByHandle(handle: string) {
   const query = `
-  query GetProductByHandle($handle: String!) {
-    productByHandle(handle: $handle) {
-      id
-      title
-      handle
-      tags
-      description
-      images(first: 10) {
-        edges {
-          node {
-            url
-            altText
+    query GetProductByHandle($handle: String!) {
+      productByHandle(handle: $handle) {
+        id
+        title
+        handle
+        tags
+        description
+        images(first: 10) {
+          edges {
+            node {
+              url
+              altText
+            }
           }
         }
-      }
-      priceRange {
-        minVariantPrice {
-          amount
-          currencyCode
+        priceRange {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
         }
-      }
-      variants(first: 1) {
-        edges {
-          node {
-            id
-            price {
-              amount
-              currencyCode
+        variants(first: 1) {
+          edges {
+            node {
+              id
+              price {
+                amount
+                currencyCode
+              }
             }
           }
         }
       }
     }
-  }
-`;
+  `;
 
   const data = await shopifyFetch(query, {handle});
-  const product = data.productByHandle;
+  const product = data?.productByHandle;
+
+  if (!product) return null;
 
   return {
-    id: product.variants.edges[0]?.node.id,
+    id: product.variants?.edges?.[0]?.node?.id ?? "",
     title: product.title,
     handle: product.handle,
     images:
-      product.images.edges.map(
+      product.images?.edges?.map(
         (edge: {node: {url: string; altText: string | null}}) => edge.node
       ) || [],
-    price: product.priceRange.minVariantPrice.amount,
-    currency: product.priceRange.minVariantPrice.currencyCode,
-    tags: product.tags,
-    description: product.description,
+    price: product.priceRange?.minVariantPrice?.amount ?? "0.00",
+    currency: product.priceRange?.minVariantPrice?.currencyCode ?? "USD",
+    tags: product.tags || [],
+    description: product.description || "",
   };
 }

@@ -17,7 +17,9 @@ export default function ProductPage() {
   useEffect(() => {
     async function fetchProduct() {
       const res = await fetch(`/api/products/${handle}`);
+      if (!res.ok) return; // Exit early on error
       const data = await res.json();
+      if (!data?.id) return;
       setProduct(data);
     }
 
@@ -92,7 +94,7 @@ export default function ProductPage() {
           <h1 className="text-2xl lg:text-3xl font-bold uppercase mb-1">
             {product.title}
           </h1>
-          <p className="font-vt lowercase text-lg mb-4">
+          <p className="font-vt uppercase text-lg mb-4">
             Starting at ${parseFloat(product.price).toFixed(2)}
           </p>
 

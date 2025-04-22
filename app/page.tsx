@@ -18,13 +18,19 @@ export default async function HomePage() {
   const {hero, origin, productGridIntro, featureBlock} = homepageContent;
 
   return (
-    <main className="w-full max-w-screen overflow-x-hidden">
+    <div className="w-full max-w-screen overflow-x-hidden">
       <FullBleedImage imageSrc={hero.imageSrc} alt={hero.alt} priority>
-        {hero.lines.map((line) => (
-          <p key={line} className="text-2xl md:text-4xl leading-snug">
-            {line}
-          </p>
-        ))}
+        {hero.lines.map((line, index) =>
+          index === 0 ? (
+            <h1 key={line} className="text-2xl md:text-4xl leading-snug">
+              {line}
+            </h1>
+          ) : (
+            <p key={line} className="text-2xl md:text-4xl leading-snug">
+              {line}
+            </p>
+          )
+        )}
       </FullBleedImage>
 
       <QuoteRotator />
@@ -50,6 +56,6 @@ export default async function HomePage() {
       />
 
       <StoryBlock />
-    </main>
+    </div>
   );
 }

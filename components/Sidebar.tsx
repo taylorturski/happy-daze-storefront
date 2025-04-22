@@ -114,7 +114,7 @@ export default function Sidebar() {
       {/* Nav */}
       <div className="md:pl-3">
         <h3 className="mb-2 text-lg font-bold">CATEGORIES</h3>
-        <nav className="flex flex-col gap-1">
+        <nav aria-label="Sidebar navigation" className="flex flex-col gap-1">
           <Link href="/custom-putters" className="hover:underline">
             Custom Putters
           </Link>

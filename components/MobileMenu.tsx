@@ -84,7 +84,9 @@ export default function MobileMenu() {
           </div>
 
           {/* Navigation links */}
-          <nav className="flex flex-col gap-4 text-lg font-bold uppercase mb-6">
+          <nav
+            aria-label="Mobile navigation"
+            className="flex flex-col gap-4 text-lg font-bold uppercase mb-6">
             <Link href="/custom-putters" onClick={() => setOpen(false)}>
               Custom Putters
             </Link>

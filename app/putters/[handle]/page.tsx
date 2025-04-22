@@ -50,7 +50,7 @@ export default function ProductPage() {
   if (!product) return <p className="p-8 font-pitch">Loading...</p>;
 
   return (
-    <main className="font-pitch px-4 py-8">
+    <div className="font-pitch px-4 py-8">
       <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row gap-12">
         <div className="w-full lg:w-1/2 flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
@@ -127,6 +127,6 @@ export default function ProductPage() {
           )}
         </div>
       </div>
-    </main>
+    </div>
   );
 }

@@ -10,7 +10,7 @@ import FooterDesktop from "@/components/FooterDesktop";
 import FooterMobile from "@/components/FooterMobile";
 import {usePathname} from "next/navigation";
 
-// Client‑only components (all default exports)
+// Client‑only components
 const CartProvider = dynamic(
   () => import("@/app/context/CartContext").then((mod) => mod.CartProvider),
   {ssr: false}
@@ -34,18 +34,28 @@ export default function RootLayout({children}: {children: ReactNode}) {
 
   return (
     <html lang="en">
+      <head>
+        <title>Happy Daze Golf — Underground Golf Club</title>
+      </head>
       <body className="m-0 font-pitch text-[16px] overflow-x-hidden">
         <GoogleAnalytics />
         <CartProvider>
           <div className="flex min-h-screen flex-col relative">
             <div className="flex flex-1">
-              <aside className="hidden sm:block sticky top-0 z-50 h-screen bg-black">
+              {/* Sidebar on desktop */}
+              <aside
+                role="complementary"
+                className="hidden sm:block sticky top-0 z-50 h-screen bg-black">
                 <Sidebar />
               </aside>
 
-              <main className="flex-1 relative z-0 bg-transparent sm:pl-0 min-h-screen">
+              {/* Main content landmark */}
+              <main
+                role="main"
+                className="flex-1 relative z-0 bg-transparent sm:pl-0 min-h-screen">
+                {/* Desktop Header */}
                 <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-4">
-                  <nav className="flex gap-2">
+                  <nav aria-label="Primary navigation" className="flex gap-2">
                     <Link href="/custom-putters" className={navLinkClasses}>
                       CUSTOM PUTTERS
                     </Link>
@@ -58,6 +68,7 @@ export default function RootLayout({children}: {children: ReactNode}) {
                   </nav>
                 </header>
 
+                {/* Mobile Header */}
                 <div className="flex sm:hidden justify-between items-center border-b-2 border-black px-4 py-3">
                   <Link href="/" className="block w-[160px] h-[60px] relative">
                     <Image

@@ -23,7 +23,13 @@ function ProductGrid({products}: ProductGridProps) {
           <div
             key={product.id}
             className="border-2 border-black p-4 flex flex-col justify-between bg-black hover:bg-white hover:text-black transition-all duration-200 ease-in-out">
-            <Link href={`/putters/${product.handle}`} className="no-underline">
+            <Link
+              href={
+                product.tags?.includes("hats")
+                  ? `/merch/${product.handle}`
+                  : `/putters/${product.handle}`
+              }
+              className="no-underline">
               {firstImage ? (
                 <Image
                   src={firstImage.url}
@@ -49,9 +55,12 @@ function ProductGrid({products}: ProductGridProps) {
               <button
                 onClick={() =>
                   addToCart({
-                    id: product.id,
+                    id: product.variants?.[0]?.id || product.id, // fallback to product.id if no variants
                     title: product.title,
-                    price: parseFloat(product.price),
+                    price: parseFloat(
+                      product.variants?.[0]?.price.split(" ")[0] ||
+                        product.price
+                    ),
                     image: firstImage?.url || "",
                     quantity: 1,
                   })

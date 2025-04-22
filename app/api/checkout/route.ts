@@ -10,7 +10,65 @@ const noCacheHeaders = {
 };
 
 export async function POST(req: Request) {
-  const selections = await req.json();
+  const data = await req.json();
+
+  // === 1. Sidebar Checkout: array of cart items ===
+  if (Array.isArray(data)) {
+    const lines = data.map((item) => ({
+      merchandiseId: item.id,
+      quantity: item.quantity ?? 1,
+      attributes: item.properties
+        ? Object.entries(item.properties).map(([key, value]) => ({
+            key: key.charAt(0).toUpperCase() + key.slice(1),
+            value: value || "N/A",
+          }))
+        : [],
+    }));
+
+    const query = `
+      mutation CartCreate($input: CartInput!) {
+        cartCreate(input: $input) {
+          cart {
+            id
+            checkoutUrl
+          }
+          userErrors {
+            field
+            message
+          }
+        }
+      }
+    `;
+
+    const variables = {input: {lines}};
+
+    try {
+      const response = await shopifyFetch(query, variables);
+      const cart = response.cartCreate?.cart;
+      const error = response.cartCreate?.userErrors?.[0];
+
+      if (!cart?.checkoutUrl) {
+        return NextResponse.json(
+          {error: error?.message || "Checkout creation failed"},
+          {status: 500, headers: noCacheHeaders}
+        );
+      }
+
+      return NextResponse.json(
+        {url: cart.checkoutUrl},
+        {status: 200, headers: noCacheHeaders}
+      );
+    } catch (err) {
+      console.error("[SIDEBAR CHECKOUT ERROR]", err);
+      return NextResponse.json(
+        {error: "Server error"},
+        {status: 500, headers: noCacheHeaders}
+      );
+    }
+  }
+
+  // === 2. Builder Checkout: single putter with selections ===
+  const selections = data;
   const blankProducts: Product[] = await getProductsByTag("blanks");
   const headshape = selections.headshape?.toLowerCase();
 
@@ -82,6 +140,7 @@ export async function POST(req: Request) {
       }
     }
   `;
+
   const variables = {input: {lines: [lineItem]}};
 
   try {
@@ -106,7 +165,8 @@ export async function POST(req: Request) {
       },
       {status: 200, headers: noCacheHeaders}
     );
-  } catch {
+  } catch (err) {
+    console.error("[BUILDER CHECKOUT ERROR]", err);
     return NextResponse.json(
       {error: "Server error"},
       {status: 500, headers: noCacheHeaders}

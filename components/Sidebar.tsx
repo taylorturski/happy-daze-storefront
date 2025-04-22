@@ -33,7 +33,7 @@ export default function Sidebar() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(cart[0]?.properties || {}),
+        body: JSON.stringify(cart),
       });
 
       const data = await res.json();
@@ -85,12 +85,14 @@ export default function Sidebar() {
                 </p>
 
                 {/* Custom Build Attributes */}
-                {item.properties &&
-                  Object.entries(item.properties).map(([key, value]) => (
-                    <p key={key} className="text-[11px] text-gray-500">
-                      {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
-                    </p>
-                  ))}
+                {item.properties?.headshape && (
+                  <p className="text-sm text-gray-400">
+                    Custom:{" "}
+                    {item.properties.material
+                      ? `${item.properties.headshape}`
+                      : item.properties.headshape}
+                  </p>
+                )}
               </div>
               <button
                 onClick={() => removeFromCart(item.id)}
@@ -112,11 +114,15 @@ export default function Sidebar() {
       </div>
 
       {/* Nav */}
+      {/* Nav */}
       <div className="md:pl-3">
         <h3 className="mb-2 text-lg font-bold">CATEGORIES</h3>
         <nav aria-label="Sidebar navigation" className="flex flex-col gap-1">
           <Link href="/custom-putters" className="hover:underline">
             Custom Putters
+          </Link>
+          <Link href="/merch" className="hover:underline">
+            Merch
           </Link>
           <Link href="/gallery" className="hover:underline">
             Gallery

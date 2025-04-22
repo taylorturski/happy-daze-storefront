@@ -1,60 +1,64 @@
+export const runtime = "edge";
+
 import {NextResponse} from "next/server";
 import {shopifyFetch} from "@/lib/shopify/client";
 import {getProductsByTag} from "@/lib/shopify/product";
 import {Product, ProductVariant} from "@/types/product";
 
+const noCacheHeaders = {
+  "Cache-Control": "no-store, max-age=0",
+};
+
 export async function POST(req: Request) {
   const selections = await req.json();
-
   const blankProducts: Product[] = await getProductsByTag("blanks");
   const headshape = selections.headshape?.toLowerCase();
+
   if (!headshape) {
-    return NextResponse.json({error: "Missing headshape"}, {status: 400});
+    return NextResponse.json(
+      {error: "Missing headshape"},
+      {status: 400, headers: noCacheHeaders}
+    );
   }
 
   const matchedProduct = blankProducts.find((product) =>
-    product.title.toLowerCase().includes(headshape || "")
+    product.title.toLowerCase().includes(headshape)
   );
 
   if (!matchedProduct) {
-    return NextResponse.json({error: "Product not found"}, {status: 404});
+    return NextResponse.json(
+      {error: "Product not found"},
+      {status: 404, headers: noCacheHeaders}
+    );
   }
 
   const variant: ProductVariant | undefined = matchedProduct.variants?.find(
     (v) => {
-      const materialOption = v.selectedOptions.find(
+      const mat = v.selectedOptions.find(
         (opt) =>
           opt.name.toLowerCase() === "material" &&
           opt.value
             .toLowerCase()
-            .includes(selections.material?.toLowerCase() || "")
+            .includes((selections.material || "").toLowerCase())
       );
-
-      const finishOption = v.selectedOptions.find((opt) => {
-        const selFinish = selections.finish?.toLowerCase() || "";
-        const matchValue = selFinish.includes("satin") ? "satin" : "torched";
-        return (
+      const finishVal = (selections.finish || "").toLowerCase();
+      const matchValue = finishVal.includes("satin") ? "satin" : "torched";
+      const fin = v.selectedOptions.find(
+        (opt) =>
           opt.name.toLowerCase() === "finish" &&
           opt.value.toLowerCase().includes(matchValue)
-        );
-      });
-
-      return materialOption && finishOption;
+      );
+      return Boolean(mat && fin);
     }
   );
-
-  console.log("[CHECKOUT] Incoming selections:", selections);
-  console.log("[CHECKOUT] Matched product:", matchedProduct.title);
-  console.log("[CHECKOUT] Matched variant:", variant);
 
   if (!variant) {
     return NextResponse.json(
       {error: "No matching variant found"},
-      {status: 404}
+      {status: 404, headers: noCacheHeaders}
     );
   }
 
-  // Build cart line item
   const lineItem = {
     merchandiseId: variant.id,
     quantity: 1,
@@ -63,6 +67,7 @@ export async function POST(req: Request) {
       value: value || "N/A",
     })),
   };
+
   const query = `
     mutation CartCreate($input: CartInput!) {
       cartCreate(input: $input) {
@@ -77,12 +82,7 @@ export async function POST(req: Request) {
       }
     }
   `;
-
-  const variables = {
-    input: {
-      lines: [lineItem],
-    },
-  };
+  const variables = {input: {lines: [lineItem]}};
 
   try {
     const response = await shopifyFetch(query, variables);
@@ -90,22 +90,26 @@ export async function POST(req: Request) {
     const error = response.cartCreate?.userErrors?.[0];
 
     if (!cart?.checkoutUrl) {
-      console.error("Shopify cartCreate error:", error);
       return NextResponse.json(
-        {error: "Checkout creation failed"},
-        {status: 500}
+        {error: error?.message || "Checkout creation failed"},
+        {status: 500, headers: noCacheHeaders}
       );
     }
 
-    return NextResponse.json({
-      url: cart.checkoutUrl,
-      variantId: variant.id,
-      title: matchedProduct.title,
-      price: variant.price?.split(" ")[0] ?? matchedProduct.price,
-      image: matchedProduct.images?.[0]?.url || "",
-    });
-  } catch (err) {
-    console.error("Checkout API error:", err);
-    return NextResponse.json({error: "Server error"}, {status: 500});
+    return NextResponse.json(
+      {
+        url: cart.checkoutUrl,
+        variantId: variant.id,
+        title: matchedProduct.title,
+        price: variant.price?.split(" ")[0] ?? matchedProduct.price,
+        image: matchedProduct.images?.[0]?.url || "",
+      },
+      {status: 200, headers: noCacheHeaders}
+    );
+  } catch {
+    return NextResponse.json(
+      {error: "Server error"},
+      {status: 500, headers: noCacheHeaders}
+    );
   }
 }

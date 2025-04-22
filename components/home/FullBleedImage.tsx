@@ -22,7 +22,7 @@ export default function FullBleedImage({
         src={imageSrc}
         alt={alt}
         fill
-        priority
+        priority={priority}
         className="object-cover object-center brightness-[0.9] contrast-[1.1] saturate-[0.85] z-0"
       />
 

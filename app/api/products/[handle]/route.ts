@@ -1,18 +1,29 @@
-import {NextRequest, NextResponse} from "next/server";
+export const runtime = "edge";
+
+import {NextResponse} from "next/server";
 import {getProductByHandle} from "@/lib/shopify/product";
 
-export async function GET(req: NextRequest) {
-  const handle = req.nextUrl.pathname.split("/").pop();
+const cacheHeaders = {
+  "Cache-Control": "public, s-maxage=600, stale-while-revalidate=30",
+};
 
+export async function GET(req: Request) {
+  const url = new URL(req.url);
+  const handle = url.pathname.split("/").pop();
   if (!handle) {
-    return NextResponse.json({error: "Missing handle"}, {status: 400});
+    return NextResponse.json(
+      {error: "Missing handle"},
+      {status: 400, headers: cacheHeaders}
+    );
   }
 
   try {
     const product = await getProductByHandle(handle);
-    return NextResponse.json(product, {status: 200});
-  } catch (error) {
-    console.error("Error fetching product by handle:", error);
-    return NextResponse.json({error: "Failed to fetch product"}, {status: 500});
+    return NextResponse.json(product, {status: 200, headers: cacheHeaders});
+  } catch {
+    return NextResponse.json(
+      {error: "Failed to fetch product"},
+      {status: 500, headers: cacheHeaders}
+    );
   }
 }

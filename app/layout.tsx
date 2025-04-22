@@ -1,5 +1,3 @@
-// app/layout.tsx
-
 "use client";
 
 import "@/styles/globals.css";
@@ -41,14 +39,11 @@ export default function RootLayout({children}: {children: ReactNode}) {
         <CartProvider>
           <div className="flex min-h-screen flex-col relative">
             <div className="flex flex-1">
-              {/* Sidebar on desktop */}
               <aside className="hidden sm:block sticky top-0 z-50 h-screen bg-black">
                 <Sidebar />
               </aside>
 
-              {/* Main content */}
               <main className="flex-1 relative z-0 bg-transparent sm:pl-0 min-h-screen">
-                {/* Desktop Header */}
                 <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-4">
                   <nav className="flex gap-2">
                     <Link href="/custom-putters" className={navLinkClasses}>
@@ -63,7 +58,6 @@ export default function RootLayout({children}: {children: ReactNode}) {
                   </nav>
                 </header>
 
-                {/* Mobile Header */}
                 <div className="flex sm:hidden justify-between items-center border-b-2 border-black px-4 py-3">
                   <Link href="/" className="block w-[160px] h-[60px] relative">
                     <Image

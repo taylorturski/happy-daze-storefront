@@ -7,14 +7,26 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["cdn.shopify.com", "www.happydazegolf.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.shopify.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "www.happydazegolf.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
     formats: ["image/avif", "image/webp"],
   },
   env: {
     SHOPIFY_STORE_DOMAIN: process.env.SHOPIFY_STORE_DOMAIN,
     SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION,
   },
-  metadataBase: new URL("https://www.happydazegolf.com"),
   async headers() {
     return [
       {

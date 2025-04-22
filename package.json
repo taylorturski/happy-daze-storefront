@@ -8,8 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "analyze": "ANALYZE=true npm run build",
-    "test:e2e": "playwright test"
+    "analyze": "ANALYZE=true npm run build"
   },
   "dependencies": {
     "@types/node": "22.14.0",

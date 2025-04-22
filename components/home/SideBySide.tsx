@@ -2,23 +2,30 @@
 
 import Image from "next/image";
 import React from "react";
-import {motion} from "framer-motion";
+import dynamic from "next/dynamic";
+
+const MotionDiv = dynamic(
+  () => import("framer-motion").then((mod) => mod.motion.div),
+  {ssr: false}
+);
+
+interface SideBySideProps {
+  imageSrc: string;
+  alt?: string;
+  title: string;
+  subtitle?: string;
+}
 
 export default function SideBySide({
   imageSrc,
   alt = "",
   title,
   subtitle,
-}: {
-  imageSrc: string;
-  alt?: string;
-  title: string;
-  subtitle?: string;
-}) {
+}: SideBySideProps) {
   return (
     <section className="w-full bg-transparent text-white pb-8">
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row-reverse items-center gap-12">
-        <motion.div
+        <MotionDiv
           initial={{clipPath: "inset(0 100% 0 0)"}}
           animate={{clipPath: "inset(0 0% 0 0)"}}
           transition={{duration: 0.8, ease: "easeOut"}}
@@ -31,7 +38,8 @@ export default function SideBySide({
               {subtitle}
             </p>
           )}
-        </motion.div>
+        </MotionDiv>
+
         <div className="w-full sm:w-1/2">
           <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] overflow-hidden">
             <Image

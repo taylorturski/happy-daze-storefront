@@ -1,7 +1,16 @@
 "use client";
 
-import {motion} from "framer-motion";
+import dynamic from "next/dynamic";
 import {useEffect, useState} from "react";
+
+const MotionDiv = dynamic(
+  () => import("framer-motion").then((mod) => mod.motion.div),
+  {ssr: false}
+);
+const MotionSpan = dynamic(
+  () => import("framer-motion").then((mod) => mod.motion.span),
+  {ssr: false}
+);
 
 const quote = "Refuse the ordinary.";
 const flickerChars = ["F", "U", "E", "E", "D", "A", "R"]; // flicker targets
@@ -9,15 +18,11 @@ const flickerChars = ["F", "U", "E", "E", "D", "A", "R"]; // flicker targets
 export default function QuoteRotator() {
   const [shouldFlicker, setShouldFlicker] = useState(false);
 
-  // Trigger flicker randomly every 2s
   useEffect(() => {
     const interval = setInterval(() => {
-      const flickerNow = Math.random() > 0.5; // 50% chance
+      const flickerNow = Math.random() > 0.5;
       setShouldFlicker(flickerNow);
-
-      if (flickerNow) {
-        setTimeout(() => setShouldFlicker(false), 700);
-      }
+      if (flickerNow) setTimeout(() => setShouldFlicker(false), 700);
     }, 1500);
 
     return () => clearInterval(interval);
@@ -26,7 +31,7 @@ export default function QuoteRotator() {
   return (
     <section className="w-full bg-black text-white font-pitch py-5 overflow-hidden">
       <div className="w-full overflow-x-hidden">
-        <motion.div
+        <MotionDiv
           className="inline-block whitespace-nowrap w-full"
           animate={{x: ["100%", "-100%"]}}
           transition={{repeat: Infinity, duration: 18, ease: "linear"}}>
@@ -36,7 +41,7 @@ export default function QuoteRotator() {
               shouldFlicker && flickerChars.includes(char.toUpperCase());
 
             return (
-              <motion.span
+              <MotionSpan
                 key={i}
                 className="inline-block mr-0.5 text-xl sm:text-3xl font-pitch uppercase tracking-widest"
                 animate={{
@@ -47,10 +52,10 @@ export default function QuoteRotator() {
                   ease: "easeInOut",
                 }}>
                 {displayChar}
-              </motion.span>
+              </MotionSpan>
             );
           })}
-        </motion.div>
+        </MotionDiv>
       </div>
     </section>
   );

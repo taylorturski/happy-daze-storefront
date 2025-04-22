@@ -1,11 +1,16 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import {Product} from "@/types/product";
 import {useCart} from "@/app/context/CartContext";
 import Image from "next/image";
 
-export default function ProductGrid({products}: {products: Product[]}) {
+interface ProductGridProps {
+  products: Product[];
+}
+
+function ProductGrid({products}: ProductGridProps) {
   const {addToCart} = useCart();
 
   if (!products || products.length === 0) return <p>No products found.</p>;
@@ -23,9 +28,12 @@ export default function ProductGrid({products}: {products: Product[]}) {
                 <Image
                   src={firstImage.url}
                   alt={firstImage.altText || product.title}
-                  width={800}
+                  width={600}
                   height={600}
                   className="w-full h-auto mb-4 border border-black"
+                  loading="lazy"
+                  quality={60}
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 />
               ) : (
                 <div className="h-[300px] bg-gray-300 mb-4" />
@@ -58,3 +66,5 @@ export default function ProductGrid({products}: {products: Product[]}) {
     </div>
   );
 }
+
+export default React.memo(ProductGrid);

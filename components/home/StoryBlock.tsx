@@ -1,6 +1,5 @@
-"use client";
-
 import Image from "next/image";
+import React from "react";
 
 export default function StoryBlock() {
   return (
@@ -9,7 +8,9 @@ export default function StoryBlock() {
         src="/images/story-block-bg.jpg"
         alt="Happy Daze origin story"
         fill
-        priority
+        loading="lazy"
+        quality={60}
+        sizes="100vw"
         className="object-cover object-center"
       />
 

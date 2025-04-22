@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import {ReactNode} from "react";
 
@@ -22,7 +20,6 @@ export default function ProductGridIntro({
   return (
     <section className="w-full bg-black text-white font-pitch py-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        {/* Copy column */}
         <div className="lg:col-span-4 px-4 lg:px-0">
           <h2 className="text-xl sm:text-3xl font-bold uppercase tracking-tight mb-4">
             {title}
@@ -35,7 +32,6 @@ export default function ProductGridIntro({
           </Link>
         </div>
 
-        {/* Product grid */}
         <div className="lg:col-span-8 px-4">{children}</div>
       </div>
     </section>

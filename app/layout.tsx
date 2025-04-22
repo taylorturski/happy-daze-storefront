@@ -5,13 +5,19 @@ import {ReactNode} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Sidebar from "@/components/Sidebar";
-import MobileMenu from "@/components/MobileMenu";
-import GoogleAnalytics from "@/app/analytics/GoogleAnalytics";
-import {CartProvider} from "@/app/context/CartContext";
-import EmailPopup from "@/components/EmailPopup";
 import FooterDesktop from "@/components/FooterDesktop";
 import FooterMobile from "@/components/FooterMobile";
 import {usePathname} from "next/navigation";
+import GoogleAnalytics from "@/app/analytics/GoogleAnalytics";
+import {CartProvider} from "@/app/context/CartContext";
+import dynamic from "next/dynamic";
+
+const MobileMenu = dynamic(() => import("@/components/MobileMenu"), {
+  ssr: false,
+});
+const EmailPopup = dynamic(() => import("@/components/EmailPopup"), {
+  ssr: false,
+});
 
 export default function RootLayout({children}: {children: ReactNode}) {
   return (
@@ -34,12 +40,10 @@ function LayoutContent({children}: {children: ReactNode}) {
   return (
     <div className="flex min-h-screen flex-col relative">
       <div className="flex flex-1">
-        {/* Sidebar on desktop */}
         <aside className="hidden sm:block sticky top-0 z-50 h-screen bg-black">
           <Sidebar />
         </aside>
 
-        {/* Main content */}
         <main className="flex-1 relative z-0 bg-transparent sm:pl-0 min-h-screen">
           {/* Desktop Header */}
           <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-4">

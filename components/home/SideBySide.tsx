@@ -23,11 +23,11 @@ export default function SideBySide({
           animate={{clipPath: "inset(0 0% 0 0)"}}
           transition={{duration: 0.8, ease: "easeOut"}}
           className="pr-4 sm:px-0 w-full sm:w-1/2 text-left font-pitch">
-          <h2 className="text-xl sm:text-3xl pr-1 font-bold uppercase mb-4 tracking-tight">
+          <h2 className="text-xl sm:text-3xl pr-1 pl-3 font-bold uppercase mb-4 tracking-tight">
             {title}
           </h2>
           {subtitle && (
-            <p className="text-base pr-4 sm:text-lg text-white/80">
+            <p className="text-base pl-3 pr-4 sm:text-lg text-white/80">
               {subtitle}
             </p>
           )}

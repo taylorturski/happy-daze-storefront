@@ -9,7 +9,7 @@ export const faceOptions: BuildOption[] = [
   {
     id: "Fine",
     label: "Fine Milling",
-    image: "/builder/face/fine.JPG",
+    image: "/builder/face/fine.jpg",
   },
   {
     id: "Medium",

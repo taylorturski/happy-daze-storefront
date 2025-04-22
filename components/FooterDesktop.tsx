@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function FooterDesktop() {
   return (
-    <footer className="hidden sm:block w-full absolute bottom-0 left-0 z-50 text-white font-pitch text-sm">
+    <footer className="hidden sm:block w-full text-white font-pitch text-sm">
       <div className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
         <div className="flex gap-6">
           <Link href="/about" className="hover:underline uppercase">

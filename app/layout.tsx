@@ -11,11 +11,12 @@ import {CartProvider} from "@/app/context/CartContext";
 import EmailPopup from "@/components/EmailPopup";
 import FooterDesktop from "@/components/FooterDesktop";
 import FooterMobile from "@/components/FooterMobile";
+import {usePathname} from "next/navigation";
 
 export default function RootLayout({children}: {children: ReactNode}) {
   return (
     <html lang="en">
-      <body className="m-0 font-pitch text-[16px]">
+      <body className="m-0 font-pitch text-[16px] overflow-x-hidden">
         <GoogleAnalytics />
         <CartProvider>
           <LayoutContent>{children}</LayoutContent>
@@ -27,6 +28,9 @@ export default function RootLayout({children}: {children: ReactNode}) {
 }
 
 function LayoutContent({children}: {children: ReactNode}) {
+  const pathname = usePathname();
+  const isBuilder = pathname.startsWith("/build-your-putter");
+
   return (
     <div className="flex min-h-screen flex-col relative">
       <div className="flex flex-1">
@@ -35,8 +39,9 @@ function LayoutContent({children}: {children: ReactNode}) {
           <Sidebar />
         </aside>
 
-        {/* Main */}
-        <main className="flex-1 relative z-0 bg-transparent sm:pl-0">
+        {/* Main content */}
+        <main className="flex-1 relative z-0 bg-transparent sm:pl-0 min-h-screen">
+          {/* Desktop Header */}
           <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-4">
             <nav className="flex gap-2">
               <Link href="/custom-putters" className={navLinkClasses}>
@@ -66,10 +71,11 @@ function LayoutContent({children}: {children: ReactNode}) {
           </div>
 
           {children}
-          <FooterMobile />
+
+          {!isBuilder && <FooterMobile />}
         </main>
       </div>
-      <FooterDesktop />
+      {!isBuilder && <FooterDesktop />}
     </div>
   );
 }

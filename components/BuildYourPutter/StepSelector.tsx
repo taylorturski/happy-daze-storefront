@@ -86,28 +86,26 @@ export default function StepSelector({step}: StepSelectorProps) {
       </div>
 
       <div className="px-3 pb-3">
-        <div
-          className={`grid gap-4 sm:gap-6 ${gridColsClass} max-w-[1024px] mx-auto`}>
+        <div className={`grid gap-4 ${gridColsClass} max-w-full`}>
           {options.map((option) => (
             <div
               key={option.id}
               onClick={() => handleSelect(option.id)}
-              className={`cursor-pointer border-2 flex flex-col justify-between ${
+              className={`cursor-pointer border-2 flex flex-col justify-between h-[300px] ${
                 selected === option.id ? "border-[#ACFF9B]" : "border-white"
-              }`}
-              style={{height: "250px"}}>
-              <div className="w-full h-[200px] overflow-hidden">
+              }`}>
+              <div className="w-full h-[300px] overflow-hidden">
                 <Image
                   src={option.image}
                   alt={option.label}
                   width={400}
-                  height={300}
+                  height={325}
                   priority
                   className="w-full h-full object-cover object-center"
                 />
               </div>
-              <div className="text-center text-sm font-pitch font-medium py-2">
-                {option.label}
+              <div className="text-center text-xs sm:text-sm font-medium py-2">
+                {option.label.replace(/\s*\(\+\$\d+\)/g, "")}
               </div>
             </div>
           ))}

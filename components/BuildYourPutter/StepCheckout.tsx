@@ -76,11 +76,11 @@ export default function StepCheckout() {
   const allStepsSelected = missingSteps.length === 0;
 
   return (
-    <div className="flex flex-col w-1/2 sm:w-auto">
+    <div className="w-1/2 sm:w-auto">
       <button
         disabled={loading || !allStepsSelected}
         onClick={handleAddToCart}
-        className={`px-4 py-2 font-bold border-2 w-full ${
+        className={`px-4 py-2 font-bold border-2 w-full sm:w-auto ${
           allStepsSelected
             ? "bg-[#ACFF9B] text-black border-black"
             : "border-white text-white opacity-30 cursor-not-allowed"

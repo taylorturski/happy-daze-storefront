@@ -45,36 +45,40 @@ export default function WizardBuilder() {
     !selections[step];
 
   return (
-    <section className="h-[calc(100svh-64px)] flex flex-col font-pitch">
-      {/* Step content fills available space, scrolls if needed */}
-      <div className="flex-1 overflow-y-auto">
-        {step === "overview" && <Overview />}
-        {typeof step === "string" &&
-          step !== "overview" &&
-          step !== "review" && <StepSelector step={step} />}
-        {step === "review" && <StepReview />}
+    <section className="relative h-[calc(100dvh-94px)] w-full flex flex-col font-pitch">
+      <div className="flex-1 overflow-y-auto w-full sm:pl-[0px] sm:pr-8">
+        <div className="max-w-screen-lg mx-auto">
+          {step === "overview" && <Overview />}
+          {typeof step === "string" &&
+            step !== "overview" &&
+            step !== "review" && <StepSelector step={step} />}
+          {step === "review" && <StepReview onBack={handleBack} />}
+        </div>
       </div>
+
       {step !== "review" && (
-        <div className="w-full px-6 pt-2 pb-8 sm:pb-20 flex justify-between items-center bg-black">
-          {!isFirst ? (
+        <div className="w-full px-3 sm:pl-[0px] sm:pr-8 py-6 bg-black">
+          <div className="max-w-screen-lg mx-auto flex justify-between items-center">
+            {!isFirst ? (
+              <button
+                onClick={handleBack}
+                className="bg-white text-black px-4 py-2 font-bold border-2 border-black">
+                Back
+              </button>
+            ) : (
+              <div />
+            )}
             <button
-              onClick={handleBack}
-              className="bg-white text-black px-4 py-2 font-bold border-2 border-black">
-              Back
+              onClick={handleNext}
+              disabled={isNextDisabled}
+              className={`px-4 py-2 font-bold border-2 ${
+                isNextDisabled
+                  ? "border-white text-white opacity-30 cursor-not-allowed"
+                  : "bg-[#ACFF9B] text-black border-black"
+              }`}>
+              Next
             </button>
-          ) : (
-            <div />
-          )}
-          <button
-            onClick={handleNext}
-            disabled={isNextDisabled}
-            className={`px-4 py-2 font-bold border-2 ${
-              isNextDisabled
-                ? "border-white text-white opacity-30 cursor-not-allowed"
-                : "bg-[#ACFF9B] text-black border-black"
-            }`}>
-            Next
-          </button>
+          </div>
         </div>
       )}
     </section>

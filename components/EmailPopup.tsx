@@ -91,7 +91,7 @@ export default function EmailPopup() {
                   <input
                     type="email"
                     name="email"
-                    placeholder="you@happydaze.golf"
+                    placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required

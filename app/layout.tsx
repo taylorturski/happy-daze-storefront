@@ -36,6 +36,27 @@ export default function RootLayout({children}: {children: ReactNode}) {
     <html lang="en">
       <head>
         <title>Happy Daze Golf — Underground Golf Club</title>
+        <link
+          rel="preload"
+          href="/fonts/pitch-sans-medium.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/pitch-sans-semibold.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/VT323-Regular.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className="m-0 font-pitch text-[16px] overflow-x-hidden">
         <GoogleAnalytics />
@@ -51,15 +72,21 @@ export default function RootLayout({children}: {children: ReactNode}) {
               <main
                 role="main"
                 className="flex-1 relative z-0 bg-transparent sm:pl-0 min-h-screen min-w-0">
-                <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-4">
+                <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-4 hover:text:underline">
                   <nav aria-label="Primary navigation" className="flex gap-2">
-                    <Link href="/custom-putters" className={navLinkClasses}>
+                    <Link
+                      href="/custom-putters"
+                      className={navLinkClasses("/custom-putters", pathname)}>
                       CUSTOM PUTTERS
                     </Link>
-                    <Link href="/journal" className={navLinkClasses}>
+                    <Link
+                      href="/journal"
+                      className={navLinkClasses("/journal", pathname)}>
                       JOURNAL
                     </Link>
-                    <Link href="/about" className={navLinkClasses}>
+                    <Link
+                      href="/about"
+                      className={navLinkClasses("/about", pathname)}>
                       ABOUT
                     </Link>
                   </nav>
@@ -92,5 +119,9 @@ export default function RootLayout({children}: {children: ReactNode}) {
   );
 }
 
-const navLinkClasses =
-  "border-2 border-black px-3 py-1 font-bold no-underline text-md uppercase";
+const navLinkClasses = (href: string, currentPath: string) =>
+  `border-2 px-3 py-1 font-bold text-md uppercase transition-all ${
+    currentPath === href
+      ? "border-black underline"
+      : "border-black hover:underline"
+  }`;

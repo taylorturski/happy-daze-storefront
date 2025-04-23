@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {useCart} from "@/app/context/CartContext";
 import EmailSignup from "./EmailSignup";
+import {usePathname} from "next/navigation";
 
 export type CartItem = {
   id: string;
@@ -121,19 +122,49 @@ export default function Sidebar() {
       <div className="md:pl-3">
         <h3 className="mb-2 text-lg font-bold">CATEGORIES</h3>
         <nav aria-label="Sidebar navigation" className="flex flex-col gap-1">
-          <Link href="/custom-putters" className="hover:underline">
+          <Link
+            href="/custom-putters"
+            className={`hover:underline ${
+              usePathname() === "/custom-putters"
+                ? "text-[#ACFF9B] font-bold underline"
+                : ""
+            }`}>
             Custom Putters
           </Link>
-          <Link href="/merch" className="hover:underline">
+          <Link
+            href="/merch"
+            className={`hover:underline ${
+              usePathname() === "/merch"
+                ? "text-[#ACFF9B] font-bold underline"
+                : ""
+            }`}>
             Merch
           </Link>
-          <Link href="/gallery" className="hover:underline">
+          <Link
+            href="/gallery"
+            className={`hover:underline ${
+              usePathname() === "/gallery"
+                ? "text-[#ACFF9B] font-bold underline"
+                : ""
+            }`}>
             Gallery
           </Link>
-          <Link href="/journal" className="hover:underline">
+          <Link
+            href="/journal"
+            className={`hover:underline ${
+              usePathname() === "/journal"
+                ? "text-[#ACFF9B] font-bold underline"
+                : ""
+            }`}>
             Journal
           </Link>
-          <Link href="/contact" className="hover:underline">
+          <Link
+            href="/contact"
+            className={`hover:underline ${
+              usePathname() === "/contact"
+                ? "text-[#ACFF9B] font-bold underline"
+                : ""
+            }`}>
             Contact
           </Link>
         </nav>

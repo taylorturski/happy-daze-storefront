@@ -33,7 +33,7 @@ export default async function AboutPage() {
   return (
     <PageSection title={page.title}>
       <div
-        className="max-w-xl font-pitch"
+        className="max-w-5xl font-pitch"
         dangerouslySetInnerHTML={{__html: page.body}}
       />
     </PageSection>

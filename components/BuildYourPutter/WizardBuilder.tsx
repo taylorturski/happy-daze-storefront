@@ -57,7 +57,7 @@ export default function WizardBuilder() {
       </div>
 
       {step !== "review" && (
-        <div className="w-full px-3 sm:pl-[0px] sm:pr-8 py-6 bg-black">
+        <div className="w-full px-3 sm:pl-[0px] sm:pr-8 py-3 bg-black">
           <div className="max-w-screen-lg mx-auto flex justify-between items-center">
             {!isFirst ? (
               <button

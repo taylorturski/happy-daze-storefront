@@ -41,9 +41,14 @@ export default function StepReview({onBack}: {onBack: () => void}) {
   return (
     <section className="h-[calc(100dvh-64px)] w-full flex flex-col font-pitch overflow-hidden">
       {/* Scrollable build preview */}
-      <div className="flex-1 overflow-y-auto w-full px-3 sm:pl-[0px] sm:pr-8 pt-4 sm:pt-6">
+      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-white scrollbar-track-black w-full px-3 sm:pl-[0px] sm:pr-8 pt-4 sm:pt-6">
         <div className="max-w-screen-lg mx-auto">
           <h2 className="text-xl font-bold uppercase mb-4">Your Build</h2>
+          <p className="mb-4 text-xs sm:text-sm max-w-5xl leading-relaxed">
+            Give everything one last look—make sure this putter feels like{" "}
+            <em>you</em>. Each order comes with a headcover, grip, and shaft cut
+            to your length. We'll get those details after checkout. :)
+          </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6">
             {steps.map((step) => {
               const selection = getOption(
@@ -83,7 +88,7 @@ export default function StepReview({onBack}: {onBack: () => void}) {
       </div>
 
       {/* Aligned footer buttons */}
-      <div className="w-full px-3 sm:pl-[0px] sm:pr-8 py-6 bg-black">
+      <div className="w-full px-3 sm:pl-[0px] sm:pr-8 py-3 bg-black">
         <div className="max-w-screen-lg mx-auto flex justify-between items-center">
           <button
             onClick={onBack}

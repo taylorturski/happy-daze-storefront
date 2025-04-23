@@ -1,15 +1,16 @@
 "use client";
 
 import {useContext} from "react";
+import Image from "next/image";
 import {BuildOption} from "./types";
+import {BuildContext} from "./BuildContext";
 import {materials} from "./data/materials";
 import {headshapes} from "./data/headshapes";
 import {finishes} from "./data/finishOptions";
-import {BuildContext} from "./BuildContext";
 import {faceOptions} from "./data/face";
 import {neckOptions} from "./data/neckOptions";
 import {alignmentOptions} from "./data/alignmentOptions";
-import Image from "next/image";
+import {stepDescriptions} from "./data/stepDescriptions";
 
 type StepSelectorProps = {
   step: "material" | "headshape" | "finish" | "face" | "neck" | "alignment";
@@ -82,7 +83,19 @@ export default function StepSelector({step}: StepSelectorProps) {
         <p className="text-xs text-[#ACFF9B] font-vt lowercase mb-1">
           step {stepNumber}
         </p>
-        <h2 className="text-xl font-bold uppercase mb-4">{step}</h2>
+        <h2 className="text-xl font-bold uppercase mb-2">{step}</h2>
+        {stepDescriptions[step] && (
+          <div className="mb-4 text-sm w-full leading-relaxed text-white">
+            <p className="mb-2">{stepDescriptions[step].body}</p>
+            {stepDescriptions[step].bullets && (
+              <ul className="list-disc ml-5 space-y-1 text-white text-sm">
+                {stepDescriptions[step].bullets.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="px-3 pb-3">

@@ -40,20 +40,17 @@ export default function RootLayout({children}: {children: ReactNode}) {
       <body className="m-0 font-pitch text-[16px] overflow-x-hidden">
         <GoogleAnalytics />
         <CartProvider>
-          <div className="flex min-h-screen flex-col relative">
-            <div className="flex flex-1">
-              {/* Sidebar on desktop */}
+          <div className="flex min-h-screen flex-col relative min-w-0">
+            <div className="flex flex-1 min-w-0">
               <aside
                 role="complementary"
                 className="hidden sm:block sticky top-0 z-50 h-screen bg-black">
                 <Sidebar />
               </aside>
 
-              {/* Main content landmark */}
               <main
                 role="main"
-                className="flex-1 relative z-0 bg-transparent sm:pl-0 min-h-screen">
-                {/* Desktop Header */}
+                className="flex-1 relative z-0 bg-transparent sm:pl-0 min-h-screen min-w-0">
                 <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-4">
                   <nav aria-label="Primary navigation" className="flex gap-2">
                     <Link href="/custom-putters" className={navLinkClasses}>
@@ -68,7 +65,6 @@ export default function RootLayout({children}: {children: ReactNode}) {
                   </nav>
                 </header>
 
-                {/* Mobile Header */}
                 <div className="flex sm:hidden justify-between items-center border-b-2 border-black px-4 py-3">
                   <Link href="/" className="block w-[160px] h-[60px] relative">
                     <Image

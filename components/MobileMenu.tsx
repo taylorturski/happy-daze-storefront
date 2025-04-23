@@ -34,7 +34,7 @@ export default function MobileMenu() {
 
       const data = await res.json();
       if (data?.url) {
-        window.location.href = data.url;
+        window.location.href = `${data.url}?discount=HAPPY10`;
       } else {
         alert("Failed to start checkout.");
       }

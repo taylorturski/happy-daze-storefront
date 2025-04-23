@@ -18,7 +18,7 @@ export default async function HomePage() {
   const {hero, origin, productGridIntro, featureBlock} = homepageContent;
 
   return (
-    <div className="w-full max-w-screen overflow-x-hidden">
+    <div className="w-full max-w-screen overflow-x-hidden mx-auto">
       <FullBleedImage imageSrc={hero.imageSrc} alt={hero.alt} priority>
         {hero.lines.map((line, index) =>
           index === 0 ? (

@@ -34,6 +34,7 @@ export default function EmailPopup() {
       if (!res.ok) throw new Error(data?.error || "Error subscribing");
 
       localStorage.setItem("emailSubscribed", "true");
+      sessionStorage.removeItem("popupDismissed");
       setSubmitted(true);
       setVisible(false);
     } catch (err: unknown) {
@@ -55,6 +56,7 @@ export default function EmailPopup() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
       <div className="bg-white text-black w-full max-w-2xl mx-4 flex flex-col md:flex-row rounded shadow-xl relative font-pitch overflow-hidden">
+        {/* Image Section */}
         <div className="w-full md:w-1/2 h-64 md:h-auto flex items-center justify-center bg-black">
           <Image
             src="/email-modal-img-2.jpg"
@@ -65,6 +67,7 @@ export default function EmailPopup() {
           />
         </div>
 
+        {/* Form Section */}
         <div className="w-full md:w-1/2 p-4 md:p-6 relative">
           <button
             onClick={handleClose}
@@ -83,11 +86,11 @@ export default function EmailPopup() {
               <input
                 type="email"
                 name="email"
-                placeholder="you@example.com"
+                placeholder="you@happydaze.golf"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="border text-white border-black px-3 py-2 font-pitch font-medium"
+                className="border border-black bg-black text-white px-3 py-2 font-pitch font-medium"
               />
               <button
                 type="submit"
@@ -106,8 +109,7 @@ export default function EmailPopup() {
                 You&apos;re in!
               </h2>
               <p className="text-sm mb-2 font-pitch font-medium">
-                Use code <span className="font-pitch font-bold">HAPPY10</span>{" "}
-                at checkout.
+                Use code <span className="font-bold">HAPPY10</span> at checkout.
               </p>
               <p className="text-xs text-gray-600 font-pitch font-medium">
                 Thanks for joining the Happy Daze underground.

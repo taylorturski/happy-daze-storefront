@@ -90,6 +90,9 @@ export default function MobileMenu() {
             <Link href="/custom-putters" onClick={() => setOpen(false)}>
               Custom Putters
             </Link>
+            <Link href="/merch" onClick={() => setOpen(false)}>
+              Merch
+            </Link>
             <Link href="/gallery" onClick={() => setOpen(false)}>
               Gallery
             </Link>

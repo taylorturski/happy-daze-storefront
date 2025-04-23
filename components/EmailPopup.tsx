@@ -54,18 +54,18 @@ export default function EmailPopup() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-      <div className="bg-white text-black w-full max-w-2xl flex rounded shadow-xl relative font-pitch overflow-hidden">
-        <div className="w-1/2 hidden md:flex items-center justify-center bg-black">
+      <div className="bg-white text-black w-full max-w-2xl mx-4 flex flex-col md:flex-row rounded shadow-xl relative font-pitch overflow-hidden">
+        <div className="w-full md:w-1/2 h-64 md:h-auto flex items-center justify-center bg-black">
           <Image
-            src="/email-modal-img.JPG"
+            src="/email-modal-img-2.jpg"
             alt="Happy Daze Golf"
             width={300}
             height={300}
-            className="object-cover [object-position:center_20%] h-64 w-full"
+            className="object-cover w-full h-full"
           />
         </div>
 
-        <div className="w-full md:w-1/2 p-6 relative">
+        <div className="w-full md:w-1/2 p-4 md:p-6 relative">
           <button
             onClick={handleClose}
             className="absolute font-vt lowercase top-2 right-3 text-xl font-bold text-gray-500 hover:text-black">

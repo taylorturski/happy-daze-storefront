@@ -27,17 +27,24 @@ export default function Sidebar() {
       return;
     }
 
+    const cartId = localStorage.getItem("cartId");
+
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(cartId ? {"x-cart-id": cartId} : {}),
         },
         body: JSON.stringify(cart),
       });
 
       const data = await res.json();
       console.log("[SIDEBAR CHECKOUT] Response:", data);
+
+      if (data?.cartId) {
+        localStorage.setItem("cartId", data.cartId);
+      }
 
       if (data?.url) {
         window.location.href = data.url;
@@ -51,8 +58,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-[240px] border-r-2 border-black p-1 flex flex-col gap-6 font-pitch sticky top-0 h-screen overflow-y-auto">
-      {/* Logo */}
+    <aside className="w-[240px] border-r-2 border-black p-1 flex flex-col gap-2 font-pitch sticky top-0 h-screen overflow-y-auto">
       <Link href="/" className="block w-[200px] h-[80px] relative mb-2">
         <Image
           src="/happy_daze_logo.svg"
@@ -63,7 +69,6 @@ export default function Sidebar() {
         />
       </Link>
 
-      {/* Cart */}
       <div className="md:pl-4">
         <h3 className="mb-2 text-lg font-bold">MY CART</h3>
         {!cart || cart.length === 0 ? (
@@ -84,7 +89,6 @@ export default function Sidebar() {
                   ${Number(item.price).toFixed(2)} × {item.quantity}
                 </p>
 
-                {/* Custom Build Attributes */}
                 {item.properties?.headshape && (
                   <p className="text-sm text-gray-400">
                     Custom:{" "}
@@ -96,7 +100,7 @@ export default function Sidebar() {
               </div>
               <button
                 onClick={() => removeFromCart(item.id)}
-                className="text-xl font-bold leading-none">
+                className="text-xl font-bold leading-none pr-2">
                 ×
               </button>
             </div>
@@ -113,8 +117,6 @@ export default function Sidebar() {
         {message && <p className="text-xs text-red-600 mt-1">{message}</p>}
       </div>
 
-      {/* Nav */}
-      {/* Nav */}
       <div className="md:pl-3">
         <h3 className="mb-2 text-lg font-bold">CATEGORIES</h3>
         <nav aria-label="Sidebar navigation" className="flex flex-col gap-1">
@@ -136,7 +138,6 @@ export default function Sidebar() {
         </nav>
       </div>
 
-      {/* Email form */}
       <EmailSignup />
     </aside>
   );

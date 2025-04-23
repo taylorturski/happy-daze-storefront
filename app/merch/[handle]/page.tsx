@@ -1,14 +1,13 @@
 "use client";
 
 import {useState, useEffect} from "react";
-import {useParams, useRouter} from "next/navigation";
+import {useParams} from "next/navigation";
 import {useCart} from "@/app/context/CartContext";
 import {Product} from "@/types/product";
 import Image from "next/image";
 
 export default function MerchProductPage() {
   const {handle} = useParams();
-  const router = useRouter();
   const [product, setProduct] = useState<Product | null>(null);
   const [added, setAdded] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
@@ -29,8 +28,38 @@ export default function MerchProductPage() {
   const onAddToCart = async () => {
     if (!product) return;
 
+    const variant = product.variants?.[0];
+    if (!variant?.id) {
+      alert("No variant found for this product");
+      return;
+    }
+
+    const cartId = localStorage.getItem("cartId");
+
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(cartId ? {"x-cart-id": cartId} : {}),
+      },
+      body: JSON.stringify([
+        {
+          id: variant.id,
+          title: product.title,
+          price: parseFloat(product.price),
+          image: product.images?.[0]?.url || "",
+          quantity: 1,
+        },
+      ]),
+    });
+
+    const data = await res.json();
+
+    if (data?.cartId) localStorage.setItem("cartId", data.cartId);
+    if (data?.url) localStorage.setItem("checkoutUrl", data.url);
+
     await addToCart({
-      id: product.id,
+      id: variant.id,
       title: product.title,
       price: parseFloat(product.price),
       image: product.images?.[0]?.url || "",
@@ -46,7 +75,6 @@ export default function MerchProductPage() {
   return (
     <div className="font-pitch px-4 py-8">
       <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row gap-12">
-        {/* Image Section */}
         <div className="w-full lg:w-1/2 flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
             <Image
@@ -84,7 +112,6 @@ export default function MerchProductPage() {
           </div>
         </div>
 
-        {/* Info Section */}
         <div className="w-full lg:w-1/2 flex flex-col justify-start">
           <h1 className="text-2xl lg:text-3xl font-bold uppercase mb-1">
             {product.title}

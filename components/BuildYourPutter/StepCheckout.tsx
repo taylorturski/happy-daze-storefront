@@ -3,7 +3,6 @@
 import {useContext, useState} from "react";
 import {BuildContext} from "./BuildContext";
 import {useCart} from "@/app/context/CartContext";
-import {useRouter} from "next/navigation";
 
 const REQUIRED_STEPS = [
   "material",
@@ -17,7 +16,6 @@ const REQUIRED_STEPS = [
 export default function StepCheckout() {
   const {selections} = useContext(BuildContext);
   const {addToCart} = useCart();
-  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -40,16 +38,25 @@ export default function StepCheckout() {
     setLoading(true);
 
     try {
+      const cartId = localStorage.getItem("cartId");
+
       const res = await fetch("/api/checkout", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          "Content-Type": "application/json",
+          ...(cartId ? {"x-cart-id": cartId} : {}),
+        },
         body: JSON.stringify(selections),
       });
 
       const data = await res.json();
+
       if (!res.ok || !data?.variantId) {
         throw new Error(data?.error || "Failed to match product.");
       }
+
+      if (data?.cartId) localStorage.setItem("cartId", data.cartId);
+      if (data?.url) localStorage.setItem("checkoutUrl", data.url);
 
       await addToCart({
         id: data.variantId,
@@ -59,15 +66,10 @@ export default function StepCheckout() {
         quantity: 1,
         properties: selections,
       });
-
-      router.push("/");
     } catch (err: unknown) {
       console.error("[BUILD] Add to cart error:", err);
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Unexpected error.");
-      }
+      if (err instanceof Error) setError(err.message);
+      else setError("Unexpected error.");
     } finally {
       setLoading(false);
     }

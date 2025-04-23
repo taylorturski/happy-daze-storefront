@@ -83,7 +83,6 @@ export default function MobileMenu() {
             </button>
           </div>
 
-          {/* Navigation links */}
           <nav
             aria-label="Mobile navigation"
             className="flex flex-col gap-4 text-lg font-bold uppercase mb-6">
@@ -104,7 +103,6 @@ export default function MobileMenu() {
             </Link>
           </nav>
 
-          {/* Cart */}
           <div className="mb-6">
             <h3 className="mb-1 text-lg font-bold">MY CART</h3>
             {!cart || cart.length === 0 ? (
@@ -140,12 +138,15 @@ export default function MobileMenu() {
             </p>
             <button
               onClick={handleCheckout}
-              className="mt-2 font-vt border-2 border-black px-3 py-1 font-bold">
-              CHECK OUT
+              disabled={!cart || cart.length === 0}
+              className={`mt-2 font-vt border-2 px-3 py-1 font-bold w-full max-w-[200px] ${
+                cart.length === 0
+                  ? "bg-gray-300 text-gray-500 border-gray-400 cursor-not-allowed"
+                  : "bg-[#ACFF9B] text-black border-black hover:bg-[#90ff78]"
+              }`}>
+              {cart.length === 0 ? "Add an item first" : "CHECK OUT"}
             </button>
           </div>
-
-          {/* Email Signup */}
           <EmailSignup />
         </div>
       )}

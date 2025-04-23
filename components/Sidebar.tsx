@@ -69,7 +69,7 @@ export default function Sidebar() {
         />
       </Link>
 
-      <div className="md:pl-4">
+      <div className="md:pl-3">
         <h3 className="mb-2 text-lg font-bold">MY CART</h3>
         {!cart || cart.length === 0 ? (
           <p className="text-xs mb-2">No items yet.</p>
@@ -111,7 +111,8 @@ export default function Sidebar() {
         </p>
         <button
           onClick={handleCheckout}
-          className="w-full max-w-[180px] bg-[#ACFF9B] uppercase text-black px-3 py-1 mt-2 font-bold font-vt text-sm">
+          disabled={!cart || cart.length === 0}
+          className="w-full max-w-[180px] bg-[#ACFF9B] uppercase text-black px-3 py-1 mt-2 font-bold font-vt text-sm border-black border-2 disabled:opacity-50 disabled:cursor-not-allowed">
           CHECK OUT
         </button>
         {message && <p className="text-xs text-red-600 mt-1">{message}</p>}

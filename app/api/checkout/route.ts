@@ -40,7 +40,12 @@ export async function POST(req: Request) {
       }
     `;
 
-    const variables = {input: {lines}};
+    const variables = {
+      input: {
+        lines,
+        discountCodes: ["HAPPY10"],
+      },
+    };
 
     try {
       const response = await shopifyFetch(query, variables);

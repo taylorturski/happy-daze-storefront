@@ -47,7 +47,7 @@ export default function Sidebar() {
       }
 
       if (data?.url) {
-        window.location.href = data.url;
+        window.location.href = `${data.url}?discount=HAPPY10`;
       } else {
         setMessage("Failed to start checkout.");
       }

@@ -44,16 +44,15 @@ export const stepDescriptions: Record<
         Feel lives here. Face milling controls feedback —{" "}
         <strong>more milling</strong> gives you a <strong>softer feel</strong>,{" "}
         <strong>less milling</strong> gives you a <strong>firmer click</strong>.
-        Subtle? Sure. But <em>you'll notice</em>.
+        Subtle? Sure. But <em>you&apos;ll notice</em>.
       </>
     ),
   },
   neck: {
     body: (
       <>
-        This one's about <strong>toe hang</strong>,{" "}
-        <strong>face balance</strong>, and choosing a setup that matches your
-        stroke.
+        This one&apos;s about <em>toe hang.</em>, <strong>face balance</strong>,
+        and choosing a setup that matches your stroke.
       </>
     ),
     bullets: [
@@ -76,7 +75,7 @@ export const stepDescriptions: Record<
       <>
         Dot? Line? Nothing at all? Alignment is all <em>personal</em>. This is
         what helps you aim, commit, and roll it how you see it. Want laser
-        focus? Go line. Want clean vibes? Go blank. Nobody's judging.
+        focus? Go line. Want clean vibes? Go blank. Nobody&apos;s judging.
       </>
     ),
   },

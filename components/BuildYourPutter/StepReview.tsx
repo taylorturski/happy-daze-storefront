@@ -47,7 +47,7 @@ export default function StepReview({onBack}: {onBack: () => void}) {
           <p className="mb-4 text-xs sm:text-sm max-w-5xl leading-relaxed">
             Give everything one last look—make sure this putter feels like{" "}
             <em>you</em>. Each order comes with a headcover, grip, and shaft cut
-            to your length. We'll get those details after checkout. :)
+            to your length. We&apos;ll get those details after checkout. :)
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6">
             {steps.map((step) => {

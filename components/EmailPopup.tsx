@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from "react";
 import Image from "next/image";
+import {motion, AnimatePresence} from "framer-motion";
 
 export default function EmailPopup() {
   const [visible, setVisible] = useState(false);
@@ -36,88 +37,94 @@ export default function EmailPopup() {
       localStorage.setItem("emailSubscribed", "true");
       sessionStorage.removeItem("popupDismissed");
       setSubmitted(true);
-      setVisible(false);
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Something went wrong.");
-      }
+      if (err instanceof Error) setError(err.message);
+      else setError("Something went wrong.");
     }
   };
 
   const handleClose = () => {
-    setVisible(false);
     sessionStorage.setItem("popupDismissed", "true");
+    setVisible(false);
   };
 
-  if (!visible) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-      <div className="bg-white text-black w-full max-w-2xl mx-4 flex flex-col md:flex-row rounded shadow-xl relative font-pitch overflow-hidden">
-        {/* Image Section */}
-        <div className="w-full md:w-1/2 h-64 md:h-auto flex items-center justify-center bg-black">
-          <Image
-            src="/email-modal-img-2.jpg"
-            alt="Happy Daze Golf"
-            width={300}
-            height={300}
-            className="object-cover w-full h-full"
-          />
-        </div>
-
-        {/* Form Section */}
-        <div className="w-full md:w-1/2 p-4 md:p-6 relative">
-          <button
-            onClick={handleClose}
-            className="absolute font-vt lowercase top-2 right-3 text-xl font-bold text-gray-500 hover:text-black">
-            &times;
-          </button>
-
-          {!submitted ? (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <h2 className="text-xl font-pitch font-semibold uppercase">
-                Get 10% Off
-              </h2>
-              <p className="text-sm font-pitch font-medium">
-                Sign up to get 10% off your first custom order.
-              </p>
-              <input
-                type="email"
-                name="email"
-                placeholder="you@happydaze.golf"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="border border-black bg-black text-white px-3 py-2 font-pitch font-medium"
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          exit={{opacity: 0}}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+          <motion.div
+            initial={{scale: 0.85, rotate: -10, opacity: 0, y: 100}}
+            animate={{scale: 1, rotate: 0, opacity: 1, y: 0}}
+            exit={{scale: 0.3, rotate: 360, opacity: 0, y: 300}}
+            transition={{duration: 0.5, ease: "anticipate"}}
+            className="bg-white text-black w-full max-w-2xl mx-4 flex flex-col md:flex-row rounded shadow-xl relative font-pitch overflow-hidden">
+            <div className="w-full md:w-1/2 h-64 md:h-auto flex items-center justify-center bg-black">
+              <Image
+                src="/email-modal-img-2.jpg"
+                alt="Happy Daze Golf"
+                width={300}
+                height={300}
+                className="object-cover w-full h-full"
               />
-              <button
-                type="submit"
-                className="bg-black text-white text-lg px-4 py-2 font-vt border-2 lowercase border-black">
-                Claim Discount :)
-              </button>
-              {error && (
-                <p className="text-red-600 text-sm font-pitch font-medium">
-                  {error}
-                </p>
-              )}
-            </form>
-          ) : (
-            <div className="text-center">
-              <h2 className="text-xl font-pitch font-semibold uppercase mb-2">
-                You&apos;re in!
-              </h2>
-              <p className="text-sm mb-2 font-pitch font-medium">
-                Use code <span className="font-bold">HAPPY10</span> at checkout.
-              </p>
-              <p className="text-xs text-gray-600 font-pitch font-medium">
-                Thanks for joining the Happy Daze underground.
-              </p>
             </div>
-          )}
-        </div>
-      </div>
-    </div>
+
+            <div className="w-full md:w-1/2 p-4 md:p-6 relative">
+              <button
+                onClick={handleClose}
+                className="absolute font-vt lowercase top-2 right-3 text-xl font-bold text-gray-500 hover:text-black">
+                &times;
+              </button>
+
+              {!submitted ? (
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                  <h2 className="text-xl font-pitch font-semibold uppercase">
+                    Get 10% Off
+                  </h2>
+                  <p className="text-sm font-pitch font-medium">
+                    Sign up to get 10% off your first custom order.
+                  </p>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="you@happydaze.golf"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="border border-black bg-black text-white px-3 py-2 font-pitch font-medium"
+                  />
+                  <button
+                    type="submit"
+                    className="bg-black text-white text-lg px-4 py-2 font-vt border-2 lowercase border-black">
+                    Claim Discount :)
+                  </button>
+                  {error && (
+                    <p className="text-red-600 text-sm font-pitch font-medium">
+                      {error}
+                    </p>
+                  )}
+                </form>
+              ) : (
+                <div className="text-center">
+                  <h2 className="text-xl font-pitch font-semibold uppercase mb-2">
+                    You&apos;re in!
+                  </h2>
+                  <p className="text-sm mb-2 font-pitch font-medium">
+                    Use code <span className="font-bold">HAPPY10</span> at
+                    checkout.
+                  </p>
+                  <p className="text-xs text-gray-600 font-pitch font-medium">
+                    Thanks for joining the Happy Daze underground.
+                  </p>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

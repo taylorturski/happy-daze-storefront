@@ -13,71 +13,93 @@ This storefront is a fully custom e-commerce experience that lets users:
 
 ---
 
-## 🧱 Tech Stack
+## Tech Stack
 
 ### Framework & Runtime
 
-- **Next.js 13.0.4+ (App Router)** — modern file-based routing and layout system
-- **React 19** — component-based architecture, client-side interactivity
-- **TypeScript** — fully typed codebase with strict type safety
-- **Vercel** — deploy target with production domain config and preview environments
+- Next.js 13.0.4 (App Router)
+- React 19
+- TypeScript
+- Vercel (CI/CD and hosting)
+- Bun (JS runtime, package manager, and task runner)
 
 ### Styling & UI
 
-- **Tailwind CSS** — low-level utility-first styling
-- **Custom CSS** — additional global tweaks in `build-your-putter.css`
-- **90s / raw scaffolding aesthetic** — intentionally minimal, awaiting final polish
+- Tailwind CSS
+- Custom raw CSS overrides
+- 90s-inspired, minimal design
 
 ### Shopify Integration
 
-- **Storefront API (2024-04)** — pulling products, variants, pricing, blogs, pages
-- **Admin API** — used to add email signups as Shopify customers
-- **Dynamic checkout creation** — users sent directly to Shopify checkout with correct variant and line item properties
+- Storefront API (2024-04) for product and content data
+- Admin API for customer email capture
+- Dynamic cart + checkout API integration
 
-### Custom Functionality
+### Custom Features
 
-- **Custom putter builder** — supports material, finish, face milling, neck, alignment steps
-- **Line item property injection** — passes build config to Shopify checkout via POST `/api/checkout`
-- **Custom Shop routing** — each blank can lead directly to builder with headshape preselected
-- **Client-side cart state** — fully reactive cart UI for sidebar and mobile
-- **Contact form** — sends email to `hello@happydaze.golf` via Shopify’s built-in email system
+- Multi-step visual putter builder (materials, finishes, milling, necks, alignment)
+- Variant matching and line item property injection into Shopify
+- Reactive cart with sidebar and mobile views
+- Email popup with discount code
+- Contact form integration
 
-### Analytics / SEO
+### Analytics & SEO
 
-- **GA4 & GTM** — Google Analytics and Tag Manager wired up
-- **Dynamic SEO metadata** — `generateMetadata()` used per page
-- **Open Graph images** — every major page has OG image (`/public/og`) for social sharing
-
----
-
-## 🧩 Major Pages
-
-- `/` — Homepage with featured product grid, process section, and direct builder access
-- `/custom-shop` — Grid of blank putters with direct entry to builder per model
-- `/build-your-putter` — Multi-step visual builder with dynamic logic
-- `/putters/[handle]` — Individual product pages (blanks and accessories)
-- `/journal` & `/journal/[handle]` — Blog system powered by Shopify articles
-- `/about`, `/contact`, `/workshop` — Static pages powered by Shopify’s CMS
+- Google Analytics (GA4)
+- Google Tag Manager
+- Open Graph metadata per page
 
 ---
 
-## ⚙️ Notable Logic & Features
+## Key Pages
 
-- **Price calculation** — pulled from the correct Shopify variant (e.g. Torched = +$100)
-- **Variant matching** — builder uses material + finish to find matching Shopify variant
-- **Checkout API** — `POST /api/checkout` creates cart + redirects to Shopify checkout
-- **Context system** — builder state managed via `BuildContext` provider
-- **Thumbnail swapping** — on product detail pages, responsive gallery UX
-- **Mobile-responsive** — builder, cart, navigation, and image layouts all adapt
+- `/` — Homepage with featured product grid and entry points
+- `/custom-shop` — Product grid of blank putters
+- `/build-your-putter` — Builder flow with custom option logic
+- `/putters/[handle]` — Individual product pages (putters and accessories)
+- `/journal` — Blog posts via Shopify CMS
+- `/about`, `/contact`, `/workshop` — Static pages
 
 ---
 
-## 🧪 Dev & Deployment
+## Logic Highlights
 
-- Local dev: `npm run dev`
-- Production: deployed via **Vercel**
-- Shopify domain: `szusur-15.myshopify.com`
-- Live domain: `https://www.happydazegolf.com`
+- Builder dynamically matches Shopify variants based on selected attributes
+- Price reflects real-time variant pricing (e.g. torched = +$100)
+- Cart is stored in localStorage and synced with Shopify
+- `/api/checkout` POST endpoint creates new or updates existing Shopify cart
+- Visual builder uses React Context (`BuildContext`) for state persistence
+- Framer Motion used for lightweight animations and transitions
+- All layouts are mobile-first responsive with desktop priority styling
+
+---
+
+## Development
+
+### Requirements
+
+- [Bun](https://bun.sh) installed:
+  ```bash
+  curl -fsSL https://bun.sh/install | bash
+  ```
+
+### First-Time Setup
+
+```bash
+bun install
+```
+
+### Dev Commands
+
+| Task             | Command          |
+| ---------------- | ---------------- |
+| Start Dev Server | `bun dev`        |
+| Build for Prod   | `bun run build`  |
+| Preview Build    | `bun run start`  |
+| Format Code      | `bun run format` |
+| Lint Code        | `bun run lint`   |
+| Add Package      | `bun add`        |
+| Remove Package   | `bun remove`     |
 
 ### Environment Variables (`.env.local`)
 
@@ -94,18 +116,26 @@ SMTP_PASS=...
 
 ---
 
-## 🚧 Fast Follows (Post Launch)
+## Deployment
 
-- Style polish pass across entire site
-- Add option to upload inspiration photos to builder
-- Improve mobile UX of builder progress
-- Enable blog filtering or categories
-- Expand email automation via Shopify
+- Deployed via [Vercel](https://vercel.com/)
+- `bun run build` outputs production-ready app
+- Vercel handles environment injection, serverless edge runtime, and CDN
 
 ---
 
-## 🤘 Brand Ethos
+## Post-Launch Roadmap
+
+- Improve mobile builder UX and progress tracking
+- Add ability to upload inspiration photos during build
+- Expand Journal with filters/tags
+- Refactor animations into global utility component
+- Integrate Klaviyo or MailerLite for deeper email automation
+
+---
+
+## Brand Ethos
 
 Happy Daze Golf isn’t about fixing your game. It’s about building a connection — with your putter, your story, your roots. This is underground golf culture for people who want to make something personal. One stamp at a time.
 
-**Refuse the ordinary.**
+Refuse the ordinary.

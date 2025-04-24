@@ -39,7 +39,7 @@ export default function StepReview({onBack}: {onBack: () => void}) {
   ];
 
   return (
-    <section className="h-[calc(100dvh-64px)] w-full flex flex-col font-pitch overflow-hidden">
+    <section className="h-[calc(100dvh-69px)] w-full flex flex-col font-pitch overflow-hidden">
       {/* Scrollable build preview */}
       <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-white scrollbar-track-black w-full px-3 sm:pl-[0px] sm:pr-8 pt-4 sm:pt-6">
         <div className="max-w-screen-lg mx-auto">
@@ -58,7 +58,7 @@ export default function StepReview({onBack}: {onBack: () => void}) {
 
               return selection ? (
                 <div key={step} className="border-2 border-white flex flex-col">
-                  <div className="w-full sm:h-[150px] overflow-hidden">
+                  <div className="w-full sm:h-[140px] overflow-hidden">
                     <Image
                       src={selection.image}
                       alt={selection.label}
@@ -88,7 +88,7 @@ export default function StepReview({onBack}: {onBack: () => void}) {
       </div>
 
       {/* Aligned footer buttons */}
-      <div className="w-full px-3 sm:pl-[0px] sm:pr-8 py-3 bg-black">
+      <div className="w-full px-3 sm:pl-[0px] sm:pr-8 bg-black">
         <div className="max-w-screen-lg mx-auto flex justify-between items-center">
           <button
             onClick={onBack}

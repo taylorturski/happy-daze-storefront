@@ -45,7 +45,7 @@ export default function WizardBuilder() {
     !selections[step];
 
   return (
-    <section className="relative h-[calc(100dvh-94px)] w-full flex flex-col font-pitch">
+    <section className="relative h-[calc(100dvh-64px)] w-full flex flex-col font-pitch">
       <div className="flex-1 overflow-y-auto w-full sm:pl-[0px] sm:pr-8">
         <div className="max-w-screen-lg mx-auto">
           {step === "overview" && <Overview />}

@@ -7,7 +7,7 @@ export default function PageSection({
 }) {
   return (
     <section className="p-8 font-pitch">
-      <h1 className="text-2xl font-bold mb-6">{title}</h1>
+      <h1 className="text-2xl uppercase font-bold mb-6">{title}</h1>
       {children}
     </section>
   );

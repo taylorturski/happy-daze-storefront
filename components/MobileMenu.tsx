@@ -16,23 +16,25 @@ export default function MobileMenu() {
       return;
     }
 
-    const properties = cart[0]?.properties;
-
-    if (!properties || !properties.headshape) {
-      alert("Missing selection data for checkout.");
-      return;
-    }
+    const cartId = localStorage.getItem("cartId");
 
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(cartId ? {"x-cart-id": cartId} : {}),
         },
-        body: JSON.stringify(properties),
+        body: JSON.stringify(cart),
       });
 
       const data = await res.json();
+      console.log("[MOBILE CHECKOUT] Response:", data);
+
+      if (data?.cartId) {
+        localStorage.setItem("cartId", data.cartId);
+      }
+
       if (data?.url) {
         window.location.href = `${data.url}?discount=HAPPY10`;
       } else {

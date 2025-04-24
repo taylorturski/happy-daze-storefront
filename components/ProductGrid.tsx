@@ -45,10 +45,15 @@ function ProductGrid({products}: ProductGridProps) {
                 <div className="h-[300px] bg-gray-300 mb-4" />
               )}
               <h2 className="text-lg font-bold">{product.title}</h2>
-              <p className="text-sm">
-                {product.price
-                  ? `$${parseFloat(product.price).toFixed(2)}`
-                  : "Price unavailable"}
+              <p className="font-vt lowercase text-md">
+                {product.price ? (
+                  <>
+                    <span className="font-pitch text-sm">Starting at</span> $
+                    {parseFloat(product.price).toFixed(2)}
+                  </>
+                ) : (
+                  "Price unavailable"
+                )}
               </p>
             </Link>
             {!product.tags?.includes("blanks") && (

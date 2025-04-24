@@ -8,7 +8,7 @@ export default async function MerchPage() {
 
   return (
     <section className="p-8">
-      <h1 className="text-3xl font-bold uppercase mb-6">Merch</h1>
+      <h1 className="text-2xl font-bold uppercase mb-6">Merch</h1>
       <ProductGrid products={products} />
     </section>
   );

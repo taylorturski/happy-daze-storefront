@@ -5,6 +5,8 @@ import {useParams, useRouter} from "next/navigation";
 import {useCart} from "@/app/context/CartContext";
 import {Product} from "@/types/product";
 import Image from "next/image";
+import productDescriptions from "@/components/product/data/productDescriptions";
+import parse from "html-react-parser";
 
 export default function ProductPage() {
   const {handle} = useParams();
@@ -17,7 +19,7 @@ export default function ProductPage() {
   useEffect(() => {
     async function fetchProduct() {
       const res = await fetch(`/api/products/${handle}`);
-      if (!res.ok) return; // Exit early on error
+      if (!res.ok) return;
       const data = await res.json();
       if (!data?.id) return;
       setProduct(data);
@@ -48,6 +50,8 @@ export default function ProductPage() {
   };
 
   if (!product) return <p className="p-8 font-pitch">Loading...</p>;
+
+  const customHTML = handle && productDescriptions[handle as string]?.html;
 
   return (
     <div className="font-pitch px-4 py-8">
@@ -94,22 +98,12 @@ export default function ProductPage() {
           <h1 className="text-2xl lg:text-3xl font-bold uppercase mb-1">
             {product.title}
           </h1>
-          <p className="font-vt uppercase text-lg mb-4">
+          <p className="font-vt lowercase text-lg mb-4">
             Starting at ${parseFloat(product.price).toFixed(2)}
           </p>
 
-          {product.description && (
-            <div
-              className="text-sm leading-relaxed mb-6"
-              dangerouslySetInnerHTML={{__html: product.description}}
-            />
-          )}
-
-          <div className="mt-5 border-t-2 border-black pt-6">
-            <h2 className="uppercase text-sm font-bold mb-2">Customization</h2>
-            <p className="text-sm text-gray-700">
-              [Customization form goes here — coming soon.]
-            </p>
+          <div className="text-sm leading-relaxed mb-6 prose prose-invert max-w-none list-disc pl-4 marker:text-white">
+            {customHTML ? parse(customHTML) : null}
           </div>
 
           {product.tags?.includes("blanks") ? (

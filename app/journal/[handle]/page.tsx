@@ -21,18 +21,18 @@ export default async function JournalArticlePage(props: Params) {
   if (!article) return notFound();
 
   return (
-    <article className="max-w-4xl mx-auto p-6 text-white">
-      <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
+    <article className="max-w-4xl mx-auto px-4 sm:px-6 md:px-9 text-white">
       {article.image?.url && (
         <Image
           src={article.image.url}
           alt={article.image.altText || article.title}
-          width={1200}
-          height={630}
-          className="mb-6 w-full h-auto object-cover"
+          width={1000}
+          height={430}
+          className="mb-6 w-full h-[450px] object-cover"
           priority
         />
       )}
+      <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
       <div
         className="prose prose-invert max-w-none"
         dangerouslySetInnerHTML={{__html: article.contentHtml}}

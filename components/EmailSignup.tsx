@@ -17,7 +17,8 @@ export default function EmailSignup() {
     });
 
     if (res.ok) {
-      setMessage("Thanks for signing up!");
+      localStorage.setItem("happyDazeDiscount", "HAPPY10");
+      setMessage("Discount will be automatically applied at checkout!");
       setEmail("");
     } else {
       const data = await res.json();

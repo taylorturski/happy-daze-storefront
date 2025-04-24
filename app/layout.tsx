@@ -88,7 +88,7 @@ export default function RootLayout({children}: {children: ReactNode}) {
               <main
                 role="main"
                 className="flex-1 relative z-0 bg-transparent sm:pl-0 min-h-screen min-w-0">
-                <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-4 hover:text:underline">
+                <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-1 hover:text:underline">
                   <nav aria-label="Primary navigation" className="flex gap-2">
                     <Link
                       href="/custom-putters"
@@ -136,7 +136,7 @@ export default function RootLayout({children}: {children: ReactNode}) {
 }
 
 const navLinkClasses = (href: string, currentPath: string) =>
-  `border-2 px-3 py-1 font-bold text-md uppercase transition-all ${
+  `border-2 px-3 py-1 font-bold text-sm uppercase transition-all ${
     currentPath === href
       ? "border-black underline"
       : "border-black hover:underline"

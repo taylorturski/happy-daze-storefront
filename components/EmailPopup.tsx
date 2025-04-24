@@ -9,7 +9,6 @@ export default function EmailPopup() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const hasSubscribed = localStorage.getItem("emailSubscribed");
@@ -36,6 +35,7 @@ export default function EmailPopup() {
       if (!res.ok) throw new Error(data?.error || "Error subscribing");
 
       localStorage.setItem("emailSubscribed", "true");
+      localStorage.setItem("happyDazeDiscount", "HAPPY10");
       sessionStorage.removeItem("popupDismissed");
       setSubmitted(true);
     } catch (err: unknown) {
@@ -62,7 +62,7 @@ export default function EmailPopup() {
             animate={{scale: 1, rotate: 0, opacity: 1, y: 0}}
             exit={{scale: 0.3, rotate: 360, opacity: 0, y: 300}}
             transition={{duration: 0.5, ease: "anticipate"}}
-            className="bg-white text-black max-w-[calc(100vw-2rem)] w-full box-border overflow-hidden flex flex-col md:flex-row rounded shadow-xl relative font-pitch">
+            className="bg-white text-black w-full max-w-2xl mx-auto box-border overflow-hidden flex flex-col md:flex-row rounded shadow-xl relative font-pitch">
             <div className="w-full md:w-1/2 h-64 md:h-auto flex items-center justify-center bg-black overflow-hidden">
               <Image
                 src="/email-modal-img-2.jpg"
@@ -85,7 +85,7 @@ export default function EmailPopup() {
                   <h2 className="text-xl font-pitch font-semibold uppercase">
                     Get 10% Off
                   </h2>
-                  <p className="text-sm font-pitch font-medium">
+                  <p className="text-sm mt-0 font-pitch font-medium">
                     Sign up to get 10% off your first custom order.
                   </p>
                   <input
@@ -111,28 +111,11 @@ export default function EmailPopup() {
               ) : (
                 <div className="text-center">
                   <h2 className="text-xl font-pitch font-semibold uppercase mb-2">
-                    You&apos;re in!
+                    You’re in!
                   </h2>
-                  <div className="text-sm mb-2 font-pitch font-medium">
-                    Use code <span className="font-bold">HAPPY10</span> at
-                    checkout.
-                    <span className="ml-2">
-                      <button
-                        onClick={() => {
-                          navigator.clipboard.writeText("HAPPY10");
-                          setCopied(true);
-                          setTimeout(() => setCopied(false), 2000);
-                        }}
-                        className="underline text-xs font-medium text-blue-600 hover:text-blue-800">
-                        Copy
-                      </button>
-                      {copied && (
-                        <span className="text-green-600 ml-2 font-medium text-xs">
-                          Copied!
-                        </span>
-                      )}
-                    </span>
-                  </div>
+                  <p className="text-green-600 text-sm font-medium mb-2">
+                    Discount will be automatically applied at checkout!
+                  </p>
                   <p className="text-xs text-gray-600 font-pitch font-medium">
                     Thanks for joining the Happy Daze underground.
                   </p>

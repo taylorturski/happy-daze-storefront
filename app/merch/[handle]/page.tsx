@@ -28,9 +28,14 @@ export default function MerchProductPage() {
   const onAddToCart = async () => {
     if (!product) return;
 
-    const variant = product.variants?.[0];
-    if (!variant?.id) {
-      alert("No variant found for this product");
+    const variant = product.variants?.[0]; // assumes first variant
+    const variantId = variant?.id || product.id;
+    const variantPrice = parseFloat(
+      variant?.price?.split(" ")[0] || product.price
+    );
+
+    if (!variantId) {
+      alert("No variant or product ID found.");
       return;
     }
 
@@ -44,9 +49,9 @@ export default function MerchProductPage() {
       },
       body: JSON.stringify([
         {
-          id: variant.id,
+          id: variantId,
           title: product.title,
-          price: parseFloat(product.price),
+          price: variantPrice,
           image: product.images?.[0]?.url || "",
           quantity: 1,
         },
@@ -59,9 +64,9 @@ export default function MerchProductPage() {
     if (data?.url) localStorage.setItem("checkoutUrl", data.url);
 
     await addToCart({
-      id: variant.id,
+      id: variantId,
       title: product.title,
-      price: parseFloat(product.price),
+      price: variantPrice,
       image: product.images?.[0]?.url || "",
       quantity: 1,
     });
@@ -129,7 +134,7 @@ export default function MerchProductPage() {
 
           <button
             onClick={onAddToCart}
-            className="border-2 font-vt lowercase border-black mt-3 px-4 py-2 font-bold text-white bg-black w-fit">
+            className="border-2 font-vt lowercase border-black mt-3 px-4 py-2 font-bold text-black bg-white w-fit">
             {added ? "✓ Added" : "Add to Cart"}
           </button>
         </div>

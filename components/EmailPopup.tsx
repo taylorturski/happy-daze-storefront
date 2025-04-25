@@ -2,7 +2,16 @@
 
 import {useEffect, useState} from "react";
 import Image from "next/image";
-import {motion, AnimatePresence} from "framer-motion";
+import dynamic from "next/dynamic";
+
+const MotionDiv = dynamic(
+  () => import("framer-motion").then((mod) => mod.motion.div),
+  {ssr: false}
+);
+const AnimatePresence = dynamic(
+  () => import("framer-motion").then((mod) => mod.AnimatePresence),
+  {ssr: false}
+);
 
 export default function EmailPopup() {
   const [visible, setVisible] = useState(false);
@@ -52,12 +61,12 @@ export default function EmailPopup() {
   return (
     <AnimatePresence>
       {visible && (
-        <motion.div
+        <MotionDiv
           initial={{opacity: 0}}
           animate={{opacity: 1}}
           exit={{opacity: 0}}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 overflow-x-hidden">
-          <motion.div
+          <MotionDiv
             initial={{scale: 0.85, rotate: -10, opacity: 0, y: 100}}
             animate={{scale: 1, rotate: 0, opacity: 1, y: 0}}
             exit={{scale: 0.3, rotate: 360, opacity: 0, y: 300}}
@@ -122,8 +131,8 @@ export default function EmailPopup() {
                 </div>
               )}
             </div>
-          </motion.div>
-        </motion.div>
+          </MotionDiv>
+        </MotionDiv>
       )}
     </AnimatePresence>
   );

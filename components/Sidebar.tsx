@@ -66,7 +66,6 @@ export default function Sidebar() {
           alt="Happy Daze Golf"
           fill
           className="object-contain invert"
-          priority
         />
       </Link>
 

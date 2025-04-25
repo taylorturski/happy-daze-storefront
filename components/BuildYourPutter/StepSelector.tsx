@@ -113,7 +113,6 @@ export default function StepSelector({step}: StepSelectorProps) {
                   alt={option.label}
                   width={400}
                   height={325}
-                  priority
                   className="w-full h-full object-cover object-center"
                 />
               </div>

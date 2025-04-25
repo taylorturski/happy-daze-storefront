@@ -44,7 +44,6 @@ export default async function JournalPage() {
                 width={800}
                 height={600}
                 className="w-full h-auto mb-2"
-                priority
               />
             ) : (
               <div className="h-[200px] bg-gray-300 mb-4" />

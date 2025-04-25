@@ -74,7 +74,6 @@ export default function MobileMenu() {
                 alt="Happy Daze Golf"
                 fill
                 className="object-contain"
-                priority
               />
             </Link>
 

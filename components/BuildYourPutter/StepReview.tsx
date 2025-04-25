@@ -64,7 +64,6 @@ export default function StepReview({onBack}: {onBack: () => void}) {
                       alt={selection.label}
                       height={300}
                       width={300}
-                      priority
                       className="w-full h-full object-cover object-center"
                     />
                   </div>

@@ -4,6 +4,7 @@ import {NextResponse} from "next/server";
 import {shopifyFetch} from "@/lib/shopify/client";
 import {getProductsByTag} from "@/lib/shopify/product";
 import {Product, ProductVariant} from "@/types/product";
+import _ from "lodash";
 
 const noCacheHeaders = {
   "Cache-Control": "no-store, max-age=0",
@@ -11,56 +12,82 @@ const noCacheHeaders = {
 
 export async function POST(req: Request) {
   const data = await req.json();
+  const cartId = req.headers.get("x-cart-id");
 
-  // === 1. Sidebar Checkout: array of cart items ===
+  // === 1. Sidebar Cart: array of items ===
   if (Array.isArray(data)) {
-    const lines = data.map((item) => ({
-      merchandiseId: item.id,
-      quantity: item.quantity ?? 1,
-      attributes: item.properties
-        ? Object.entries(item.properties).map(([key, value]) => ({
-            key: key.charAt(0).toUpperCase() + key.slice(1),
-            value: value || "N/A",
-          }))
-        : [],
-    }));
+    interface CartItem {
+      id: string;
+      quantity?: number;
+      properties?: Record<string, string>;
+    }
 
-    const query = `
-      mutation CartCreate($input: CartInput!) {
-        cartCreate(input: $input) {
-          cart {
-            id
-            checkoutUrl
-          }
-          userErrors {
-            field
-            message
-          }
-        }
-      }
-    `;
+    const grouped = _.groupBy(
+      data as CartItem[],
+      (item: CartItem) => item.id + JSON.stringify(item.properties || {})
+    );
 
-    const variables = {
-      input: {
-        lines,
-        discountCodes: ["HAPPY10"],
-      },
-    };
+    const lines = Object.values(grouped).map((items) => {
+      const typedItems = items as {
+        id: string;
+        quantity?: number;
+        properties?: Record<string, string>;
+      }[];
+
+      const {id, properties} = typedItems[0];
+      const totalQty = typedItems.reduce(
+        (sum, i) => sum + (i.quantity ?? 1),
+        0
+      );
+
+      return {
+        merchandiseId: id,
+        quantity: totalQty,
+        attributes: properties
+          ? Object.entries(properties).map(([key, value]) => ({
+              key: key.charAt(0).toUpperCase() + key.slice(1),
+              value: value || "N/A",
+            }))
+          : [],
+      };
+    });
+
+    const query = cartId
+      ? `mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+           cartLinesAdd(cartId: $cartId, lines: $lines) {
+             cart { id, checkoutUrl }
+             userErrors { field, message }
+           }
+         }`
+      : `mutation CartCreate($input: CartInput!) {
+           cartCreate(input: $input) {
+             cart { id, checkoutUrl }
+             userErrors { field, message }
+           }
+         }`;
+
+    const variables = cartId
+      ? {cartId, lines}
+      : {input: {lines, discountCodes: ["HAPPY10"]}};
 
     try {
       const response = await shopifyFetch(query, variables);
-      const cart = response.cartCreate?.cart;
-      const error = response.cartCreate?.userErrors?.[0];
+      const cart = cartId
+        ? response.cartLinesAdd?.cart
+        : response.cartCreate?.cart;
+      const error = cartId
+        ? response.cartLinesAdd?.userErrors?.[0]
+        : response.cartCreate?.userErrors?.[0];
 
       if (!cart?.checkoutUrl) {
         return NextResponse.json(
-          {error: error?.message || "Checkout creation failed"},
+          {error: error?.message || "Checkout failed"},
           {status: 500, headers: noCacheHeaders}
         );
       }
 
       return NextResponse.json(
-        {url: cart.checkoutUrl},
+        {cartId: cart.id, url: cart.checkoutUrl},
         {status: 200, headers: noCacheHeaders}
       );
     } catch (err) {
@@ -72,7 +99,7 @@ export async function POST(req: Request) {
     }
   }
 
-  // === 2. Builder Checkout: single putter with selections ===
+  // === 2. Builder form ===
   const selections = data;
   const blankProducts: Product[] = await getProductsByTag("blanks");
   const headshape = selections.headshape?.toLowerCase();
@@ -104,13 +131,16 @@ export async function POST(req: Request) {
             .toLowerCase()
             .includes((selections.material || "").toLowerCase())
       );
+
       const finishVal = (selections.finish || "").toLowerCase();
       const matchValue = finishVal.includes("satin") ? "satin" : "torched";
+
       const fin = v.selectedOptions.find(
         (opt) =>
           opt.name.toLowerCase() === "finish" &&
           opt.value.toLowerCase().includes(matchValue)
       );
+
       return Boolean(mat && fin);
     }
   );
@@ -131,37 +161,43 @@ export async function POST(req: Request) {
     })),
   };
 
-  const query = `
-    mutation CartCreate($input: CartInput!) {
-      cartCreate(input: $input) {
-        cart {
-          id
-          checkoutUrl
-        }
-        userErrors {
-          field
-          message
-        }
-      }
-    }
-  `;
+  const builderQuery = cartId
+    ? `mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+         cartLinesAdd(cartId: $cartId, lines: $lines) {
+           cart { id, checkoutUrl }
+           userErrors { field, message }
+         }
+       }`
+    : `mutation CartCreate($input: CartInput!) {
+         cartCreate(input: $input) {
+           cart { id, checkoutUrl }
+           userErrors { field, message }
+         }
+       }`;
 
-  const variables = {input: {lines: [lineItem]}};
+  const builderVariables = cartId
+    ? {cartId, lines: [lineItem]}
+    : {input: {lines: [lineItem]}};
 
   try {
-    const response = await shopifyFetch(query, variables);
-    const cart = response.cartCreate?.cart;
-    const error = response.cartCreate?.userErrors?.[0];
+    const response = await shopifyFetch(builderQuery, builderVariables);
+    const cart = cartId
+      ? response.cartLinesAdd?.cart
+      : response.cartCreate?.cart;
+    const error = cartId
+      ? response.cartLinesAdd?.userErrors?.[0]
+      : response.cartCreate?.userErrors?.[0];
 
     if (!cart?.checkoutUrl) {
       return NextResponse.json(
-        {error: error?.message || "Checkout creation failed"},
+        {error: error?.message || "Builder checkout failed"},
         {status: 500, headers: noCacheHeaders}
       );
     }
 
     return NextResponse.json(
       {
+        cartId: cart.id,
         url: cart.checkoutUrl,
         variantId: variant.id,
         title: matchedProduct.title,

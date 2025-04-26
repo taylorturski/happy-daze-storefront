@@ -28,7 +28,7 @@ export default function MerchProductPage() {
   const onAddToCart = async () => {
     if (!product) return;
 
-    const variant = product.variants?.[0]; // assumes first variant
+    const variant = product.variants?.[0];
     const variantId = variant?.id || product.id;
     const variantPrice = parseFloat(
       variant?.price?.split(" ")[0] || product.price
@@ -39,31 +39,8 @@ export default function MerchProductPage() {
       return;
     }
 
-    const cartId = localStorage.getItem("cartId");
-
-    const res = await fetch("/api/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(cartId ? {"x-cart-id": cartId} : {}),
-      },
-      body: JSON.stringify([
-        {
-          id: variantId,
-          title: product.title,
-          price: variantPrice,
-          image: product.images?.[0]?.url || "",
-          quantity: 1,
-        },
-      ]),
-    });
-
-    const data = await res.json();
-
-    if (data?.cartId) localStorage.setItem("cartId", data.cartId);
-    if (data?.url) localStorage.setItem("checkoutUrl", data.url);
-
     await addToCart({
+      lineId: `${variantId}-${Date.now()}`,
       id: variantId,
       title: product.title,
       price: variantPrice,

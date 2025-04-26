@@ -23,39 +23,14 @@ export default function Sidebar() {
   const [message, setMessage] = useState("");
 
   const handleCheckout = async () => {
-    if (!cart || cart.length === 0) {
-      setMessage("Your cart is empty.");
+    const checkoutUrl = localStorage.getItem("checkoutUrl");
+
+    if (!checkoutUrl) {
+      setMessage("Something went wrong. Please try adding an item again.");
       return;
     }
 
-    const cartId = localStorage.getItem("cartId");
-
-    try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(cartId ? {"x-cart-id": cartId} : {}),
-        },
-        body: JSON.stringify(cart),
-      });
-
-      const data = await res.json();
-      console.log("[SIDEBAR CHECKOUT] Response:", data);
-
-      if (data?.cartId) {
-        localStorage.setItem("cartId", data.cartId);
-      }
-
-      if (data?.url) {
-        window.location.href = `${data.url}?discount=HAPPY10`;
-      } else {
-        setMessage("Failed to start checkout.");
-      }
-    } catch (err) {
-      console.error("Checkout error:", err);
-      setMessage("Error processing checkout.");
-    }
+    window.location.href = `${checkoutUrl}?discount=HAPPY10`;
   };
 
   return (
@@ -99,7 +74,7 @@ export default function Sidebar() {
                 )}
               </div>
               <button
-                onClick={() => removeFromCart(item.id)}
+                onClick={() => removeFromCart(item.lineId)}
                 className="text-xl font-bold leading-none pr-2">
                 ×
               </button>
@@ -112,7 +87,7 @@ export default function Sidebar() {
         <button
           onClick={handleCheckout}
           disabled={!cart || cart.length === 0}
-          className="w-full max-w-[180px] bg-[#ACFF9B] uppercase text-black px-3 py-1 mt-2 font-bold font-vt text-sm border-black border-2 disabled:opacity-50 disabled:cursor-not-allowed">
+          className="w-full max-w-[180px] bg-[#ACFF9B] uppercase text-black px-3 py-1 mt-2 font-bold font-vt text-sm border-black border-2 disabled:opacity-100 disabled:cursor-not-allowed">
           CHECK OUT
         </button>
         {message && <p className="text-xs text-red-600 mt-1">{message}</p>}

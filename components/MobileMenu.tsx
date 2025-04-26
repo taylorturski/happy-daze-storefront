@@ -11,39 +11,14 @@ export default function MobileMenu() {
   const {cart, total, removeFromCart} = useCart();
 
   const handleCheckout = async () => {
-    if (!cart || cart.length === 0) {
-      alert("Your cart is empty.");
+    const checkoutUrl = localStorage.getItem("checkoutUrl");
+
+    if (!checkoutUrl) {
+      postMessage("Something went wrong. Please try adding an item again.");
       return;
     }
 
-    const cartId = localStorage.getItem("cartId");
-
-    try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(cartId ? {"x-cart-id": cartId} : {}),
-        },
-        body: JSON.stringify(cart),
-      });
-
-      const data = await res.json();
-      console.log("[MOBILE CHECKOUT] Response:", data);
-
-      if (data?.cartId) {
-        localStorage.setItem("cartId", data.cartId);
-      }
-
-      if (data?.url) {
-        window.location.href = `${data.url}?discount=HAPPY10`;
-      } else {
-        alert("Failed to start checkout.");
-      }
-    } catch (err) {
-      console.error("Checkout error:", err);
-      alert("Error processing checkout.");
-    }
+    window.location.href = `${checkoutUrl}?discount=HAPPY10`;
   };
 
   return (
@@ -127,7 +102,7 @@ export default function MobileMenu() {
                     </p>
                   </div>
                   <button
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() => removeFromCart(item.lineId)}
                     className="text-xl font-bold leading-none">
                     ×
                   </button>

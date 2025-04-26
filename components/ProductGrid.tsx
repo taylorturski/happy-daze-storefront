@@ -60,7 +60,8 @@ function ProductGrid({products}: ProductGridProps) {
               <button
                 onClick={() =>
                   addToCart({
-                    id: product.variants?.[0]?.id || product.id, // fallback to product.id if no variants
+                    lineId: product.variants?.[0]?.id || product.id, // fallback to product.id if no variants
+                    id: product.variants?.[0]?.id || product.id,
                     title: product.title,
                     price: parseFloat(
                       product.variants?.[0]?.price.split(" ")[0] ||

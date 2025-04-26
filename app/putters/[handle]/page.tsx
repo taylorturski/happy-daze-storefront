@@ -38,6 +38,7 @@ export default function ProductPage() {
     if (!product) return;
 
     await addToCart({
+      lineId: `${product.id}-${Date.now()}`,
       id: product.id,
       title: product.title,
       price: parseFloat(product.price),

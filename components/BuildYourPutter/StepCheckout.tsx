@@ -15,7 +15,7 @@ const REQUIRED_STEPS = [
 
 export default function StepCheckout() {
   const {selections} = useContext(BuildContext);
-  const {addToCart} = useCart();
+  const {fetchCart} = useCart();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -57,15 +57,7 @@ export default function StepCheckout() {
 
       if (data?.cartId) localStorage.setItem("cartId", data.cartId);
       if (data?.url) localStorage.setItem("checkoutUrl", data.url);
-
-      await addToCart({
-        id: data.variantId,
-        title: data.title,
-        price: parseFloat(data.price),
-        image: data.image,
-        quantity: 1,
-        properties: selections,
-      });
+      await fetchCart();
     } catch (err: unknown) {
       console.error("[BUILD] Add to cart error:", err);
       if (err instanceof Error) setError(err.message);

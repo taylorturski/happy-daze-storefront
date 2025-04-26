@@ -22,7 +22,14 @@ export default function AddToCartButton({
   const handleAdd = async () => {
     setLoading(true);
     try {
-      await addToCart({id, title, price, image, quantity: 1});
+      await addToCart({
+        lineId: `${id}-${Date.now()}`,
+        id,
+        title,
+        price,
+        image,
+        quantity: 1,
+      });
     } finally {
       setLoading(false);
     }

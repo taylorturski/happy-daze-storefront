@@ -4,7 +4,7 @@ export const faceOptions: BuildOption[] = [
   {
     id: "Smooth",
     label: "Smooth",
-    image: "/builder/face/smooth.jpg",
+    image: "/builder/face/smooth.JPG",
   },
   {
     id: "Fine",

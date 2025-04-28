@@ -10,11 +10,48 @@ const noCacheHeaders = {
   "Cache-Control": "no-store, max-age=0",
 };
 
+const cartCreateMutation = `
+mutation CartCreate($input: CartInput!) {
+  cartCreate(input: $input) {
+    cart { id checkoutUrl }
+    userErrors { field message }
+  }
+}
+`;
+
+const cartLinesAddMutation = `
+mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+  cartLinesAdd(cartId: $cartId, lines: $lines) {
+    cart { id checkoutUrl }
+    userErrors { field message }
+  }
+}
+`;
+
+const cartFetchQuery = `
+query CartQuery($cartId: ID!) {
+  cart(id: $cartId) {
+    id
+    checkoutUrl
+  }
+}
+`;
+
+async function fetchCart(cartId: string) {
+  const res = await shopifyFetch(cartFetchQuery, {cartId});
+  return res.cart;
+}
+
+function addDiscountToUrl(url: string, code: string) {
+  const separator = url.includes("?") ? "&" : "?";
+  return `${url}${separator}discount=${code}`;
+}
+
 export async function POST(req: Request) {
   const data = await req.json();
   const cartId = req.headers.get("x-cart-id");
 
-  // === 1. Sidebar Cart: array of items ===
+  // === 1. Sidebar Cart flow ===
   if (Array.isArray(data)) {
     interface CartItem {
       id: string;
@@ -24,21 +61,12 @@ export async function POST(req: Request) {
 
     const grouped = _.groupBy(
       data as CartItem[],
-      (item: CartItem) => item.id + JSON.stringify(item.properties || {})
+      (item) => item.id + JSON.stringify(item.properties || {})
     );
 
     const lines = Object.values(grouped).map((items) => {
-      const typedItems = items as {
-        id: string;
-        quantity?: number;
-        properties?: Record<string, string>;
-      }[];
-
-      const {id, properties} = typedItems[0];
-      const totalQty = typedItems.reduce(
-        (sum, i) => sum + (i.quantity ?? 1),
-        0
-      );
+      const {id, properties} = items[0];
+      const totalQty = items.reduce((sum, i) => sum + (i.quantity ?? 1), 0);
 
       return {
         merchandiseId: id,
@@ -52,42 +80,47 @@ export async function POST(req: Request) {
       };
     });
 
-    const query = cartId
-      ? `mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
-           cartLinesAdd(cartId: $cartId, lines: $lines) {
-             cart { id, checkoutUrl }
-             userErrors { field, message }
-           }
-         }`
-      : `mutation CartCreate($input: CartInput!) {
-           cartCreate(input: $input) {
-             cart { id, checkoutUrl }
-             userErrors { field, message }
-           }
-         }`;
-
-    const variables = cartId
-      ? {cartId, lines}
-      : {input: {lines, discountCodes: ["HAPPY10"]}};
-
     try {
-      const response = await shopifyFetch(query, variables);
-      const cart = cartId
-        ? response.cartLinesAdd?.cart
-        : response.cartCreate?.cart;
-      const error = cartId
-        ? response.cartLinesAdd?.userErrors?.[0]
-        : response.cartCreate?.userErrors?.[0];
+      let finalCartId = cartId ?? null;
+
+      if (finalCartId) {
+        await shopifyFetch(cartLinesAddMutation, {cartId: finalCartId, lines});
+      } else {
+        const res = await shopifyFetch(cartCreateMutation, {
+          input: {lines, discountCodes: ["HAPPY10"]},
+        });
+        const cart = res.cartCreate?.cart;
+        const error = res.cartCreate?.userErrors?.[0];
+
+        if (!cart?.checkoutUrl) {
+          return NextResponse.json(
+            {error: error?.message || "Checkout failed"},
+            {status: 500, headers: noCacheHeaders}
+          );
+        }
+        finalCartId = cart.id;
+      }
+
+      if (!finalCartId) {
+        throw new Error("Cart ID is null");
+      }
+
+      const cart = await fetchCart(finalCartId);
 
       if (!cart?.checkoutUrl) {
         return NextResponse.json(
-          {error: error?.message || "Checkout failed"},
+          {error: "Failed to fetch checkout URL"},
           {status: 500, headers: noCacheHeaders}
         );
       }
 
+      const checkoutUrlWithDiscount = addDiscountToUrl(
+        cart.checkoutUrl,
+        "HAPPY10"
+      );
+
       return NextResponse.json(
-        {cartId: cart.id, url: cart.checkoutUrl},
+        {cartId: cart.id, url: checkoutUrlWithDiscount},
         {status: 200, headers: noCacheHeaders}
       );
     } catch (err) {
@@ -99,10 +132,10 @@ export async function POST(req: Request) {
     }
   }
 
-  // === 2. Builder form ===
+  // === 2. Builder Form flow ===
   const selections = data;
   const blankProducts: Product[] = await getProductsByTag("blanks");
-  const headshape = selections.headshape?.toLowerCase();
+  const headshape = selections?.headshape?.toLowerCase();
 
   if (!headshape) {
     return NextResponse.json(
@@ -161,44 +194,53 @@ export async function POST(req: Request) {
     })),
   };
 
-  const builderQuery = cartId
-    ? `mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
-         cartLinesAdd(cartId: $cartId, lines: $lines) {
-           cart { id, checkoutUrl }
-           userErrors { field, message }
-         }
-       }`
-    : `mutation CartCreate($input: CartInput!) {
-         cartCreate(input: $input) {
-           cart { id, checkoutUrl }
-           userErrors { field, message }
-         }
-       }`;
-
-  const builderVariables = cartId
-    ? {cartId, lines: [lineItem]}
-    : {input: {lines: [lineItem]}};
-
   try {
-    const response = await shopifyFetch(builderQuery, builderVariables);
-    const cart = cartId
-      ? response.cartLinesAdd?.cart
-      : response.cartCreate?.cart;
-    const error = cartId
-      ? response.cartLinesAdd?.userErrors?.[0]
-      : response.cartCreate?.userErrors?.[0];
+    let finalCartId = cartId ?? null;
+
+    if (finalCartId) {
+      await shopifyFetch(cartLinesAddMutation, {
+        cartId: finalCartId,
+        lines: [lineItem],
+      });
+    } else {
+      const res = await shopifyFetch(cartCreateMutation, {
+        input: {lines: [lineItem], discountCodes: ["HAPPY10"]},
+      });
+
+      const cart = res.cartCreate?.cart;
+      const error = res.cartCreate?.userErrors?.[0];
+
+      if (!cart?.checkoutUrl) {
+        return NextResponse.json(
+          {error: error?.message || "Checkout failed"},
+          {status: 500, headers: noCacheHeaders}
+        );
+      }
+      finalCartId = cart.id;
+    }
+
+    if (!finalCartId) {
+      throw new Error("Cart ID is null");
+    }
+
+    const cart = await fetchCart(finalCartId);
 
     if (!cart?.checkoutUrl) {
       return NextResponse.json(
-        {error: error?.message || "Builder checkout failed"},
+        {error: "Failed to fetch checkout URL"},
         {status: 500, headers: noCacheHeaders}
       );
     }
 
+    const checkoutUrlWithDiscount = addDiscountToUrl(
+      cart.checkoutUrl,
+      "HAPPY10"
+    );
+
     return NextResponse.json(
       {
         cartId: cart.id,
-        url: cart.checkoutUrl,
+        url: checkoutUrlWithDiscount,
         variantId: variant.id,
         title: matchedProduct.title,
         price: variant.price?.split(" ")[0] ?? matchedProduct.price,

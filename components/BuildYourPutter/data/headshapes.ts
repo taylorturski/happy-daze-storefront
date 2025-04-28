@@ -14,6 +14,6 @@ export const headshapes: BuildOption[] = [
   {
     id: "Trebek",
     label: "Trebek",
-    image: "/builder/headshape/trebek.jpg",
+    image: "/builder/headshape/trebek.JPG",
   },
 ];

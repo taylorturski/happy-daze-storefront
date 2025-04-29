@@ -5,7 +5,7 @@ import ProductGridIntro from "@/components/home/ProductGridIntro";
 import {getProductsByTag} from "@/lib/shopify/product";
 import {homepageContent} from "@/lib/homepageContent";
 
-export const revalidate = 3600; // ISR: rebuild hourly
+export const revalidate = 3600;
 
 const ProductGrid = dynamic(() => import("@/components/ProductGrid"));
 const QuoteRotator = dynamic(() => import("@/components/home/QuoteRotator"));

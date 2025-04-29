@@ -35,7 +35,7 @@ export default function RootLayout({children}: {children: ReactNode}) {
   return (
     <html lang="en">
       <head>
-        <title>Happy Daze Golf — Underground Golf Club</title>
+        <title>Happy Daze Golf</title>
 
         {/* Preconnect and DNS Prefetch for Shopify and prod domain */}
         <link
@@ -50,6 +50,7 @@ export default function RootLayout({children}: {children: ReactNode}) {
         />
         <link rel="dns-prefetch" href="https://szusur-15.myshopify.com" />
         <link rel="dns-prefetch" href="https://www.happydazegolf.com" />
+        <link rel="dns-prefetch" href="https://www.happydaze.golf" />
 
         {/* Font preloading */}
         <link

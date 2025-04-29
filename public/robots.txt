@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.happydazegolf.com/sitemap.xml
+Sitemap: https://www.happydaze.golf/sitemap.xml

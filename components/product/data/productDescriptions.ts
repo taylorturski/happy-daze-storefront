@@ -60,14 +60,13 @@ const productDescriptions: Record<string, ProductDescription> = {
     title: "The Local Snapback",
     html: `
       <p>
-      A classic unstructured 5-panel hat. No frills, just the right fit. Embroidered with our staple Happy Daze badge.</p>
+      A classic unstructured 5-panel hat. No frills, just the right fit. Embroidered with our signature Happy Daze logo.</p>
       <ul>
         <li>5-panel construction with low crown</li>
         <li>Adjustable snapback for one-size-fits-most</li>
         <li>Unstructured fit — lays low, looks better broken in</li>
         <li>Custom Happy Daze embroidery (by us, by hand, jk)</li>
         <li>Worn by at least 3 guys who claim to have shot 68 once</li>
-        <li>Guaranteed to get you a nod at the local muni</li>
       </ul>
     `,
   },

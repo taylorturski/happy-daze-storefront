@@ -5,6 +5,12 @@ import {useParams} from "next/navigation";
 import {useCart} from "@/app/context/CartContext";
 import {Product} from "@/types/product";
 import Image from "next/image";
+import parse from "html-react-parser";
+import productDescriptions from "@/components/product/data/productDescriptions";
+
+const aliasMap: Record<string, string> = {
+  "the-local-cap": "the-local-snapback",
+};
 
 export default function MerchProductPage() {
   const {handle} = useParams();
@@ -54,6 +60,10 @@ export default function MerchProductPage() {
 
   if (!product) return <p className="p-8 font-pitch">Loading...</p>;
 
+  const rawHandle = handle as string;
+  const resolvedHandle = aliasMap[rawHandle] || rawHandle;
+  const customHTML = productDescriptions[resolvedHandle]?.html;
+
   return (
     <div className="font-pitch px-4 py-8">
       <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row gap-12">
@@ -102,11 +112,10 @@ export default function MerchProductPage() {
             ${parseFloat(product.price).toFixed(2)}
           </p>
 
-          {product.description && (
-            <div
-              className="text-sm leading-relaxed mb-6"
-              dangerouslySetInnerHTML={{__html: product.description}}
-            />
+          {customHTML && (
+            <div className="text-sm leading-relaxed mb-6 prose prose-invert max-w-none list-disc pl-4 marker:text-white">
+              {parse(customHTML)}
+            </div>
           )}
 
           <button

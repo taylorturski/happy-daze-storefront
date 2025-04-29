@@ -22,7 +22,7 @@ export const homepageContent = {
     lines: ["Street first. Golf second."],
     cta: {
       label: "Reserve Yours",
-      href: "/merch",
+      href: "/merch/the-local-cap",
     },
   },
   quoteRotator: {

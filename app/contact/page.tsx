@@ -12,7 +12,7 @@ export async function generateMetadata() {
       title: "Contact | Happy Daze Golf",
       description:
         "Have a question about your build? Want to talk shop? We read every message. Reach out directly and we'll get back to you soon.",
-      url: "https://www.happydazegolf.com/contact",
+      url: "https://www.happydaze.golf/contact",
       images: [
         {
           url: "/og/contact.jpg",

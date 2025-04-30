@@ -13,7 +13,7 @@ export async function generateMetadata() {
       title: "Journal | Happy Daze Golf",
       description:
         "Stories from the bench, experiments in the shop, and honest thoughts on modern golf culture. No hype. Just real.",
-      url: "https://www.happydazegolf.com/journal",
+      url: "https://www.happydaze.golf/journal",
       images: [
         {
           url: "/og/journal.jpg",

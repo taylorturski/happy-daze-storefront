@@ -11,7 +11,7 @@ export async function generateMetadata() {
       title: "Custom Putters | Happy Daze Golf",
       description:
         "This is where it starts. Choose your blank. Choose your story. Hand-stamped putters built with intention — no performance gimmicks.",
-      url: "https://www.happydazegolf.com/custom-putters",
+      url: "https://www.happydaze.golf/custom-putters",
       images: [
         {
           url: "/og/custom-shop.jpg",

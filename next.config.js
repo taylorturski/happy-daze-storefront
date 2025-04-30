@@ -16,7 +16,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "www.happydazegolf.com",
+        hostname: "www.happydaze.golf",
         port: "",
         pathname: "/**",
       },

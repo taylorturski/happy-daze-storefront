@@ -29,8 +29,13 @@ export default function AddToCartFeedback() {
 
   return (
     <div
-      className="fixed text-2xl font-bold text-[#ACFF9B] z-50 select-none pointer-events-none animate-float-up"
-      style={{left: position.x, top: position.y}}>
+      className="fixed text-3xl font-bold z-50 select-none pointer-events-none animate-float-up"
+      style={{
+        left: position.x,
+        top: position.y,
+        color: "#ACFF9B",
+        textShadow: "0 0 6px rgba(172, 255, 155, 0.9)",
+      }}>
       +1
     </div>
   );

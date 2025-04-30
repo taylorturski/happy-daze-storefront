@@ -72,9 +72,11 @@ export default function StepCheckout() {
       await fetchCart();
 
       setAdded(true);
-      setTimeout(() => setAdded(false), 2000);
+      setTimeout(() => {
+        setAdded(false);
+        window.location.href = "/";
+      }, 2000);
     } catch (err: unknown) {
-      console.error("[BUILD] Add to cart error:", err);
       if (err instanceof Error) setError(err.message);
       else setError("Unexpected error.");
     } finally {

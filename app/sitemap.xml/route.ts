@@ -3,7 +3,7 @@ import {NextResponse} from "next/server";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const baseUrl = "https://www.happydazegolf.com";
+  const baseUrl = "https://www.happydaze.golf";
 
   const staticPaths = [
     "",

@@ -17,7 +17,7 @@ export async function generateMetadata() {
       title: "Build Your Putter | Happy Daze Golf",
       description:
         "Choose every detail of your next gamer — head shape, material, finish, milling, neck, alignment. No tech gimmicks. Just personality.",
-      url: "https://www.happydazegolf.com/build-your-putter",
+      url: "https://www.happydaze.golf/build-your-putter",
       images: [
         {
           url: "/og/build.jpg",

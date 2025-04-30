@@ -10,7 +10,7 @@ export async function generateMetadata() {
       title: "About | Happy Daze Golf",
       description:
         "Happy Daze didn’t start with a business plan. It started with a feeling — and a putter. A new kind of golf brand, built from scratch.",
-      url: "https://www.happydazegolf.com/about",
+      url: "https://www.happydaze.golf/about",
       images: [
         {
           url: "/og/about.jpg",

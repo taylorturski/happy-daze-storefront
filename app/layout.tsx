@@ -41,15 +41,9 @@ export default function RootLayout({children}: {children: ReactNode}) {
         {/* Preconnect and DNS Prefetch for Shopify and prod domain */}
         <link
           rel="preconnect"
-          href="https://szusur-15.myshopify.com"
+          href="https://www.happydaze.golf"
           crossOrigin="anonymous"
         />
-        <link
-          rel="preconnect"
-          href="https://www.happydazegolf.com"
-          crossOrigin="anonymous"
-        />
-        <link rel="dns-prefetch" href="https://szusur-15.myshopify.com" />
         <link rel="dns-prefetch" href="https://www.happydazegolf.com" />
         <link rel="dns-prefetch" href="https://www.happydaze.golf" />
 

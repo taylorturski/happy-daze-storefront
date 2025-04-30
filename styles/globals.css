@@ -84,6 +84,21 @@ blockquote {
   }
 }
 
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+}
+
+.animate-float-up {
+  animation: floatUp 2s ease-out forwards;
+}
+
 @layer utilities {
   .scrollbar-thin {
     scrollbar-width: thin;

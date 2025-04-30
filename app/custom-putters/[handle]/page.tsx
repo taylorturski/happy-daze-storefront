@@ -6,6 +6,15 @@ import {Product} from "@/types/product";
 import {useCart} from "@/app/context/CartContext";
 import Image from "next/image";
 
+function triggerCartFeedback(e: React.MouseEvent) {
+  const rect = (e.target as HTMLElement).getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top;
+  window.dispatchEvent(
+    new CustomEvent("add-to-cart-feedback", {detail: {x, y}})
+  );
+}
+
 export default function CustomProductPage() {
   const {handle} = useParams();
   const [product, setProduct] = useState<Product | null>(null);
@@ -70,17 +79,21 @@ export default function CustomProductPage() {
         <p className="text-lg mb-6">${product.price}</p>
 
         <button
-          onClick={onAddToCart}
-          className="border-2 font-vt lowercase border-black px-4 py-2 font-bold bg-black text-white hover:bg-white hover:text-black transition-all w-fit">
+          onClick={(e) => {
+            triggerCartFeedback(e);
+            onAddToCart();
+            setAdded(true);
+            setTimeout(() => setAdded(false), 2000);
+          }}
+          className={`border-2 font-vt lowercase mt-3 px-4 py-2 font-bold w-fit transition-all duration-300
+    ${
+      added
+        ? "bg-[#ACFF9B] text-white border-[#ACFF9B]"
+        : "bg-white text-black border-black hover:bg-black hover:text-white"
+    }
+  `}>
           {added ? "✓ Added" : "Add to Cart"}
         </button>
-
-        <div className="mt-10 border-t-2 border-black pt-6">
-          <h2 className="uppercase text-sm font-bold mb-2">Customization</h2>
-          <p className="text-sm text-gray-700">
-            [Customization form goes here — coming soon.]
-          </p>
-        </div>
       </div>
     </div>
   );

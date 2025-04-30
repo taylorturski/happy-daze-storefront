@@ -3,16 +3,14 @@
 import React from "react";
 import Link from "next/link";
 import {Product} from "@/types/product";
-import {useCart} from "@/app/context/CartContext";
 import Image from "next/image";
+import AddToCartButton from "./AddToCartButton";
 
 interface ProductGridProps {
   products: Product[];
 }
 
 function ProductGrid({products}: ProductGridProps) {
-  const {addToCart} = useCart();
-
   if (!products || products.length === 0) return <p>No products found.</p>;
 
   return (
@@ -57,23 +55,14 @@ function ProductGrid({products}: ProductGridProps) {
               </p>
             </Link>
             {!product.tags?.includes("blanks") && (
-              <button
-                onClick={() =>
-                  addToCart({
-                    lineId: product.variants?.[0]?.id || product.id, // fallback to product.id if no variants
-                    id: product.variants?.[0]?.id || product.id,
-                    title: product.title,
-                    price: parseFloat(
-                      product.variants?.[0]?.price.split(" ")[0] ||
-                        product.price
-                    ),
-                    image: firstImage?.url || "",
-                    quantity: 1,
-                  })
-                }
-                className="mt-4 font-vt lowercase border-2 border-black px-3 py-1 font-bold bg-white text-black hover:bg-black hover:text-white transition-all duration-150">
-                Add to Cart
-              </button>
+              <AddToCartButton
+                id={product.variants?.[0]?.id || product.id}
+                title={product.title}
+                price={parseFloat(
+                  product.variants?.[0]?.price.split(" ")[0] || product.price
+                )}
+                image={firstImage?.url || ""}
+              />
             )}
           </div>
         );

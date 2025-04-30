@@ -61,7 +61,7 @@ export default function ContactForm({
           required
           value={form.name}
           onChange={handleChange}
-          className="border border-black px-3 py-2"
+          className="border border-black px-3 py-2 text-black"
         />
         <input
           type="email"
@@ -70,7 +70,7 @@ export default function ContactForm({
           required
           value={form.email}
           onChange={handleChange}
-          className="border border-black px-3 py-2"
+          className="border border-black px-3 py-2 text-black"
         />
         <textarea
           name="message"
@@ -79,7 +79,7 @@ export default function ContactForm({
           required
           value={form.message}
           onChange={handleChange}
-          className="border border-black px-3 py-2"
+          className="border border-black px-3 py-2 text-black"
         />
         <button
           type="submit"
@@ -87,7 +87,7 @@ export default function ContactForm({
           SEND MESSAGE
         </button>
         {submitted && (
-          <p className="text-green-600 mt-2">
+          <p className="text-[#ACFF9B] mt-2">
             Message sent. We’ll get back to you soon.
           </p>
         )}

@@ -9,7 +9,7 @@ export const headshapes: BuildOption[] = [
   {
     id: "Wesley",
     label: "Wesley",
-    image: "/builder/headshape/Wesley.jpg",
+    image: "/builder/headshape/wesley.jpg",
   },
   {
     id: "Trebek",

@@ -48,12 +48,12 @@ export default function ContactForm({
   return (
     <PageSection title={title}>
       <div
-        className="mb-8 font-pitch"
+        className="mb-8 w-full md:max-w-[50%] font-pitch"
         dangerouslySetInnerHTML={{__html: content}}
       />
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 max-w-md font-pitch">
+        className="flex flex-col gap-4 w-full md:max-w-[50%] font-pitch">
         <input
           type="text"
           name="name"

@@ -88,7 +88,7 @@ export default function CustomProductPage() {
           className={`border-2 font-vt lowercase mt-3 px-4 py-2 font-bold w-fit transition-all duration-300
     ${
       added
-        ? "bg-green-500 text-white border-green-500"
+        ? "bg-[#ACFF9B] text-white border-[#ACFF9B]"
         : "bg-white text-black border-black hover:bg-black hover:text-white"
     }
   `}>

@@ -43,7 +43,7 @@ export default function StepReview({onBack}: {onBack: () => void}) {
       {/* Scrollable build preview */}
       <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-white scrollbar-track-black w-full px-3 sm:pl-[0px] sm:pr-8 pt-4 sm:pt-6">
         <div className="max-w-screen-lg mx-auto">
-          <h2 className="text-xl font-bold uppercase mb-4">Your Build</h2>
+          <h2 className="text-xl font-bold uppercase mb-4">Build Overview</h2>
           <p className="mb-4 text-xs sm:text-sm max-w-5xl leading-relaxed">
             Give everything one last look—make sure this putter feels like{" "}
             <em>you</em>. Each order comes with a headcover, grip, and shaft cut
@@ -57,7 +57,9 @@ export default function StepReview({onBack}: {onBack: () => void}) {
               );
 
               return selection ? (
-                <div key={step} className="border-2 border-white flex flex-col">
+                <div
+                  key={step}
+                  className="border-2 border-[#ACFF9B] flex flex-col">
                   <div className="w-full sm:h-[140px] overflow-hidden">
                     <Image
                       src={selection.image}
@@ -77,7 +79,7 @@ export default function StepReview({onBack}: {onBack: () => void}) {
               ) : (
                 <div
                   key={step}
-                  className="border-2 border-white p-4 text-xs sm:text-sm text-center italic text-gray-400">
+                  className="border-2 border-[#ACFF9B] p-4 text-xs sm:text-sm text-center italic text-gray-400">
                   <p>{step} not selected</p>
                 </div>
               );

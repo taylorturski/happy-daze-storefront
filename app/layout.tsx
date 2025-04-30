@@ -9,6 +9,7 @@ import Sidebar from "@/components/Sidebar";
 import FooterDesktop from "@/components/FooterDesktop";
 import FooterMobile from "@/components/FooterMobile";
 import {usePathname} from "next/navigation";
+import AddToCartFeedback from "@/components/cart/AddToCartFeedback";
 
 // Client‑only components
 const CartProvider = dynamic(
@@ -130,6 +131,7 @@ export default function RootLayout({children}: {children: ReactNode}) {
             {!isBuilder && <FooterDesktop />}
             <EmailPopup />
           </div>
+          <AddToCartFeedback />
         </CartProvider>
       </body>
     </html>

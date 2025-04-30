@@ -13,19 +13,30 @@ const REQUIRED_STEPS = [
   "alignment",
 ] as const;
 
+function triggerCartFeedback(e: React.MouseEvent) {
+  const rect = (e.target as HTMLElement).getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top;
+  window.dispatchEvent(
+    new CustomEvent("add-to-cart-feedback", {detail: {x, y}})
+  );
+}
+
 export default function StepCheckout() {
   const {selections} = useContext(BuildContext);
   const {fetchCart} = useCart();
 
   const [loading, setLoading] = useState(false);
+  const [added, setAdded] = useState(false);
   const [error, setError] = useState("");
 
   const missingSteps = REQUIRED_STEPS.filter((step) => !selections[step]);
+  const allStepsSelected = missingSteps.length === 0;
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
     setError("");
 
-    if (missingSteps.length > 0) {
+    if (!allStepsSelected) {
       const message =
         "Please complete: " +
         missingSteps
@@ -36,6 +47,7 @@ export default function StepCheckout() {
     }
 
     setLoading(true);
+    triggerCartFeedback(e);
 
     try {
       const cartId = localStorage.getItem("cartId");
@@ -58,6 +70,9 @@ export default function StepCheckout() {
       if (data?.cartId) localStorage.setItem("cartId", data.cartId);
       if (data?.url) localStorage.setItem("checkoutUrl", data.url);
       await fetchCart();
+
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
     } catch (err: unknown) {
       console.error("[BUILD] Add to cart error:", err);
       if (err instanceof Error) setError(err.message);
@@ -67,19 +82,21 @@ export default function StepCheckout() {
     }
   };
 
-  const allStepsSelected = missingSteps.length === 0;
-
   return (
     <div className="w-1/2 sm:w-auto">
       <button
         disabled={loading || !allStepsSelected}
         onClick={handleAddToCart}
-        className={`px-4 py-2 font-bold border-2 w-full sm:w-auto ${
-          allStepsSelected
-            ? "bg-[#ACFF9B] text-black border-black"
-            : "border-white text-white opacity-30 cursor-not-allowed"
-        }`}>
-        {loading ? "Adding..." : "Add to Cart"}
+        className={`px-4 py-2 font-bold border-2 w-full sm:w-auto transition-all duration-300
+          ${
+            added
+              ? "bg-[#ACFF9B] text-black border-[#ACFF9B]"
+              : allStepsSelected
+              ? "bg-[#ACFF9B] text-black border-black"
+              : "border-white text-white opacity-30 cursor-not-allowed"
+          }
+        `}>
+        {loading ? "Adding..." : added ? "✓ Added" : "Add to Cart"}
       </button>
 
       {error && (

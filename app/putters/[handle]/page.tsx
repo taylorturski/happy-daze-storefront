@@ -8,6 +8,15 @@ import Image from "next/image";
 import productDescriptions from "@/components/product/data/productDescriptions";
 import parse from "html-react-parser";
 
+function triggerCartFeedback(e: React.MouseEvent) {
+  const rect = (e.target as HTMLElement).getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top;
+  window.dispatchEvent(
+    new CustomEvent("add-to-cart-feedback", {detail: {x, y}})
+  );
+}
+
 export default function ProductPage() {
   const {handle} = useParams();
   const router = useRouter();
@@ -115,7 +124,10 @@ export default function ProductPage() {
             </button>
           ) : (
             <button
-              onClick={onAddToCart}
+              onClick={(e) => {
+                triggerCartFeedback(e);
+                onAddToCart();
+              }}
               className="border-2 font-vt lowercase border-black mt-3 px-4 py-2 font-bold text-white bg-black w-fit">
               {added ? "✓ Added" : "Add to Cart"}
             </button>

@@ -28,7 +28,7 @@ export default function FullBleedImage({
         />
       </div>
       <div className="absolute inset-0 bg-black/30 z-10" />
-      <div className="relative z-20 flex flex-col items-center justify-center h-full text-white text-center px-4 tracking-tight font-bold uppercase text-2xl">
+      <div className="relative z-20 flex flex-col items-center justify-center h-full text-white text-center px-4 tracking-tight uppercase text-2xl">
         {children}
       </div>
     </section>

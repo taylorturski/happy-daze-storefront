@@ -115,7 +115,7 @@ export default function MobileMenu() {
             <button
               onClick={handleCheckout}
               disabled={!cart || cart.length === 0}
-              className={`mt-2 font-vt border-2 px-3 py-1 font-bold w-full max-w-[200px] ${
+              className={`mt-2 font-vt uppercase text-md border-2 px-3 py-1 font-bold w-full max-w-[200px] ${
                 cart.length === 0
                   ? "bg-gray-300 text-gray-500 border-gray-400 cursor-not-allowed"
                   : "bg-[#ACFF9B] text-black border-black hover:bg-[#90ff78]"

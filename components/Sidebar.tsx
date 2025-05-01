@@ -87,7 +87,7 @@ export default function Sidebar() {
         <button
           onClick={handleCheckout}
           disabled={!cart || cart.length === 0}
-          className="w-full max-w-[180px] bg-[#ACFF9B] uppercase text-black px-3 py-1 mt-2 font-bold font-vt text-sm border-black border-2 disabled:opacity-100 disabled:cursor-not-allowed">
+          className="w-full max-w-[180px] bg-[#ACFF9B] uppercase text-black px-3 py-1 mt-2 font-bold font-vt text-md border-black border-2 disabled:opacity-100 tracking-wider disabled:cursor-not-allowed">
           CHECK OUT
         </button>
         {message && <p className="text-xs text-red-600 mt-1">{message}</p>}

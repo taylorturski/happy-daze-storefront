@@ -43,7 +43,7 @@ export default function EmailSignup() {
         />
         <button
           type="submit"
-          className="w-full bg-[#ACFF9B] uppercase text-black px-3 py-1 font-bold font-vt text-sm">
+          className="w-full bg-[#ACFF9B] uppercase text-black px-3 py-1 tracking-wider uppercase font-vt text-md">
           Subscribe
         </button>
       </form>

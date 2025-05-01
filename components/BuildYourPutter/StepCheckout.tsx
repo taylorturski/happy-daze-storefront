@@ -89,7 +89,7 @@ export default function StepCheckout() {
       <button
         disabled={loading || !allStepsSelected}
         onClick={handleAddToCart}
-        className={`px-4 py-2 font-bold border-2 w-full sm:w-auto transition-all duration-300
+        className={`px-4 py-2 font-vt tracking-wider text-md uppercase border-2 w-full sm:w-auto transition-all duration-300
           ${
             added
               ? "bg-[#ACFF9B] text-black border-[#ACFF9B]"

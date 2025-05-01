@@ -132,7 +132,7 @@ export default function MerchProductPage() {
               triggerCartFeedback(e);
               onAddToCart();
             }}
-            className="border-2 font-vt lowercase border-black mt-3 px-4 py-2 font-bold text-black bg-white w-fit">
+            className="border-2 font-vt uppercase text-md border-black mt-3 px-4 py-2 font-bold text-black bg-white w-fit">
             {added ? "✓ Added" : "Add to Cart"}
           </button>
         </div>

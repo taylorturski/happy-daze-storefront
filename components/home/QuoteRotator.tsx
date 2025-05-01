@@ -1,7 +1,6 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import {useEffect, useState} from "react";
 
 const MotionDiv = dynamic(
   () => import("framer-motion").then((mod) => mod.motion.div),
@@ -12,50 +11,35 @@ const MotionSpan = dynamic(
   {ssr: false}
 );
 
-const quote = "Refuse the ordinary.";
-const flickerChars = ["F", "U", "E", "E", "D", "A", "R"]; // flicker targets
+const baseQuote = "Refuse the ordinary.";
+const repeated = Array(20).fill(baseQuote).join(" ");
 
 export default function QuoteRotator() {
-  const [shouldFlicker, setShouldFlicker] = useState(false);
+  const renderText = (text: string) =>
+    text.split("").map((char, i) => {
+      const displayChar = char === " " ? "\u00A0" : char;
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const flickerNow = Math.random() > 0.5;
-      setShouldFlicker(flickerNow);
-      if (flickerNow) setTimeout(() => setShouldFlicker(false), 700);
-    }, 1500);
-
-    return () => clearInterval(interval);
-  }, []);
+      return (
+        <MotionSpan
+          key={i}
+          className="inline-block mr-0.5 text-xl sm:text-3xl font-pitch uppercase tracking-widest">
+          {displayChar}
+        </MotionSpan>
+      );
+    });
 
   return (
-    <section className="w-full bg-black text-white font-pitch py-5 overflow-hidden">
-      <div className="w-full overflow-x-hidden">
-        <MotionDiv
-          className="inline-block whitespace-nowrap w-full"
-          animate={{x: ["100%", "-100%"]}}
-          transition={{repeat: Infinity, duration: 18, ease: "linear"}}>
-          {quote.split("").map((char, i) => {
-            const displayChar = char === " " ? "\u00A0" : char;
-            const isFlickering =
-              shouldFlicker && flickerChars.includes(char.toUpperCase());
-
-            return (
-              <MotionSpan
-                key={i}
-                className="inline-block mr-0.5 text-xl sm:text-3xl font-pitch uppercase tracking-widest"
-                animate={{
-                  opacity: isFlickering ? [1, 0.2, 0.6, 0.4, 1] : 1,
-                }}
-                transition={{
-                  duration: isFlickering ? 0.6 : 0,
-                  ease: "easeInOut",
-                }}>
-                {displayChar}
-              </MotionSpan>
-            );
-          })}
-        </MotionDiv>
+    <section className="w-full bg-black text-white text-opacity-20 font-pitch py-5 overflow-hidden">
+      <div className="flex w-full overflow-hidden whitespace-nowrap">
+        {[0, 1].map((i) => (
+          <MotionDiv
+            key={i}
+            className="inline-block whitespace-nowrap"
+            animate={{x: ["0%", "-100%"]}}
+            transition={{repeat: Infinity, duration: 120, ease: "linear"}}>
+            {renderText(repeated)}
+          </MotionDiv>
+        ))}
       </div>
     </section>
   );

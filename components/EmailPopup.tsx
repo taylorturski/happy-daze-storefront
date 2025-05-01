@@ -66,12 +66,13 @@ export default function EmailPopup() {
           animate={{opacity: 1}}
           exit={{opacity: 0}}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 overflow-x-hidden">
+          <div className="absolute inset-0 z-0" onClick={handleClose} />
           <MotionDiv
             initial={{scale: 0.85, rotate: -10, opacity: 0, y: 100}}
             animate={{scale: 1, rotate: 0, opacity: 1, y: 0}}
             exit={{scale: 0.3, rotate: 360, opacity: 0, y: 300}}
             transition={{duration: 0.5, ease: "anticipate"}}
-            className="bg-white text-black w-full max-w-2xl mx-auto box-border overflow-hidden flex flex-col md:flex-row rounded shadow-xl relative font-pitch">
+            className="bg-white text-black w-full max-w-2xl mx-4 md:mx-auto box-border overflow-hidden flex flex-col md:flex-row rounded shadow-xl relative font-pitch">
             <div className="w-full md:w-1/2 h-64 md:h-auto flex items-center justify-center bg-black overflow-hidden">
               <Image
                 src="/email-modal-img-2.jpg"
@@ -85,7 +86,8 @@ export default function EmailPopup() {
             <div className="w-full md:w-1/2 p-4 md:p-6 relative">
               <button
                 onClick={handleClose}
-                className="absolute font-vt lowercase top-2 right-3 text-xl font-bold text-gray-500 hover:text-black">
+                aria-label="Close"
+                className="absolute top-2 right-2 w-10 h-10 flex items-center justify-center text-xl font-bold text-gray-500 hover:text-black font-vt lowercase">
                 &times;
               </button>
 

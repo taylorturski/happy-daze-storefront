@@ -1,17 +1,16 @@
 "use client";
 
 import "@/styles/globals.css";
-import {ReactNode} from "react";
+import {ReactNode, useEffect} from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import Sidebar from "@/components/Sidebar";
 import FooterDesktop from "@/components/FooterDesktop";
 import FooterMobile from "@/components/FooterMobile";
 import {usePathname} from "next/navigation";
 import AddToCartFeedback from "@/components/cart/AddToCartFeedback";
 
-// Client‑only components
 const CartProvider = dynamic(
   () => import("@/app/context/CartContext").then((mod) => mod.CartProvider),
   {ssr: false}
@@ -31,23 +30,27 @@ const EmailPopup = dynamic(
 
 export default function RootLayout({children}: {children: ReactNode}) {
   const pathname = usePathname();
-  const isBuilder = pathname.startsWith("/build-your-putter");
+  const isBuilder = pathname?.includes("/build-your-putter");
+
+  // fix overflow bug during builder
+  useEffect(() => {
+    document.body.style.overflow = isBuilder ? "hidden" : "auto";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isBuilder]);
 
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <head>
         <title>Happy Daze Golf</title>
-
-        {/* Preconnect and DNS Prefetch for Shopify and prod domain */}
+        {/* DNS + Font preloading */}
         <link
           rel="preconnect"
           href="https://www.happydaze.golf"
           crossOrigin="anonymous"
         />
         <link rel="dns-prefetch" href="https://www.happydazegolf.com" />
-        <link rel="dns-prefetch" href="https://www.happydaze.golf" />
-
-        {/* Font preloading */}
         <link
           rel="preload"
           href="/fonts/pitch-sans-medium.woff2"
@@ -70,22 +73,35 @@ export default function RootLayout({children}: {children: ReactNode}) {
           crossOrigin="anonymous"
         />
       </head>
-      <body className="m-0 font-pitch text-[16px] overflow-x-hidden">
+      <body className="h-full m-0 font-pitch text-[16px] overflow-x-hidden">
         <GoogleAnalytics />
         <CartProvider>
-          <div className="flex min-h-screen flex-col relative min-w-0">
+          <div className="flex flex-col h-full relative min-w-0">
             <div className="flex flex-1 min-w-0">
-              <aside
-                role="complementary"
-                className="hidden sm:block sticky top-0 z-50 h-screen bg-black">
+              {/* Sidebar */}
+              <aside className="hidden sm:block sticky top-0 z-50 h-screen bg-black">
                 <Sidebar />
               </aside>
 
-              <main
-                role="main"
-                className="flex-1 relative z-0 bg-transparent sm:pl-0 min-h-screen min-w-0">
+              {/* Main content layout */}
+              <main className="flex flex-col flex-1 min-h-screen sm:pl-0 min-w-0 bg-transparent">
+                {/* Mobile nav - sticky */}
+                <div className="sticky top-0 z-50 sm:hidden flex justify-between items-center border-b-2 border-black px-4 py-3 bg-black">
+                  <Link href="/" className="block w-[160px] h-[60px] relative">
+                    <Image
+                      src="/happy_daze_logo.svg"
+                      alt="Happy Daze Golf"
+                      fill
+                      className="pt-2 object-contain invert"
+                      priority
+                    />
+                  </Link>
+                  <MobileMenu />
+                </div>
+
+                {/* Desktop header nav */}
                 <header className="hidden sm:flex justify-end items-right border-b-2 border-white px-5 py-1 hover:text:underline">
-                  <nav aria-label="Primary navigation" className="flex gap-2">
+                  <nav className="flex gap-2" aria-label="Primary navigation">
                     <Link
                       href="/custom-putters"
                       className={navLinkClasses("/custom-putters", pathname)}>
@@ -104,24 +120,15 @@ export default function RootLayout({children}: {children: ReactNode}) {
                   </nav>
                 </header>
 
-                <div className="flex sm:hidden justify-between items-center border-b-2 border-black px-4 py-3">
-                  <Link href="/" className="block w-[160px] h-[60px] relative">
-                    <Image
-                      src="/happy_daze_logo.svg"
-                      alt="Happy Daze Golf"
-                      fill
-                      className="pt-2 object-contain invert"
-                      priority
-                    />
-                  </Link>
-                  <MobileMenu />
+                {/* Actual page content */}
+                <div className="flex-1 overflow-y-auto">
+                  {children}
+                  {!isBuilder && <FooterMobile />}
                 </div>
-
-                {children}
-
-                {!isBuilder && <FooterMobile />}
               </main>
             </div>
+
+            {/* Shared components */}
             {!isBuilder && <FooterDesktop />}
             <EmailPopup />
           </div>

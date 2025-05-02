@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Your custom base styles (optional overrides below) */
 html,
 body {
   padding: 0;
@@ -11,6 +10,7 @@ body {
   color: white;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  height: 100%;
   overflow-x: hidden;
 }
 

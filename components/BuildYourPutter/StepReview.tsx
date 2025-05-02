@@ -53,9 +53,9 @@ export default function StepReview({onBack}: {onBack: () => void}) {
   ];
 
   return (
-    <div className="builder-wrapper">
-      <div className="builder-scroll">
-        <div className="max-w-screen-lg mx-auto px-2 sm:px-8 pt-2 sm:pt-6">
+    <div>
+      <div>
+        <div className="max-w-screen-lg mx-auto pb-20 sm:px-8 sm:pt-6">
           <h2 className="text-xl font-bold uppercase mb-1">Build Overview</h2>
           <p className="mb-4 text-xs sm:text-sm max-w-5xl leading-relaxed">
             Give everything one last look—make sure this putter feels like{" "}

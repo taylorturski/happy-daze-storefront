@@ -1,4 +1,7 @@
-/* /components/BuildYourPutter/build-your-putter.css */
+:root {
+  --vh: 1vh;
+  --nav-height: 64px;
+}
 
 .builder-wrapper {
   display: flex;
@@ -13,6 +16,13 @@
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding-bottom: 1rem;
+}
+
+.builder-inner {
+  max-width: 100vw;
+  padding: 0 1rem;
 }
 
 .builder-footer {

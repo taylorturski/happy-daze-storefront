@@ -12,6 +12,7 @@ import {BuildOption} from "./types";
 import StepCheckout from "./StepCheckout";
 import Image from "next/image";
 import "./build-your-putter.css";
+import {useEffect} from "react";
 
 const stepMap: {[key: string]: BuildOption[]} = {
   material: materials,
@@ -24,6 +25,18 @@ const stepMap: {[key: string]: BuildOption[]} = {
 
 export default function StepReview({onBack}: {onBack: () => void}) {
   const {selections} = useContext(BuildContext);
+
+  useEffect(() => {
+    const setVh = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    };
+
+    setVh();
+    window.addEventListener("resize", setVh);
+
+    return () => window.removeEventListener("resize", setVh);
+  }, []);
 
   const getOption = (step: string, id: string | null) => {
     const options = stepMap[step];

@@ -1,6 +1,6 @@
 "use client";
 
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext, useState} from "react";
 import {BuildContext} from "./BuildContext";
 import StepSelector from "./StepSelector";
 import StepReview from "./StepReview";
@@ -22,7 +22,6 @@ const steps: (Step | "overview" | "review")[] = [
 export default function WizardBuilder() {
   const {selections} = useContext(BuildContext);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
 
   const step = steps[currentStepIndex];
   const isFirst = currentStepIndex === 0;
@@ -36,15 +35,6 @@ export default function WizardBuilder() {
     if (!isFirst) setCurrentStepIndex((i) => i - 1);
   };
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTop = 0;
-      }
-    }, 25); // slight delay for layout to stabilize
-    return () => clearTimeout(timeout);
-  }, [currentStepIndex]);
-
   const isNextDisabled =
     typeof step === "string" &&
     step !== "overview" &&
@@ -53,7 +43,7 @@ export default function WizardBuilder() {
 
   return (
     <div className="builder-wrapper">
-      <div className="builder-scroll" ref={scrollRef}>
+      <div className="builder-scroll">
         <div className="max-w-screen-lg mx-auto sm:px-8">
           {step === "overview" && <Overview />}
           {typeof step === "string" &&

@@ -1,11 +1,11 @@
 :root {
-  --nav-height: 64px;
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 1.5rem);
 }
 
 .builder-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 90vh;
   background: black;
   font-family: "Pitch Sans", sans-serif;
   overflow: hidden;
@@ -15,15 +15,18 @@
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding-top: var(--nav-height); /* keeps it below sticky nav */
-  padding-bottom: 2rem; /* gives room above sticky footer */
+  padding-top: 20px;
+  padding-bottom: calc(
+    75px + var(--safe-area-inset-bottom)
+  ); /* give footer some room */
 }
 
 .builder-footer {
-  position: sticky;
+  position: fixed;
   bottom: 0;
+  width: 100%;
   background: black;
   border-top: 2px solid white;
   z-index: 50;
-  padding: 1rem 1rem calc(env(safe-area-inset-bottom, 1rem) + 1rem);
+  padding: 1rem 1rem calc(1rem + var(--safe-area-inset-bottom));
 }

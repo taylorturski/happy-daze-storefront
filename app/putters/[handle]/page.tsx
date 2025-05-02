@@ -109,7 +109,8 @@ export default function ProductPage() {
             {product.title}
           </h1>
           <p className="font-vt lowercase text-lg mb-4">
-            Starting at ${parseFloat(product.price).toFixed(2)}
+            <span className="text-sm font-pitch">Starting at</span> $
+            {parseFloat(product.price).toFixed(2)}
           </p>
 
           <div className="text-sm leading-relaxed mb-6 prose prose-invert max-w-none list-disc pl-4 marker:text-white">
@@ -119,7 +120,7 @@ export default function ProductPage() {
           {product.tags?.includes("blanks") ? (
             <button
               onClick={goToBuilder}
-              className="border-2 font-vt lowercase border-black mt-3 px-4 py-2 font-bold text-black bg-white w-fit">
+              className="border-2 font-vt uppercase tracking-wide font-md border-black mt-3 px-4 py-2 font-bold text-black bg-white w-fit">
               Customize
             </button>
           ) : (

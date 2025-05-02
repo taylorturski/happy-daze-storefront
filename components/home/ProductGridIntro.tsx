@@ -27,7 +27,7 @@ export default function ProductGridIntro({
           <p className="text-base sm:text-lg text-white/80">{body}</p>
           <Link
             href={cta.href}
-            className="inline-block mt-6 border-2 border-white px-5 py-2 font-bold text-sm hover:bg-white hover:text-black transition-all">
+            className="inline-block mt-6 border-2 border-white px-5 py-2 font-vt tracking-wider text-md uppercase hover:bg-white hover:text-black transition-all">
             {cta.label}
           </Link>
         </div>

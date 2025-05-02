@@ -63,7 +63,7 @@ export default function Cart() {
               </div>
               <button
                 onClick={() => handleRemoveItem(item.id)}
-                className="ml-4 font-vt lowercase text-sm text-red-600 underline">
+                className="ml-4 font-vt uppercase text-md text-red-600 underline">
                 Remove
               </button>
             </div>

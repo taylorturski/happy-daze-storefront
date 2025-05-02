@@ -55,7 +55,7 @@ export default function FeatureBlock({
 
           <Link
             href={cta.href}
-            className="inline-block mt-3 border-black px-5 py-2 bg-white text-black font-bold text-sm">
+            className="inline-block mt-3 border-black px-5 py-2 bg-white text-black font-vt uppercase text-md tracking-wider">
             {cta.label}
           </Link>
 

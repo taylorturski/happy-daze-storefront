@@ -54,7 +54,7 @@ export default function AddToCartButton({
     <button
       onClick={handleAdd}
       disabled={loading}
-      className={`mt-4 font-vt lowercase border-2 px-3 py-1 font-bold transition-all duration-300
+      className={`mt-4 font-vt uppercase tracking-wider text-md border-2 px-3 py-1 font-bold transition-all duration-300
         ${
           added
             ? "bg-[#ACFF9B] text-black border-[#ACFF9B]"

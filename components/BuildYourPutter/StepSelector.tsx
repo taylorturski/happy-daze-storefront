@@ -79,11 +79,11 @@ export default function StepSelector({step}: StepSelectorProps) {
 
   return (
     <section className="flex flex-col h-full font-pitch">
-      <div className="px-3 pb-0">
-        <p className="text-xs text-[#ACFF9B] font-vt lowercase mb-1">
+      <div className="px-3 pb-0 sm:pt-2">
+        <p className="text-md text-[#ACFF9B] font-vt lowercase">
           step {stepNumber}
         </p>
-        <h2 className="text-xl font-bold uppercase mb-2">{step}</h2>
+        <h2 className="text-xl font-bold uppercase mb-1">{step}</h2>
         {stepDescriptions[step] && (
           <div className="mb-4 text-sm w-full leading-relaxed text-white">
             <p className="mb-2">{stepDescriptions[step].body}</p>
@@ -107,7 +107,7 @@ export default function StepSelector({step}: StepSelectorProps) {
               className={`cursor-pointer border-2 ${
                 selected === option.id ? "border-[#ACFF9B]" : "border-white"
               }`}>
-              <div className="aspect-[2/2] w-full overflow-hidden bg-black">
+              <div className="aspect-[1/1] sm:aspect-[4/2] w-full overflow-hidden bg-black">
                 <Image
                   src={option.image}
                   alt={option.label}

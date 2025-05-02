@@ -98,7 +98,7 @@ export default function StepSelector({step}: StepSelectorProps) {
         )}
       </div>
 
-      <div className="px-3 pb-3">
+      <div className="px-3 pb-10">
         <div className={`grid gap-4 ${gridColsClass} max-w-full`}>
           {options.map((option) => (
             <div

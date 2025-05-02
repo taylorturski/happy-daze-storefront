@@ -15,9 +15,8 @@
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding-top: 20px;
   padding-bottom: calc(
-    75px + var(--safe-area-inset-bottom)
+    60px + var(--safe-area-inset-bottom)
   ); /* give footer some room */
 }
 

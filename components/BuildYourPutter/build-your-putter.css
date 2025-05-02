@@ -3,10 +3,10 @@
 .builder-wrapper {
   display: flex;
   flex-direction: column;
-  height: 90vh;
+  height: calc(var(--vh, 1vh) * 90);
   background: black;
   font-family: "Pitch Sans", sans-serif;
-  overflow: hidden; /* don't let it leak scroll to body */
+  overflow: hidden;
 }
 
 .builder-scroll {
@@ -21,5 +21,5 @@
   background: black;
   border-top: 2px solid white;
   z-index: 50;
-  padding: 1rem;
+  padding: 1rem 1rem calc(env(safe-area-inset-bottom, 1rem) + 1rem);
 }

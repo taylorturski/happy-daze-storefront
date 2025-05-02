@@ -6,6 +6,7 @@ import StepSelector from "./StepSelector";
 import StepReview from "./StepReview";
 import Overview from "./Overview";
 import {Step} from "./BuildContext";
+import "./build-your-putter.css";
 
 const steps: (Step | "overview" | "review")[] = [
   "overview",
@@ -41,18 +42,9 @@ export default function WizardBuilder() {
     !selections[step];
 
   return (
-    <section className="fixed inset-0 z-[99] flex flex-col font-pitch bg-black builder-layout">
-      {step !== "review" && (
-        <button
-          onClick={() => (window.location.href = "/")}
-          className="fixed top-3 right-4 z-[100] text-white text-3xl font-bold px-3 py-2 hover:text-[#ACFF9B] transition select-none"
-          aria-label="Close Builder">
-          &times;
-        </button>
-      )}
-
-      <div className="flex-1 overflow-y-auto w-full sm:pl-0 sm:pr-8 pb-32">
-        <div className="max-w-screen-lg mx-auto">
+    <div className="builder-wrapper">
+      <div className="builder-scroll">
+        <div className="max-w-screen-lg mx-auto sm:px-8">
           {step === "overview" && <Overview />}
           {typeof step === "string" &&
             step !== "overview" &&
@@ -62,12 +54,12 @@ export default function WizardBuilder() {
       </div>
 
       {step !== "review" && (
-        <div className="fixed bottom-0 left-0 right-0 z-[100] px-3 sm:px-8 py-3 bg-black border-t-2 border-white">
+        <div className="builder-footer">
           <div className="max-w-screen-lg mx-auto flex justify-between items-center">
             {!isFirst ? (
               <button
                 onClick={handleBack}
-                className="bg-white text-black px-4 py-2 font-bold border-2 border-black">
+                className="bg-white text-md font-vt uppercase tracking-wider text-black px-4 py-2 font-bold border-2 border-black">
                 Back
               </button>
             ) : (
@@ -76,7 +68,7 @@ export default function WizardBuilder() {
             <button
               onClick={handleNext}
               disabled={isNextDisabled}
-              className={`px-4 py-2 font-bold border-2 ${
+              className={`px-4 py-2 text-md font-vt uppercase tracking-wider border-2 ${
                 isNextDisabled
                   ? "border-white text-white opacity-30 cursor-not-allowed"
                   : "bg-[#ACFF9B] text-black border-black"
@@ -86,9 +78,6 @@ export default function WizardBuilder() {
           </div>
         </div>
       )}
-
-      {/* 👇 Hidden purge-proof tailwind refs */}
-      <div className="hidden builder-layout fixed inset-0 z-[99] z-[100] flex flex-col bg-black overflow-y-auto pb-32 border-t-2 border-white top-3 right-4 text-white text-3xl hover:text-[#ACFF9B] px-3 py-2 px-4 py-3 border-2 bg-[#ACFF9B] text-black opacity-30 cursor-not-allowed" />
-    </section>
+    </div>
   );
 }

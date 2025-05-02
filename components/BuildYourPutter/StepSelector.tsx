@@ -79,7 +79,7 @@ export default function StepSelector({step}: StepSelectorProps) {
 
   return (
     <section className="flex flex-col h-full font-pitch">
-      <div className="px-3 pt-3 pb-0">
+      <div className="px-3 pb-0">
         <p className="text-xs text-[#ACFF9B] font-vt lowercase mb-1">
           step {stepNumber}
         </p>
@@ -104,19 +104,19 @@ export default function StepSelector({step}: StepSelectorProps) {
             <div
               key={option.id}
               onClick={() => handleSelect(option.id)}
-              className={`cursor-pointer border-2 flex flex-col justify-between h-[300px] ${
+              className={`cursor-pointer border-2 ${
                 selected === option.id ? "border-[#ACFF9B]" : "border-white"
               }`}>
-              <div className="w-full h-[300px] overflow-hidden">
+              <div className="aspect-[2/2] w-full overflow-hidden bg-black">
                 <Image
                   src={option.image}
                   alt={option.label}
                   width={400}
-                  height={325}
+                  height={533}
                   className="w-full h-full object-cover object-center"
                 />
               </div>
-              <div className="text-center text-xs sm:text-sm font-medium py-2">
+              <div className="text-center text-xs sm:text-sm font-medium py-2 bg-black">
                 {option.label.replace(/\s*\(\+\$\d+\)/g, "")}
               </div>
             </div>

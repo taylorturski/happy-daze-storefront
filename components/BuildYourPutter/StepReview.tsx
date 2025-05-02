@@ -11,6 +11,7 @@ import {alignmentOptions} from "./data/alignmentOptions";
 import {BuildOption} from "./types";
 import StepCheckout from "./StepCheckout";
 import Image from "next/image";
+import "./build-your-putter.css";
 
 const stepMap: {[key: string]: BuildOption[]} = {
   material: materials,
@@ -39,10 +40,9 @@ export default function StepReview({onBack}: {onBack: () => void}) {
   ];
 
   return (
-    <section className="h-[calc(100dvh-69px)] w-full flex flex-col font-pitch overflow-hidden">
-      {/* Scrollable build preview */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-white scrollbar-track-black w-full px-3 sm:pl-[0px] sm:pr-8 pt-4 sm:pt-6">
-        <div className="max-w-screen-lg mx-auto">
+    <div className="builder-wrapper">
+      <div className="builder-scroll">
+        <div className="max-w-screen-lg mx-auto px-2 sm:px-8 pt-2 sm:pt-6">
           <h2 className="text-xl font-bold uppercase mb-4">Build Overview</h2>
           <p className="mb-4 text-xs sm:text-sm max-w-5xl leading-relaxed">
             Give everything one last look—make sure this putter feels like{" "}
@@ -60,12 +60,12 @@ export default function StepReview({onBack}: {onBack: () => void}) {
                 <div
                   key={step}
                   className="border-2 border-[#ACFF9B] flex flex-col">
-                  <div className="w-full sm:h-[140px] overflow-hidden">
+                  <div className="w-full aspect-[3/2] overflow-hidden bg-black">
                     <Image
                       src={selection.image}
                       alt={selection.label}
-                      height={300}
-                      width={300}
+                      width={600}
+                      height={400}
                       className="w-full h-full object-cover object-center"
                     />
                   </div>
@@ -88,17 +88,16 @@ export default function StepReview({onBack}: {onBack: () => void}) {
         </div>
       </div>
 
-      {/* Aligned footer buttons */}
-      <div className="w-full px-3 sm:pl-[0px] sm:pr-8 bg-black">
+      <div className="builder-footer">
         <div className="max-w-screen-lg mx-auto flex justify-between items-center">
           <button
             onClick={onBack}
-            className="bg-white text-black px-4 py-2 font-bold border-2 border-black">
+            className="bg-white font-vt text-md tracking-wider uppercase text-black px-4 py-2 font-bold border-2 border-black">
             Back
           </button>
           <StepCheckout />
         </div>
       </div>
-    </section>
+    </div>
   );
 }

@@ -32,13 +32,9 @@ export default function RootLayout({children}: {children: ReactNode}) {
   const pathname = usePathname();
   const isBuilder = pathname?.includes("/build-your-putter");
 
-  // fix overflow bug during builder
   useEffect(() => {
-    document.body.style.overflow = isBuilder ? "hidden" : "auto";
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isBuilder]);
+    // Do nothing — let CSS layout handle it
+  }, []);
 
   return (
     <html lang="en" className="h-full">

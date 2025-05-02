@@ -1,12 +1,17 @@
-/* /components/BuildYourPutter/build-your-putter.css */
-
 .builder-wrapper {
   display: flex;
   flex-direction: column;
   height: 90vh;
   background: black;
   font-family: "Pitch Sans", sans-serif;
-  overflow: hidden; /* don't let it leak scroll to body */
+  overflow: hidden;
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .builder-wrapper {
+    height: calc(100vh - 120px);
+  }
 }
 
 .builder-scroll {

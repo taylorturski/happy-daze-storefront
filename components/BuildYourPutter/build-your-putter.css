@@ -9,6 +9,7 @@
   background: black;
   font-family: "Pitch Sans", sans-serif;
   overflow: hidden;
+  padding-top: 25px;
 }
 
 .builder-scroll {

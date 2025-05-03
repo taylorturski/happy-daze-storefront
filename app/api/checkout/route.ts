@@ -92,35 +92,30 @@ export async function POST(req: Request) {
       });
 
       let finalCartId = cartId ?? null;
+      let cart = null;
 
       if (finalCartId) {
         await shopifyFetch(cartLinesAddMutation, {cartId: finalCartId, lines});
-      } else {
+        cart = await fetchCart(ensureCartId(finalCartId));
+      }
+
+      if (!cart) {
         const res = await shopifyFetch(cartCreateMutation, {
           input: {lines, discountCodes: ["HAPPY10"]},
         });
 
-        const cart = res.cartCreate?.cart;
+        const newCart = res.cartCreate?.cart;
         const error = res.cartCreate?.userErrors?.[0];
 
-        if (!cart?.checkoutUrl) {
-          console.error("[CHECKOUT] Cart creation error:", error);
+        if (!newCart?.checkoutUrl) {
           return NextResponse.json(
             {error: error?.message || "Checkout failed"},
             {status: 500, headers: noCacheHeaders}
           );
         }
 
-        finalCartId = cart.id;
-      }
-
-      const cart = await fetchCart(ensureCartId(finalCartId));
-
-      if (!cart?.checkoutUrl) {
-        return NextResponse.json(
-          {error: "Failed to fetch checkout URL"},
-          {status: 500, headers: noCacheHeaders}
-        );
+        finalCartId = newCart.id;
+        cart = newCart;
       }
 
       const checkoutUrlWithDiscount = addDiscountToUrl(
@@ -197,38 +192,33 @@ export async function POST(req: Request) {
     };
 
     let finalCartId = cartId ?? null;
+    let cart = null;
 
     if (finalCartId) {
       await shopifyFetch(cartLinesAddMutation, {
         cartId: finalCartId,
         lines: [lineItem],
       });
-    } else {
+      cart = await fetchCart(ensureCartId(finalCartId));
+    }
+
+    if (!cart) {
       const res = await shopifyFetch(cartCreateMutation, {
         input: {lines: [lineItem], discountCodes: ["HAPPY10"]},
       });
 
-      const cart = res.cartCreate?.cart;
+      const newCart = res.cartCreate?.cart;
       const error = res.cartCreate?.userErrors?.[0];
 
-      if (!cart?.checkoutUrl) {
-        console.error("[CHECKOUT] Builder Cart creation error:", error);
+      if (!newCart?.checkoutUrl) {
         return NextResponse.json(
           {error: error?.message || "Checkout failed"},
           {status: 500, headers: noCacheHeaders}
         );
       }
 
-      finalCartId = cart.id;
-    }
-
-    const cart = await fetchCart(ensureCartId(finalCartId));
-
-    if (!cart?.checkoutUrl) {
-      return NextResponse.json(
-        {error: "Failed to fetch checkout URL"},
-        {status: 500, headers: noCacheHeaders}
-      );
+      finalCartId = newCart.id;
+      cart = newCart;
     }
 
     const checkoutUrlWithDiscount = addDiscountToUrl(

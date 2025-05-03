@@ -3,7 +3,7 @@ export const runtime = "nodejs";
 import {NextResponse} from "next/server";
 import {shopifyFetch} from "@/lib/shopify/client";
 import {getProductsByTag} from "@/lib/shopify/product";
-import {Product, ProductVariant} from "@/types/product";
+import {Product} from "@/types/product";
 import _ from "lodash";
 
 const noCacheHeaders = {

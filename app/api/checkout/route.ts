@@ -45,7 +45,6 @@ function ensureCartId(id: string | null): string {
 async function fetchCart(cartId: string) {
   try {
     const res = await shopifyFetch(cartFetchQuery, {cartId});
-    console.log("[DEBUG] fetchCart response:", res);
     return res.cart;
   } catch (err) {
     console.error("[ERROR] fetchCart failed:", err);
@@ -59,14 +58,9 @@ function addDiscountToUrl(url: string, code: string) {
 }
 
 export async function POST(req: Request) {
-  console.log("[CHECKOUT] Incoming POST at /api/checkout");
-
   try {
     const data = await req.json();
     const cartId = req.headers.get("x-cart-id");
-
-    console.log("[CHECKOUT] Parsed body:", data);
-    console.log("[CHECKOUT] Cart ID:", cartId);
 
     // === 1. Sidebar Cart flow ===
     if (Array.isArray(data)) {

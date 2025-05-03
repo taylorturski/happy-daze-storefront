@@ -3,7 +3,7 @@ export const runtime = "nodejs";
 import {NextResponse} from "next/server";
 import {shopifyFetch} from "@/lib/shopify/client";
 import {getProductsByTag} from "@/lib/shopify/product";
-import {Product} from "@/types/product";
+import {Product, ProductVariant} from "@/types/product";
 import _ from "lodash";
 
 const noCacheHeaders = {
@@ -37,6 +37,11 @@ query CartQuery($cartId: ID!) {
 }
 `;
 
+function ensureCartId(id: string | null): string {
+  if (!id) throw new Error("Cart ID is null");
+  return id;
+}
+
 async function fetchCart(cartId: string) {
   try {
     const res = await shopifyFetch(cartFetchQuery, {cartId});
@@ -62,12 +67,6 @@ export async function POST(req: Request) {
 
     console.log("[CHECKOUT] Parsed body:", data);
     console.log("[CHECKOUT] Cart ID:", cartId);
-    console.log("[CHECKOUT] Env check:", {
-      SHOPIFY_STORE_DOMAIN: process.env.SHOPIFY_STORE_DOMAIN,
-      SHOPIFY_STOREFRONT_ACCESS_TOKEN:
-        process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-      SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION,
-    });
 
     // === 1. Sidebar Cart flow ===
     if (Array.isArray(data)) {
@@ -115,7 +114,8 @@ export async function POST(req: Request) {
         finalCartId = cart.id;
       }
 
-      const cart = await fetchCart(finalCartId!);
+      const cart = await fetchCart(ensureCartId(finalCartId));
+
       if (!cart?.checkoutUrl) {
         return NextResponse.json(
           {error: "Failed to fetch checkout URL"},
@@ -127,6 +127,7 @@ export async function POST(req: Request) {
         cart.checkoutUrl,
         "HAPPY10"
       );
+
       return NextResponse.json(
         {cartId: cart.id, url: checkoutUrlWithDiscount},
         {status: 200, headers: noCacheHeaders}
@@ -156,26 +157,28 @@ export async function POST(req: Request) {
       );
     }
 
-    const variant = matchedProduct.variants?.find((v) => {
-      const mat = v.selectedOptions.find(
-        (opt) =>
-          opt.name.toLowerCase() === "material" &&
-          opt.value
-            .toLowerCase()
-            .includes((selections.material || "").toLowerCase())
-      );
+    const variant: ProductVariant | undefined = matchedProduct.variants?.find(
+      (v) => {
+        const mat = v.selectedOptions.find(
+          (opt) =>
+            opt.name.toLowerCase() === "material" &&
+            opt.value
+              .toLowerCase()
+              .includes((selections.material || "").toLowerCase())
+        );
 
-      const finishVal = (selections.finish || "").toLowerCase();
-      const matchValue = finishVal.includes("satin") ? "satin" : "torched";
+        const finishVal = (selections.finish || "").toLowerCase();
+        const matchValue = finishVal.includes("satin") ? "satin" : "torched";
 
-      const fin = v.selectedOptions.find(
-        (opt) =>
-          opt.name.toLowerCase() === "finish" &&
-          opt.value.toLowerCase().includes(matchValue)
-      );
+        const fin = v.selectedOptions.find(
+          (opt) =>
+            opt.name.toLowerCase() === "finish" &&
+            opt.value.toLowerCase().includes(matchValue)
+        );
 
-      return Boolean(mat && fin);
-    });
+        return Boolean(mat && fin);
+      }
+    );
 
     if (!variant) {
       return NextResponse.json(
@@ -219,7 +222,8 @@ export async function POST(req: Request) {
       finalCartId = cart.id;
     }
 
-    const cart = await fetchCart(finalCartId!);
+    const cart = await fetchCart(ensureCartId(finalCartId));
+
     if (!cart?.checkoutUrl) {
       return NextResponse.json(
         {error: "Failed to fetch checkout URL"},

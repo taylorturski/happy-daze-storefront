@@ -32,7 +32,10 @@ export default function MobileMenu() {
         <button
           onClick={() => setOpen(true)}
           className="text-lg font-bold font-pitch uppercase border-2 border-black px-2 py-1">
-          CART{cart?.length > 0 ? `(${cart.length})` : ""}
+          CART
+          {cart?.length > 0
+            ? `(${cart.reduce((sum, item) => sum + (item.quantity ?? 1), 0)})`
+            : ""}
         </button>
       </div>
 

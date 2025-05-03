@@ -45,6 +45,7 @@ function ensureCartId(id: string | null): string {
 async function fetchCart(cartId: string) {
   try {
     const res = await shopifyFetch(cartFetchQuery, {cartId});
+    console.log("[DEBUG] fetchCart response:", res);
     return res.cart;
   } catch (err) {
     console.error("[ERROR] fetchCart failed:", err);
@@ -63,16 +64,8 @@ export async function POST(req: Request) {
   try {
     const data = await req.json();
     const cartId = req.headers.get("x-cart-id");
-    const finalCartId: string | null = cartId ?? null;
-
     console.log("[CHECKOUT] Parsed body:", data);
     console.log("[CHECKOUT] Cart ID:", cartId);
-    console.log("[CHECKOUT] Env check:", {
-      SHOPIFY_STORE_DOMAIN: process.env.SHOPIFY_STORE_DOMAIN,
-      SHOPIFY_STOREFRONT_ACCESS_TOKEN:
-        process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-      SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION,
-    });
 
     // === 1. Sidebar Cart flow ===
     if (Array.isArray(data)) {
@@ -103,7 +96,7 @@ export async function POST(req: Request) {
         };
       });
 
-      let cartIdToUse = finalCartId;
+      let cartIdToUse: string | null = cartId ?? null;
 
       if (cartIdToUse) {
         await shopifyFetch(cartLinesAddMutation, {
@@ -130,6 +123,7 @@ export async function POST(req: Request) {
       }
 
       const cart = await fetchCart(ensureCartId(cartIdToUse));
+
       if (!cart?.checkoutUrl) {
         return NextResponse.json(
           {error: "Failed to fetch checkout URL"},
@@ -210,7 +204,7 @@ export async function POST(req: Request) {
       })),
     };
 
-    let builderCartId = finalCartId;
+    let builderCartId: string | null = cartId ?? null;
 
     if (builderCartId) {
       await shopifyFetch(cartLinesAddMutation, {
@@ -237,6 +231,7 @@ export async function POST(req: Request) {
     }
 
     const cart = await fetchCart(ensureCartId(builderCartId));
+
     if (!cart?.checkoutUrl) {
       return NextResponse.json(
         {error: "Failed to fetch checkout URL"},

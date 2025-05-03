@@ -38,8 +38,14 @@ query CartQuery($cartId: ID!) {
 `;
 
 async function fetchCart(cartId: string) {
-  const res = await shopifyFetch(cartFetchQuery, {cartId});
-  return res.cart;
+  try {
+    const res = await shopifyFetch(cartFetchQuery, {cartId});
+    console.log("[DEBUG] fetchCart response:", res);
+    return res.cart;
+  } catch (err) {
+    console.error("[ERROR] fetchCart failed:", err);
+    return null;
+  }
 }
 
 function addDiscountToUrl(url: string, code: string) {
@@ -48,39 +54,44 @@ function addDiscountToUrl(url: string, code: string) {
 }
 
 export async function POST(req: Request) {
-  const data = await req.json();
-  const cartId = req.headers.get("x-cart-id");
+  console.log("[CHECKOUT] Incoming POST at /api/checkout");
 
-  // === 1. Sidebar Cart flow ===
-  if (Array.isArray(data)) {
-    interface CartItem {
-      id: string;
-      quantity?: number;
-      properties?: Record<string, string>;
-    }
+  try {
+    const data = await req.json();
+    const cartId = req.headers.get("x-cart-id");
 
-    const grouped = _.groupBy(
-      data as CartItem[],
-      (item) => item.id + JSON.stringify(item.properties || {})
-    );
-
-    const lines = Object.values(grouped).map((items) => {
-      const {id, properties} = items[0];
-      const totalQty = items.reduce((sum, i) => sum + (i.quantity ?? 1), 0);
-
-      return {
-        merchandiseId: id,
-        quantity: totalQty,
-        attributes: properties
-          ? Object.entries(properties).map(([key, value]) => ({
-              key: key.charAt(0).toUpperCase() + key.slice(1),
-              value: value || "N/A",
-            }))
-          : [],
-      };
+    console.log("[CHECKOUT] Parsed body:", data);
+    console.log("[CHECKOUT] Cart ID:", cartId);
+    console.log("[CHECKOUT] Env check:", {
+      SHOPIFY_STORE_DOMAIN: process.env.SHOPIFY_STORE_DOMAIN,
+      SHOPIFY_STOREFRONT_ACCESS_TOKEN:
+        process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+      SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION,
     });
 
-    try {
+    // === 1. Sidebar Cart flow ===
+    if (Array.isArray(data)) {
+      const grouped = _.groupBy(
+        data,
+        (item) => item.id + JSON.stringify(item.properties || {})
+      );
+
+      const lines = Object.values(grouped).map((items) => {
+        const {id, properties} = items[0];
+        const totalQty = items.reduce((sum, i) => sum + (i.quantity ?? 1), 0);
+
+        return {
+          merchandiseId: id,
+          quantity: totalQty,
+          attributes: properties
+            ? Object.entries(properties).map(([key, value]) => ({
+                key: key.charAt(0).toUpperCase() + key.slice(1),
+                value: value || "N/A",
+              }))
+            : [],
+        };
+      });
+
       let finalCartId = cartId ?? null;
 
       if (finalCartId) {
@@ -89,24 +100,22 @@ export async function POST(req: Request) {
         const res = await shopifyFetch(cartCreateMutation, {
           input: {lines, discountCodes: ["HAPPY10"]},
         });
+
         const cart = res.cartCreate?.cart;
         const error = res.cartCreate?.userErrors?.[0];
 
         if (!cart?.checkoutUrl) {
+          console.error("[CHECKOUT] Cart creation error:", error);
           return NextResponse.json(
             {error: error?.message || "Checkout failed"},
             {status: 500, headers: noCacheHeaders}
           );
         }
+
         finalCartId = cart.id;
       }
 
-      if (!finalCartId) {
-        throw new Error("Cart ID is null");
-      }
-
-      const cart = await fetchCart(finalCartId);
-
+      const cart = await fetchCart(finalCartId!);
       if (!cart?.checkoutUrl) {
         return NextResponse.json(
           {error: "Failed to fetch checkout URL"},
@@ -118,45 +127,36 @@ export async function POST(req: Request) {
         cart.checkoutUrl,
         "HAPPY10"
       );
-
       return NextResponse.json(
         {cartId: cart.id, url: checkoutUrlWithDiscount},
         {status: 200, headers: noCacheHeaders}
       );
-    } catch (err) {
-      console.error("[SIDEBAR CHECKOUT ERROR]", err);
+    }
+
+    // === 2. Builder Form flow ===
+    const selections = data;
+    const blankProducts: Product[] = await getProductsByTag("blanks");
+    const headshape = selections?.headshape?.toLowerCase();
+
+    if (!headshape) {
       return NextResponse.json(
-        {error: "Server error"},
-        {status: 500, headers: noCacheHeaders}
+        {error: "Missing headshape"},
+        {status: 400, headers: noCacheHeaders}
       );
     }
-  }
 
-  // === 2. Builder Form flow ===
-  const selections = data;
-  const blankProducts: Product[] = await getProductsByTag("blanks");
-  const headshape = selections?.headshape?.toLowerCase();
-
-  if (!headshape) {
-    return NextResponse.json(
-      {error: "Missing headshape"},
-      {status: 400, headers: noCacheHeaders}
+    const matchedProduct = blankProducts.find((product) =>
+      product.title.toLowerCase().includes(headshape)
     );
-  }
 
-  const matchedProduct = blankProducts.find((product) =>
-    product.title.toLowerCase().includes(headshape)
-  );
+    if (!matchedProduct) {
+      return NextResponse.json(
+        {error: "Product not found"},
+        {status: 404, headers: noCacheHeaders}
+      );
+    }
 
-  if (!matchedProduct) {
-    return NextResponse.json(
-      {error: "Product not found"},
-      {status: 404, headers: noCacheHeaders}
-    );
-  }
-
-  const variant: ProductVariant | undefined = matchedProduct.variants?.find(
-    (v) => {
+    const variant = matchedProduct.variants?.find((v) => {
       const mat = v.selectedOptions.find(
         (opt) =>
           opt.name.toLowerCase() === "material" &&
@@ -175,26 +175,24 @@ export async function POST(req: Request) {
       );
 
       return Boolean(mat && fin);
+    });
+
+    if (!variant) {
+      return NextResponse.json(
+        {error: "No matching variant found"},
+        {status: 404, headers: noCacheHeaders}
+      );
     }
-  );
 
-  if (!variant) {
-    return NextResponse.json(
-      {error: "No matching variant found"},
-      {status: 404, headers: noCacheHeaders}
-    );
-  }
+    const lineItem = {
+      merchandiseId: variant.id,
+      quantity: 1,
+      attributes: Object.entries(selections).map(([key, value]) => ({
+        key: key.charAt(0).toUpperCase() + key.slice(1),
+        value: value || "N/A",
+      })),
+    };
 
-  const lineItem = {
-    merchandiseId: variant.id,
-    quantity: 1,
-    attributes: Object.entries(selections).map(([key, value]) => ({
-      key: key.charAt(0).toUpperCase() + key.slice(1),
-      value: value || "N/A",
-    })),
-  };
-
-  try {
     let finalCartId = cartId ?? null;
 
     if (finalCartId) {
@@ -211,20 +209,17 @@ export async function POST(req: Request) {
       const error = res.cartCreate?.userErrors?.[0];
 
       if (!cart?.checkoutUrl) {
+        console.error("[CHECKOUT] Builder Cart creation error:", error);
         return NextResponse.json(
           {error: error?.message || "Checkout failed"},
           {status: 500, headers: noCacheHeaders}
         );
       }
+
       finalCartId = cart.id;
     }
 
-    if (!finalCartId) {
-      throw new Error("Cart ID is null");
-    }
-
-    const cart = await fetchCart(finalCartId);
-
+    const cart = await fetchCart(finalCartId!);
     if (!cart?.checkoutUrl) {
       return NextResponse.json(
         {error: "Failed to fetch checkout URL"},
@@ -249,9 +244,9 @@ export async function POST(req: Request) {
       {status: 200, headers: noCacheHeaders}
     );
   } catch (err) {
-    console.error("[BUILDER CHECKOUT ERROR]", err);
+    console.error("[CHECKOUT TOP-LEVEL ERROR]", err);
     return NextResponse.json(
-      {error: "Server error"},
+      {error: "Unhandled server error"},
       {status: 500, headers: noCacheHeaders}
     );
   }

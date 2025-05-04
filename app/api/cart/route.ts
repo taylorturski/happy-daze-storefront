@@ -117,8 +117,7 @@ export async function GET(req: Request) {
       {cart: cartItems, total},
       {status: 200, headers: noCacheHeaders}
     );
-  } catch (err) {
-    console.error("[CART FETCH ERROR]", err);
+  } catch {
     return NextResponse.json(
       {error: "Failed to fetch cart"},
       {status: 500, headers: noCacheHeaders}
@@ -245,8 +244,7 @@ export async function DELETE(req: Request) {
       {cart: cartItems, total},
       {status: 200, headers: noCacheHeaders}
     );
-  } catch (err) {
-    console.error("[CART DELETE ERROR]", err);
+  } catch {
     return NextResponse.json(
       {error: "Failed to remove item"},
       {status: 500, headers: noCacheHeaders}

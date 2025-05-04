@@ -46,13 +46,11 @@ export async function POST(req: Request) {
     }
 
     if (!res.ok) {
-      console.error("Shopify Admin API error:", data);
       return NextResponse.json({error: "Failed to subscribe"}, {status: 500});
     }
 
     return NextResponse.json({success: true});
-  } catch (err) {
-    console.error("Error subscribing customer:", err);
+  } catch {
     return NextResponse.json({error: "Unexpected error"}, {status: 500});
   }
 }

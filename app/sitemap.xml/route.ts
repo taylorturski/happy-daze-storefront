@@ -28,8 +28,8 @@ export async function GET() {
         (p: {handle: string}) => `/putters/${p.handle}`
       );
     }
-  } catch (err) {
-    console.error("Product fetch error:", err);
+  } catch {
+    // Handle error silently
   }
 
   try {
@@ -40,8 +40,8 @@ export async function GET() {
         (a: {handle: string}) => `/journal/${a.handle}`
       );
     }
-  } catch (err) {
-    console.error("Blog fetch error:", err);
+  } catch {
+    // Handle error silently
   }
 
   const allPaths = [...staticPaths, ...productPaths, ...articlePaths];

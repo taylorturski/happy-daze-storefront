@@ -18,8 +18,7 @@ export async function GET() {
     );
 
     return NextResponse.json(minimal);
-  } catch (err) {
-    console.error("[API] Error fetching blog articles:", err);
+  } catch {
     return new NextResponse("Server error", {status: 500});
   }
 }

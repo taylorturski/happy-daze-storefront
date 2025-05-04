@@ -46,8 +46,7 @@ async function fetchCart(cartId: string) {
   try {
     const res = await shopifyFetch(cartFetchQuery, {cartId});
     return res.cart;
-  } catch (err) {
-    console.error("[ERROR] fetchCart failed:", err);
+  } catch {
     return null;
   }
 }
@@ -231,8 +230,7 @@ export async function POST(req: Request) {
       },
       {status: 200, headers: noCacheHeaders}
     );
-  } catch (err) {
-    console.error("[CHECKOUT TOP-LEVEL ERROR]", err);
+  } catch {
     return NextResponse.json(
       {error: "Unhandled server error"},
       {status: 500, headers: noCacheHeaders}

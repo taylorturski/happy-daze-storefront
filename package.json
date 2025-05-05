@@ -16,15 +16,13 @@
     "@types/node": "22.14.0",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.2",
-    "eslint-config-next": "15.3.0",
     "framer-motion": "^12.7.4",
     "html-react-parser": "^5.2.3",
     "lodash": "^4.17.21",
     "next": "^15.3.1",
-    "nodemailer": "^6.10.1",
+    "nodemailer": "^7.0.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "sanitize-html": "^2.16.0",
     "tailwind-scrollbar": "^4.0.2",
     "typescript": "^5.8.3"
   },
@@ -44,8 +42,10 @@
     "imagemin-cli": "^8.0.0",
     "imagemin-mozjpeg": "^10.0.0",
     "imagemin-pngquant": "^10.0.0",
+    "knip": "^5.53.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.1",
-    "tailwindcss-cli": "^0.1.2"
+    "tailwindcss-cli": "^0.1.2",
+    "ts-prune": "^0.10.3"
   }
 }

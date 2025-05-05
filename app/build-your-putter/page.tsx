@@ -8,28 +8,6 @@ import "@/components/BuildYourPutter/build-your-putter.css";
 import WizardBuilder from "@/components/BuildYourPutter/WizardBuilder";
 import {Suspense} from "react";
 
-export async function Metadata() {
-  return {
-    title: "Build Your Putter | Happy Daze Golf",
-    description:
-      "Choose every detail of your next gamer — head shape, material, finish, milling, neck, alignment. No tech gimmicks. Just personality.",
-    openGraph: {
-      title: "Build Your Putter | Happy Daze Golf",
-      description:
-        "Choose every detail of your next gamer — head shape, material, finish, milling, neck, alignment. No tech gimmicks. Just personality.",
-      url: "https://www.happydaze.golf/build-your-putter",
-      images: [
-        {
-          url: "/og/build.jpg",
-          width: 1200,
-          height: 630,
-          alt: "Build Your Putter - Happy Daze Golf",
-        },
-      ],
-    },
-  };
-}
-
 export default function BuildYourPutterPage() {
   return (
     <Suspense fallback={<div className="p-6 text-white">Loading...</div>}>

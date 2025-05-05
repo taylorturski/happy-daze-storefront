@@ -8,7 +8,7 @@ import "@/components/BuildYourPutter/build-your-putter.css";
 import WizardBuilder from "@/components/BuildYourPutter/WizardBuilder";
 import {Suspense} from "react";
 
-export async function generateMetadata() {
+export async function Metadata() {
   return {
     title: "Build Your Putter | Happy Daze Golf",
     description:

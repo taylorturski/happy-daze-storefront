@@ -1,25 +1,34 @@
 import {getProductsByTag} from "@/lib/shopify/product";
 import PageSection from "@/components/PageSection";
 import ProductGrid from "@/components/ProductGrid";
+import type {Metadata} from "next";
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Custom Putters | Happy Daze Golf",
     description:
-      "This is where it starts. Choose your blank. Choose your story. Hand-stamped putters built with intention — no performance gimmicks.",
+      "Milled to order. Built by hand. Our custom putters are made for expression—not mass production.",
     openGraph: {
       title: "Custom Putters | Happy Daze Golf",
       description:
-        "This is where it starts. Choose your blank. Choose your story. Hand-stamped putters built with intention — no performance gimmicks.",
-      url: "https://www.happydaze.golf/custom-putters",
+        "Milled to order. Built by hand. Our custom putters are made for expression—not mass production.",
       images: [
         {
-          url: "/og/custom-shop.jpg",
+          url: "https://www.happydaze.golf/og/custom-putters.png",
           width: 1200,
           height: 630,
           alt: "Custom Putters - Happy Daze Golf",
         },
       ],
+      url: "https://www.happydaze.golf/custom-putters",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Custom Putters | Happy Daze Golf",
+      description:
+        "Milled to order. Built by hand. Our custom putters are made for expression—not mass production.",
+      images: ["https://www.happydaze.golf/og/custom-putters.png"],
     },
   };
 }

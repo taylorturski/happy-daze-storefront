@@ -5,6 +5,38 @@ import ProductGridIntro from "@/components/home/ProductGridIntro";
 import {getProductsByTag} from "@/lib/shopify/product";
 import {homepageContent} from "@/lib/homepageContent";
 
+import type {Metadata} from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Home | Happy Daze Golf",
+    description:
+      "Refuse the ordinary. Custom putters & lifestyle gear built for expression, not performance claims.",
+    openGraph: {
+      title: "Home | Happy Daze Golf",
+      description:
+        "Refuse the ordinary. Custom putters & lifestyle gear built for expression, not performance claims.",
+      images: [
+        {
+          url: "https://www.happydaze.golf/og/default.png",
+          width: 1200,
+          height: 630,
+          alt: "Happy Daze Golf OG Image",
+        },
+      ],
+      url: "https://www.happydaze.golf",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Home | Happy Daze Golf",
+      description:
+        "Refuse the ordinary. Custom putters & lifestyle gear built for expression, not performance claims.",
+      images: ["https://www.happydaze.golf/og/default.png"],
+    },
+  };
+}
+
 export const revalidate = 3600;
 
 const ProductGrid = dynamic(() => import("@/components/ProductGrid"));
@@ -34,27 +66,11 @@ export default async function HomePage() {
       </FullBleedImage>
 
       <QuoteRotator />
-
-      <SideBySide
-        imageSrc={origin.imageSrc}
-        alt={origin.alt}
-        title={origin.title}
-        subtitle={origin.subtitle}
-      />
-
-      <ProductGridIntro
-        title={productGridIntro.title}
-        body={productGridIntro.body}
-        cta={productGridIntro.cta}>
+      <SideBySide {...origin} />
+      <ProductGridIntro {...productGridIntro}>
         <ProductGrid products={products} />
       </ProductGridIntro>
-
-      <FeatureBlock
-        lines={featureBlock.lines}
-        cta={featureBlock.cta}
-        products={hats}
-      />
-
+      <FeatureBlock {...featureBlock} products={hats} />
       <StoryBlock />
     </div>
   );

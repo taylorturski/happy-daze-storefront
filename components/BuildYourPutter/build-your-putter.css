@@ -1,18 +1,36 @@
-/* /components/BuildYourPutter/build-your-putter.css */
-
 .builder-wrapper {
   display: flex;
   flex-direction: column;
   height: 90vh;
   background: black;
   font-family: "Pitch Sans", sans-serif;
-  overflow: hidden; /* don't let it leak scroll to body */
 }
 
 .builder-scroll {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  position: relative;
+
+  /* Hide native scrollbars */
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.builder-scroll::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.builder-scroll::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 100%;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0), transparent);
+  pointer-events: none;
+  z-index: 10;
 }
 
 .builder-footer {
@@ -21,5 +39,8 @@
   background: black;
   border-top: 2px solid white;
   z-index: 50;
-  padding: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }

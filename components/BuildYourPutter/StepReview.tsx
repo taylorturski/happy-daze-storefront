@@ -60,7 +60,7 @@ export default function StepReview({onBack}: {onBack: () => void}) {
                 <div
                   key={step}
                   className="border-2 border-[#ACFF9B] flex flex-col">
-                  <div className="w-full aspect-[3/2] overflow-hidden bg-black">
+                  <div className="w-full aspect-[4/2] overflow-hidden bg-black">
                     <Image
                       src={selection.image}
                       alt={selection.label}
@@ -85,17 +85,6 @@ export default function StepReview({onBack}: {onBack: () => void}) {
               );
             })}
           </div>
-        </div>
-      </div>
-
-      <div className="builder-footer">
-        <div className="max-w-screen-lg mx-auto flex justify-between items-center">
-          <button
-            onClick={onBack}
-            className="bg-white font-vt text-md tracking-wider uppercase text-black px-4 py-2 font-bold border-2 border-black">
-            Back
-          </button>
-          <StepCheckout />
         </div>
       </div>
     </div>

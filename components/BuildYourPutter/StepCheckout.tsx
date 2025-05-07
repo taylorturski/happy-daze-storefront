@@ -85,7 +85,7 @@ export default function StepCheckout() {
   };
 
   return (
-    <div className="w-1/2 sm:w-auto">
+    <div className="w-full sm:w-auto max-w-[240px]">
       <button
         disabled={loading || !allStepsSelected}
         onClick={handleAddToCart}

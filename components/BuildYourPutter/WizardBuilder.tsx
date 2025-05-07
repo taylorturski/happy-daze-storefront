@@ -3,12 +3,13 @@
 import {useContext, useState} from "react";
 import {BuildContext} from "./BuildContext";
 import StepSelector from "./StepSelector";
+import StepCheckout from "./StepCheckout";
 import StepReview from "./StepReview";
 import Overview from "./Overview";
 import {Step} from "./BuildContext";
 import "./build-your-putter.css";
 
-const steps: (Step | "overview" | "review")[] = [
+const steps: Step[] = [
   "overview",
   "material",
   "headshape",
@@ -36,35 +37,35 @@ export default function WizardBuilder() {
   };
 
   const isNextDisabled =
-    typeof step === "string" &&
-    step !== "overview" &&
-    step !== "review" &&
-    !selections[step];
+    step !== "overview" && step !== "review" && !selections[step];
 
   return (
     <div className="builder-wrapper">
-      <div className="builder-scroll">
-        <div className="max-w-screen-lg mx-auto sm:px-8">
+      <div className="builder-scroll pt-[20px] sm:pt-0">
+        <div className="w-full max-w-[1000px] mx-auto">
           {step === "overview" && <Overview />}
-          {typeof step === "string" &&
-            step !== "overview" &&
-            step !== "review" && <StepSelector step={step} />}
+          {step !== "overview" && step !== "review" && (
+            <StepSelector step={step} />
+          )}
           {step === "review" && <StepReview onBack={handleBack} />}
         </div>
       </div>
 
-      {step !== "review" && (
-        <div className="builder-footer">
-          <div className="max-w-screen-lg mx-auto flex justify-between items-center">
-            {!isFirst ? (
-              <button
-                onClick={handleBack}
-                className="bg-white text-md font-vt uppercase tracking-wider text-black px-4 py-2 font-bold border-2 border-black">
-                Back
-              </button>
-            ) : (
-              <div />
-            )}
+      <div className="builder-footer">
+        <div className="max-w-screen-lg mx-auto flex justify-between items-center">
+          {!isFirst ? (
+            <button
+              onClick={handleBack}
+              className="bg-white text-md font-vt uppercase tracking-wider text-black px-4 py-2 font-bold border-2 border-black">
+              Back
+            </button>
+          ) : (
+            <div />
+          )}
+
+          {step === "review" ? (
+            <StepCheckout />
+          ) : (
             <button
               onClick={handleNext}
               disabled={isNextDisabled}
@@ -75,9 +76,9 @@ export default function WizardBuilder() {
               }`}>
               Next
             </button>
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

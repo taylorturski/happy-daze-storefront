@@ -107,7 +107,7 @@ export default function StepSelector({step}: StepSelectorProps) {
               className={`cursor-pointer border-2 ${
                 selected === option.id ? "border-[#ACFF9B]" : "border-white"
               }`}>
-              <div className="aspect-[1/1] sm:aspect-[4/2] w-full overflow-hidden bg-black">
+              <div className="aspect-[4/2] w-full overflow-hidden bg-black">
                 <Image
                   src={option.image}
                   alt={option.label}
@@ -116,7 +116,7 @@ export default function StepSelector({step}: StepSelectorProps) {
                   className="w-full h-full object-cover object-center"
                 />
               </div>
-              <div className="text-center text-xs sm:text-sm font-medium py-2 bg-black">
+              <div className="text-center text-xs sm:text-sm font-medium py-0.5 bg-black">
                 {option.label.replace(/\s*\(\+\$\d+\)/g, "")}
               </div>
             </div>

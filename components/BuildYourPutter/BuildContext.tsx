@@ -4,12 +4,14 @@ import {createContext, useEffect, useState} from "react";
 import {useSearchParams} from "next/navigation";
 
 export type Step =
+  | "overview"
   | "material"
   | "headshape"
   | "finish"
   | "face"
   | "neck"
-  | "alignment";
+  | "alignment"
+  | "review";
 
 type BuildSelections = {
   [key in Step]?: string;

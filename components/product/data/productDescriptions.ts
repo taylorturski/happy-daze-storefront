@@ -68,6 +68,7 @@ const productDescriptions: Record<string, ProductDescription> = {
         <li>Custom Happy Daze embroidery (by us, by hand, jk)</li>
         <li>Worn by at least 3 guys who claim to have shot 68 once</li>
       </ul>
+      <p><strong>Note:</strong> This is on pre-order. Hats are expected to ship in mid to late June!</p>
     `,
   },
 };

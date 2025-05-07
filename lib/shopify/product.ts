@@ -1,25 +1,62 @@
 import {shopifyFetch} from "./client";
+import type {Product} from "@/types/product";
 
-export async function getAllProducts() {
+type ShopifyResponse = {
+  products: {
+    edges: {
+      node: {
+        id: string;
+        title: string;
+        handle: string;
+        priceRange: {
+          minVariantPrice: {
+            amount: string;
+            currencyCode: string;
+          };
+        };
+        images: {
+          edges: {
+            node: {
+              url: string;
+              altText: string | null;
+            };
+          }[];
+        };
+        variants: {
+          edges: {
+            node: {
+              id: string;
+              title: string;
+              price: string;
+              selectedOptions: {
+                name: string;
+                value: string;
+              }[];
+            };
+          }[];
+        };
+        tags: string[];
+        descriptionHtml: string;
+      };
+    }[];
+  };
+};
+
+export async function getAllProducts(): Promise<Product[]> {
   const query = `
     query Products {
-      products(first: 10) {
+      products(first: 50, query: "published_status:published") {
         edges {
           node {
             id
             title
             handle
+            descriptionHtml
+            tags
             priceRange {
               minVariantPrice {
                 amount
                 currencyCode
-              }
-            }
-            variants(first: 1) {
-              edges {
-                node {
-                  id
-                }
               }
             }
             images(first: 10) {
@@ -30,37 +67,44 @@ export async function getAllProducts() {
                 }
               }
             }
+            variants(first: 10) {
+              edges {
+                node {
+                  id
+                  title
+                  price
+                  selectedOptions {
+                    name
+                    value
+                  }
+                }
+              }
+            }
           }
         }
       }
     }
   `;
 
-  const data = await shopifyFetch(query);
+  const res: ShopifyResponse = await shopifyFetch(query);
+  const edges = res.products.edges;
 
-  return data.products.edges.map(
-    ({
-      node,
-    }: {
-      node: {
-        id: string;
-        title: string;
-        handle: string;
-        images: {edges: {node: {url: string; altText: string | null}}[]};
-        priceRange: {minVariantPrice: {amount: string; currencyCode: string}};
-      };
-    }) => ({
-      id: node.id,
-      title: node.title,
-      handle: node.handle,
-      images:
-        node.images.edges.map(
-          (edge: {node: {url: string; altText: string | null}}) => edge.node
-        ) || [],
-      price: node.priceRange.minVariantPrice.amount, // ← clean float string
-      currency: node.priceRange.minVariantPrice.currencyCode,
-    })
-  );
+  return edges.map(({node}) => ({
+    id: node.id,
+    title: node.title,
+    handle: node.handle,
+    description: node.descriptionHtml,
+    price: node.priceRange.minVariantPrice.amount,
+    currency: node.priceRange.minVariantPrice.currencyCode,
+    images: node.images.edges.map((edge) => edge.node),
+    tags: node.tags,
+    variants: node.variants.edges.map((edge) => ({
+      id: edge.node.id,
+      title: edge.node.title,
+      price: edge.node.price,
+      selectedOptions: edge.node.selectedOptions,
+    })),
+  }));
 }
 
 export async function getProductsByTag(tag: string) {

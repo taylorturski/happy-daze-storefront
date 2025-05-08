@@ -46,6 +46,10 @@ export default function StepCheckout() {
       return;
     }
 
+    window.gtag?.("event", "builder_add_to_cart", {
+      completed: true,
+    });
+
     setLoading(true);
     triggerCartFeedback(e);
 
@@ -69,16 +73,32 @@ export default function StepCheckout() {
 
       if (data?.cartId) localStorage.setItem("cartId", data.cartId);
       if (data?.url) localStorage.setItem("checkoutUrl", data.url);
+
       await fetchCart();
 
+      window.gtag?.("event", "builder_add_to_cart_success", {
+        product_id: data.variantId,
+        cart_id: data.cartId,
+      });
+
       setAdded(true);
+
       setTimeout(() => {
+        window.gtag?.("event", "checkout_redirected", {
+          cart_id: data.cartId || "unknown",
+        });
+
         setAdded(false);
         window.location.href = "/";
       }, 2000);
     } catch (err: unknown) {
-      if (err instanceof Error) setError(err.message);
-      else setError("Unexpected error.");
+      const errorMessage =
+        err instanceof Error ? err.message : "Unexpected error.";
+      setError(errorMessage);
+
+      window.gtag?.("event", "builder_add_to_cart_error", {
+        error_message: errorMessage,
+      });
     } finally {
       setLoading(false);
     }

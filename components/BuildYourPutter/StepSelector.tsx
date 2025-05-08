@@ -62,6 +62,17 @@ export default function StepSelector({step}: StepSelectorProps) {
 
   const handleSelect = (id: string) => {
     setSelection(step, id);
+
+    const selectedOption = options.find((opt) => opt.id === id);
+
+    window.gtag?.("event", "builder_option_selected", {
+      step,
+      option_id: id,
+      option_label: selectedOption?.label ?? "",
+      ...(step === "finish" && {
+        material: selections.material ?? "unknown",
+      }),
+    });
   };
 
   const getGridClass = () => {

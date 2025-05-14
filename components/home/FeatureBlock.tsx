@@ -22,19 +22,19 @@ export default function FeatureBlock({
   const image = product.images?.[0];
 
   return (
-    <section className="w-full bg-transparent text-white font-pitch py-16 px-4 sm:px-6">
+    <section className="w-full bg-transparent text-white font-pitch py-8 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <div className="lg:col-span-6">
+        <div className="lg:col-span-6 flex justify-center">
           {image && (
-            <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] overflow-hidden">
+            <div className="w-[350px] h-[350px] flex justify-center items-center">
               <Image
                 src={image.url}
                 alt={image.altText || product.title}
-                fill
+                width={400}
+                height={400}
                 loading="lazy"
-                quality={60}
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-cover object-center"
+                quality={100}
+                className="object-center object-contain"
               />
             </div>
           )}

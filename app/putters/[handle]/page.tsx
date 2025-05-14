@@ -43,6 +43,21 @@ export default function ProductPage() {
     router.push(`/build-your-putter?headshape=${shape}`);
   };
 
+  useEffect(() => {
+    if (!product) return;
+
+    window.gtag?.("event", "view_item", {
+      items: [
+        {
+          item_id: product.id,
+          item_name: product.title,
+          price: parseFloat(product.price),
+          item_category: product.tags?.[0] || "Other",
+        },
+      ],
+    });
+  }, [product]);
+
   const onAddToCart = async () => {
     if (!product) return;
 

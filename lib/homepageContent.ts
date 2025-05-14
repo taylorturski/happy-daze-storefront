@@ -7,8 +7,8 @@ export const homepageContent = {
   origin: {
     imageSrc: "/images/origin-stamp.jpg",
     alt: "Happy Daze origin stamp",
-    title: "We didn't plan on building a brand.",
-    subtitle: "We just make putters that feel right.",
+    title: "We’re not just selling putters.",
+    subtitle: "We’re building something that feels personal.",
   },
   productGridIntro: {
     title: "Custom Blanks",

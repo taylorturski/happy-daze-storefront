@@ -6,6 +6,7 @@ import {useCart} from "@/app/context/CartContext";
 import {Product} from "@/types/product";
 import Image from "next/image";
 import parse from "html-react-parser";
+import AddToCartButton from "@/components/AddToCartButton";
 import productDescriptions from "@/components/product/data/productDescriptions";
 
 const aliasMap: Record<string, string> = {
@@ -127,14 +128,14 @@ export default function MerchProductPage() {
             </div>
           )}
 
-          <button
-            onClick={(e) => {
-              triggerCartFeedback(e);
-              onAddToCart();
-            }}
-            className="border-2 font-vt uppercase text-md border-black mt-3 px-4 py-2 font-bold text-black bg-white w-fit">
-            {added ? "✓ Added" : "Add to Cart"}
-          </button>
+          <AddToCartButton
+            id={product.variants?.[0]?.id || product.id}
+            title={product.title}
+            price={parseFloat(
+              product.variants?.[0]?.price?.split(" ")[0] || product.price
+            )}
+            image={product.images?.[0]?.url || ""}
+          />
         </div>
       </div>
     </div>

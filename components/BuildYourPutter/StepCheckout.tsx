@@ -3,6 +3,7 @@
 import {useContext, useState} from "react";
 import {BuildContext} from "./BuildContext";
 import {useCart} from "@/app/context/CartContext";
+import AddToCartButton from "@/components/AddToCartButton";
 
 const REQUIRED_STEPS = [
   "material",
@@ -12,15 +13,6 @@ const REQUIRED_STEPS = [
   "neck",
   "alignment",
 ] as const;
-
-function triggerCartFeedback(e: React.MouseEvent) {
-  const rect = (e.target as HTMLElement).getBoundingClientRect();
-  const x = rect.left + rect.width / 2;
-  const y = rect.top;
-  window.dispatchEvent(
-    new CustomEvent("add-to-cart-feedback", {detail: {x, y}})
-  );
-}
 
 export default function StepCheckout() {
   const {selections} = useContext(BuildContext);
@@ -51,7 +43,14 @@ export default function StepCheckout() {
     });
 
     setLoading(true);
-    triggerCartFeedback(e);
+    setAdded(true);
+
+    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top;
+    window.dispatchEvent(
+      new CustomEvent("add-to-cart-feedback", {detail: {x, y}})
+    );
 
     try {
       const cartId = localStorage.getItem("cartId");
@@ -71,26 +70,15 @@ export default function StepCheckout() {
         throw new Error(data?.error || "Failed to match product.");
       }
 
-      if (data?.cartId) localStorage.setItem("cartId", data.cartId);
-      if (data?.url) localStorage.setItem("checkoutUrl", data.url);
-
-      await fetchCart();
+      if (data.cartId) localStorage.setItem("cartId", data.cartId);
+      if (data.url) localStorage.setItem("checkoutUrl", data.url);
 
       window.gtag?.("event", "builder_add_to_cart_success", {
         product_id: data.variantId,
         cart_id: data.cartId,
       });
 
-      setAdded(true);
-
-      setTimeout(() => {
-        window.gtag?.("event", "checkout_redirected", {
-          cart_id: data.cartId || "unknown",
-        });
-
-        setAdded(false);
-        window.location.href = "/";
-      }, 2000);
+      await fetchCart(); // Just wait and use real data
     } catch (err: unknown) {
       const errorMessage =
         err instanceof Error ? err.message : "Unexpected error.";
@@ -100,27 +88,25 @@ export default function StepCheckout() {
         error_message: errorMessage,
       });
     } finally {
+      setTimeout(() => setAdded(false), 2000);
       setLoading(false);
     }
   };
 
   return (
     <div className="w-full sm:w-auto max-w-[240px]">
-      <button
-        disabled={loading || !allStepsSelected}
+      <AddToCartButton
+        id="builder-temp-id"
+        title="Custom Putter"
+        price={0}
+        image=""
+        quantity={1}
+        properties={selections}
         onClick={handleAddToCart}
-        className={`px-4 py-2 font-vt tracking-wider text-md uppercase border-2 w-full sm:w-auto transition-all duration-300
-          ${
-            added
-              ? "bg-[#ACFF9B] text-black border-[#ACFF9B]"
-              : allStepsSelected
-              ? "bg-[#ACFF9B] text-black border-black"
-              : "border-white text-white opacity-30 cursor-not-allowed"
-          }
-        `}>
-        {loading ? "Adding..." : added ? "✓ Added" : "Add to Cart"}
-      </button>
-
+        disabled={loading || !allStepsSelected}
+        added={added}
+        loading={loading}
+      />
       {error && (
         <p className="text-red-500 mt-2 text-sm max-w-sm text-right">{error}</p>
       )}

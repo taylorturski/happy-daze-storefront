@@ -1,6 +1,6 @@
 "use client";
 
-import {createContext, useContext, useState, ReactNode, useEffect} from "react";
+import {createContext, useContext, useState, useEffect, ReactNode} from "react";
 
 export type CartItem = {
   lineId: string;
@@ -22,6 +22,8 @@ type CartContextType = {
   addToCart: (item: CartItem) => Promise<void>;
   removeFromCart: (id: string) => Promise<void>;
   fetchCart: () => Promise<void>;
+  setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
+  setTotal: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -88,19 +90,19 @@ export function CartProvider({children}: {children: ReactNode}) {
       throw new Error(data?.error || "Failed to add to cart");
     }
 
-    // Update latest cartId + checkoutUrl
     setCartId(data.cartId);
     setCheckoutUrl(data.url);
     localStorage.setItem("cartId", data.cartId);
     localStorage.setItem("checkoutUrl", data.url);
 
-    // 🧼 Fetch the real Shopify cart
     await fetchCart();
   };
 
   const removeFromCart = async (lineId: string) => {
     const cartId = localStorage.getItem("cartId");
     if (!cartId) return;
+
+    setCart((prev) => prev.filter((item) => item.lineId !== lineId));
 
     const res = await fetch("/api/cart", {
       method: "DELETE",
@@ -125,6 +127,8 @@ export function CartProvider({children}: {children: ReactNode}) {
         addToCart,
         removeFromCart,
         fetchCart,
+        setCart,
+        setTotal,
       }}>
       {children}
     </CartContext.Provider>

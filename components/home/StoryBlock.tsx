@@ -3,20 +3,18 @@ import React from "react";
 
 export default function StoryBlock() {
   return (
-    <section className="relative w-full h-[80svh] bg-black text-white overflow-hidden">
+    <section className="relative w-full bg-black text-white overflow-hidden pt-8 pb-8">
       <Image
         src="/images/story-block-bg.jpg"
         alt="Happy Daze origin story"
         fill
         loading="lazy"
-        quality={60}
+        quality={100}
         sizes="100vw"
         className="object-cover object-center"
       />
-
       <div className="absolute inset-0 bg-black/40 z-10" />
-
-      <div className="relative z-20 h-full flex items-center justify-center px-6">
+      <div className="relative z-20 flex items-center justify-center px-3">
         <div className="max-w-3xl text-center space-y-4 leading-relaxed text-base sm:text-lg font-pitch">
           <p>
             You know that feeling when something just fits? Not too flashy. Not

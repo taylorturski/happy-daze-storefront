@@ -14,6 +14,8 @@ type AddToCartButtonProps = {
   disabled?: boolean;
   loading?: boolean;
   added?: boolean;
+  className?: string;
+  variant?: "default" | "builder";
 };
 
 function triggerCartFeedback(e: React.MouseEvent) {
@@ -36,6 +38,8 @@ export default function AddToCartButton({
   disabled,
   loading: externalLoading,
   added: externalAdded,
+  className = "",
+  variant = "default",
 }: AddToCartButtonProps) {
   const {cart, setCart, addToCart} = useCart();
   const [internalLoading, setInternalLoading] = useState(false);
@@ -46,12 +50,11 @@ export default function AddToCartButton({
 
   const handleClick = async (e: React.MouseEvent) => {
     if (onClick) {
-      return onClick(e); // delegate to external logic
+      return onClick(e);
     }
 
     const lineId = `${id}-${Date.now()}`;
 
-    // Optimistic UI update
     const optimisticItem = {
       lineId,
       id,
@@ -82,12 +85,16 @@ export default function AddToCartButton({
     <button
       onClick={handleClick}
       disabled={disabled || loading}
-      className={`mt-4 font-vt uppercase tracking-wider text-md border-2 px-3 py-1 font-bold transition-all duration-300
+      className={`
+        font-vt uppercase tracking-wider text-md border-2 px-4 py-2 font-bold transition-all duration-300
         ${
           added
             ? "bg-[#ACFF9B] text-black border-[#ACFF9B]"
             : "bg-white text-black border-black hover:bg-black hover:text-white"
-        }`}>
+        }
+        ${variant === "builder" ? "mt-0 ml-auto" : "mt-4"}
+        ${className}
+      `}>
       {loading ? "Adding..." : added ? "✓ Added" : "Add to Cart"}
     </button>
   );

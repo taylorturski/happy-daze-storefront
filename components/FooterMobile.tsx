@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function FooterMobile() {
   return (
-    <footer className="block sm:hidden w-full text-white font-pitch text-sm mt-16 overflow-x-clip">
+    <footer className="block sm:hidden w-full text-white font-pitch text-sm overflow-x-clip">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-end">
         {/* Left side links */}
         <div className="flex flex-col gap-2 text-left">

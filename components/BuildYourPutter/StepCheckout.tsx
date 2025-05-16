@@ -38,9 +38,7 @@ export default function StepCheckout() {
       return;
     }
 
-    window.gtag?.("event", "builder_add_to_cart", {
-      completed: true,
-    });
+    window.gtag?.("event", "builder_add_to_cart", {completed: true});
 
     setLoading(true);
     setAdded(true);
@@ -78,7 +76,7 @@ export default function StepCheckout() {
         cart_id: data.cartId,
       });
 
-      await fetchCart(); // Just wait and use real data
+      await fetchCart();
     } catch (err: unknown) {
       const errorMessage =
         err instanceof Error ? err.message : "Unexpected error.";
@@ -94,7 +92,7 @@ export default function StepCheckout() {
   };
 
   return (
-    <div className="w-full sm:w-auto max-w-[240px]">
+    <div className="builder-footer-content w-full max-w-screen-lg mx-auto flex justify-end items-center">
       <AddToCartButton
         id="builder-temp-id"
         title="Custom Putter"
@@ -106,6 +104,7 @@ export default function StepCheckout() {
         disabled={loading || !allStepsSelected}
         added={added}
         loading={loading}
+        className="!mt-0"
       />
       {error && (
         <p className="text-red-500 mt-2 text-sm max-w-sm text-right">{error}</p>

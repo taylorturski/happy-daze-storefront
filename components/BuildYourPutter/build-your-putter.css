@@ -1,24 +1,23 @@
 .builder-wrapper {
   display: flex;
   flex-direction: column;
-  height: 90vh;
+  flex-grow: 1;
+  min-height: 100%;
   background: black;
   font-family: "Pitch Sans", sans-serif;
 }
 
 .builder-scroll {
-  flex: 1;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  position: relative;
-
-  /* Hide native scrollbars */
-  -ms-overflow-style: none; /* IE/Edge */
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
 }
 
 .builder-scroll::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: none;
 }
 
 .builder-scroll::after {
@@ -34,13 +33,18 @@
 }
 
 .builder-footer {
-  position: sticky;
-  bottom: 0;
+  width: 100%;
+  padding: 1rem 0.75rem 0.75rem;
   background: black;
   border-top: 2px solid white;
-  z-index: 50;
-  padding-top: 1rem;
-  padding-bottom: 0.5rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  display: flex;
+  justify-content: center; /* center the inner layout */
+}
+
+.builder-footer-inner {
+  max-width: 1000px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

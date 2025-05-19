@@ -47,7 +47,7 @@ export default function ClientShell({children}: {children: ReactNode}) {
               <Sidebar />
             </aside>
 
-            <main className="flex flex-col flex-1 min-h-0 sm:pl-0 min-w-0 bg-transparent">
+            <main className="flex flex-col flex-1 min-h-[calc(100vh-80px)] min-w-0 bg-transparent">
               <div className="sticky top-0 z-50 sm:hidden flex justify-between items-center border-b-2 border-black px-4 py-3 bg-black">
                 <Link href="/" className="block w-[160px] h-[60px] relative">
                   <Image

@@ -83,7 +83,7 @@ export default function WizardBuilder() {
 
   return (
     <div className="builder-wrapper">
-      <div className="builder-scroll pt-[20px] sm:pt-0">
+      <div className="builder-scroll sm:pt-0">
         <div className="w-full max-w-[1000px] mx-auto">
           {step === "overview" && <Overview />}
           {step !== "overview" && step !== "review" && (
@@ -92,9 +92,8 @@ export default function WizardBuilder() {
           {step === "review" && <StepReview onBack={handleBack} />}
         </div>
       </div>
-
       <div className="builder-footer">
-        <div className="max-w-screen-lg mx-auto flex justify-between items-center">
+        <div className="builder-footer-inner">
           {!isFirst ? (
             <button
               onClick={handleBack}

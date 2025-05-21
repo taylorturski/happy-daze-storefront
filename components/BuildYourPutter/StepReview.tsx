@@ -25,11 +25,6 @@ const stepMap: {[key: string]: BuildOption[]} = {
 export default function StepReview({onBack}: {onBack: () => void}) {
   const {selections} = useContext(BuildContext);
 
-  const getOption = (step: string, id: string | null) => {
-    const options = stepMap[step];
-    return options?.find((opt) => opt.id === id);
-  };
-
   const steps: (keyof typeof selections)[] = [
     "material",
     "headshape",
@@ -38,6 +33,11 @@ export default function StepReview({onBack}: {onBack: () => void}) {
     "neck",
     "alignment",
   ];
+
+  const getOption = (step: string, id: string | null) => {
+    const options = stepMap[step];
+    return options?.find((opt) => opt.id === id);
+  };
 
   return (
     <div className="builder-wrapper">
@@ -49,7 +49,8 @@ export default function StepReview({onBack}: {onBack: () => void}) {
             <em>you</em>. Each order comes with a headcover, grip, and shaft cut
             to your length. We&apos;ll get those details after checkout. :)
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6">
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6 mb-6">
             {steps.map((step) => {
               const selection = getOption(
                 step,

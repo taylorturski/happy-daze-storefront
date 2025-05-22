@@ -69,6 +69,27 @@ export function CartProvider({children}: {children: ReactNode}) {
       localStorage.getItem("subscribed") === "true" ||
       localStorage.getItem("emailSubscribed") === "true";
 
+    const hasBuilderItems = data.cart.some(
+      (item: CartItem) =>
+        item.properties?.headshape ||
+        item.properties?.material ||
+        item.title.toLowerCase().includes("putter")
+    );
+
+    if (!isSubscribed && hasBuilderItems) {
+      await fetch("/api/cart", {
+        method: "DELETE",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({cartId: localCartId, lineId: "ALL"}),
+      });
+
+      localStorage.removeItem("cartId");
+      localStorage.removeItem("checkoutUrl");
+      setCart([]);
+      setTotal(0);
+      return;
+    }
+
     const discountPercent = parseFloat(
       localStorage.getItem("discountPercent") ||
         (localStorage.getItem("happyDazeDiscount") === "HAPPY10" ? "10" : "0")

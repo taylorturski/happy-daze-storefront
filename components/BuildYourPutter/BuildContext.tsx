@@ -17,23 +17,42 @@ type BuildSelections = {
   [key in Step]?: string;
 };
 
-type BuildContextType = {
+export type BuildContextType = {
   selections: BuildSelections;
   setSelection: (step: Step, value: string) => void;
+  subscribed: boolean;
+  setSubscribed: (v: boolean) => void;
 };
 
 export const BuildContext = createContext<BuildContextType>({
   selections: {},
   setSelection: () => {},
+  subscribed: false,
+  setSubscribed: () => {},
 });
 
 export function BuildProvider({children}: {children: React.ReactNode}) {
   const [selections, setSelections] = useState<BuildSelections>({});
+  const [subscribed, setSubscribed] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("emailSubscribed") === "true";
+    }
+    return false;
+  });
+
   const searchParams = useSearchParams();
 
   const setSelection = (step: Step, value: string) => {
     setSelections((prev) => ({...prev, [step]: value}));
   };
+
+  useEffect(() => {
+    // Restore subscribed flag on first mount
+    if (typeof window !== "undefined") {
+      const isSubbed = localStorage.getItem("subscribed") === "true";
+      setSubscribed(isSubbed);
+    }
+  }, []);
 
   useEffect(() => {
     const headshapeParam = searchParams.get("headshape");
@@ -44,7 +63,8 @@ export function BuildProvider({children}: {children: React.ReactNode}) {
   }, [searchParams]);
 
   return (
-    <BuildContext.Provider value={{selections, setSelection}}>
+    <BuildContext.Provider
+      value={{selections, setSelection, subscribed, setSubscribed}}>
       {children}
     </BuildContext.Provider>
   );

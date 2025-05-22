@@ -89,7 +89,7 @@ export default function ClientShell({children}: {children: ReactNode}) {
           </div>
 
           {!isBuilder && <FooterDesktop />}
-          <EmailPopup />
+          {/* <EmailPopup /> */}
         </div>
         <AddToCartFeedback />
       </CartProvider>

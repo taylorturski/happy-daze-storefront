@@ -65,9 +65,13 @@ export function CartProvider({children}: {children: ReactNode}) {
 
     const data = await res.json();
 
-    const isSubscribed = localStorage.getItem("subscribed") === "true";
+    const isSubscribed =
+      localStorage.getItem("subscribed") === "true" ||
+      localStorage.getItem("emailSubscribed") === "true";
+
     const discountPercent = parseFloat(
-      localStorage.getItem("discountPercent") || "0"
+      localStorage.getItem("discountPercent") ||
+        (localStorage.getItem("happyDazeDiscount") === "HAPPY10" ? "10" : "0")
     );
 
     const enhancedCart = data.cart.map((item: CartItem) => {

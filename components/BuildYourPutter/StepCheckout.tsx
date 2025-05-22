@@ -1,6 +1,6 @@
 "use client";
 
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {BuildContext} from "./BuildContext";
 import {useCart} from "@/app/context/CartContext";
 import AddToCartButton from "@/components/AddToCartButton";
@@ -19,10 +19,15 @@ export default function StepCheckout() {
   const {selections, subscribed} = useContext(BuildContext);
   const {fetchCart} = useCart();
 
+  const [hydrated, setHydrated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [added, setAdded] = useState(false);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   const missingSteps = REQUIRED_STEPS.filter((step) => !selections[step]);
   const allStepsSelected = missingSteps.length === 0;
@@ -40,7 +45,8 @@ export default function StepCheckout() {
       return;
     }
 
-    if (!subscribed) {
+    // Avoid popup flash by waiting for hydration
+    if (hydrated && !subscribed) {
       setShowModal(true);
       return;
     }
@@ -111,6 +117,8 @@ export default function StepCheckout() {
       setLoading(false);
     }
   };
+
+  if (!hydrated) return null;
 
   return (
     <div className="w-full sm:w-auto max-w-[240px]">

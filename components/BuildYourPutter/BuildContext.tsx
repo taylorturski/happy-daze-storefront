@@ -33,12 +33,26 @@ export const BuildContext = createContext<BuildContextType>({
 
 export function BuildProvider({children}: {children: React.ReactNode}) {
   const [selections, setSelections] = useState<BuildSelections>({});
-  const [subscribed, setSubscribed] = useState(false);
+  const [subscribed, setSubscribed] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("emailSubscribed") === "true";
+    }
+    return false;
+  });
+
   const searchParams = useSearchParams();
 
   const setSelection = (step: Step, value: string) => {
     setSelections((prev) => ({...prev, [step]: value}));
   };
+
+  useEffect(() => {
+    // Restore subscribed flag on first mount
+    if (typeof window !== "undefined") {
+      const isSubbed = localStorage.getItem("subscribed") === "true";
+      setSubscribed(isSubbed);
+    }
+  }, []);
 
   useEffect(() => {
     const headshapeParam = searchParams.get("headshape");

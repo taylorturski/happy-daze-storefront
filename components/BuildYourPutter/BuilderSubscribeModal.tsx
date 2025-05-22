@@ -45,6 +45,8 @@ export default function BuilderSubscribeModal({
       });
 
       setSubscribed(true);
+      localStorage.setItem("subscribed", "true");
+      localStorage.setItem("discountPercent", "10");
       onClose();
       onSubscribeConfirm();
     } catch (err) {

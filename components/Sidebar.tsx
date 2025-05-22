@@ -7,17 +7,6 @@ import {useCart} from "@/app/context/CartContext";
 import EmailSignup from "./EmailSignup";
 import {usePathname} from "next/navigation";
 
-export type CartItem = {
-  id: string;
-  title: string;
-  price: string;
-  image: string;
-  quantity: number;
-  properties?: {
-    [key: string]: string;
-  };
-};
-
 export default function Sidebar() {
   const {cart, total, removeFromCart} = useCart();
   const [message, setMessage] = useState("");
@@ -60,16 +49,25 @@ export default function Sidebar() {
               />
               <div className="flex-1">
                 <p className="m-0 text-sm">{item.title}</p>
-                <p className="m-0 text-sm">
-                  ${Number(item.price).toFixed(2)} × {item.quantity}
-                </p>
+
+                {item.originalPrice ? (
+                  <>
+                    <p className="m-0 text-sm line-through text-gray-500">
+                      ${item.originalPrice.toFixed(2)}
+                    </p>
+                    <p className="m-0 text-sm text-[#ACFF9B] font-bold">
+                      ${item.discountedPrice?.toFixed(2)} × {item.quantity}
+                    </p>
+                  </>
+                ) : (
+                  <p className="m-0 text-sm">
+                    ${item.price.toFixed(2)} × {item.quantity}
+                  </p>
+                )}
 
                 {item.properties?.headshape && (
                   <p className="text-sm text-gray-400">
-                    Custom:{" "}
-                    {item.properties.material
-                      ? `${item.properties.headshape}`
-                      : item.properties.headshape}
+                    Custom: {item.properties.headshape}
                   </p>
                 )}
               </div>

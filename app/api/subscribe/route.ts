@@ -5,10 +5,17 @@ const SHOPIFY_STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN!;
 const SHOPIFY_API_VERSION = process.env.SHOPIFY_API_VERSION!;
 
 export async function POST(req: Request) {
-  const {email} = await req.json();
+  const body = await req.json();
 
-  if (!email) {
-    return NextResponse.json({error: "Missing email"}, {status: 400});
+  const email = body.email?.trim();
+  const firstName = body.firstName?.trim();
+  const lastName = body.lastName?.trim();
+
+  if (!email || !firstName || !lastName) {
+    return NextResponse.json(
+      {error: "Missing email, first name, or last name"},
+      {status: 400}
+    );
   }
 
   const endpoint = `https://${SHOPIFY_STORE_DOMAIN}/admin/api/${SHOPIFY_API_VERSION}/customers.json`;
@@ -23,6 +30,8 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         customer: {
           email,
+          first_name: firstName,
+          last_name: lastName,
           tags: "newsletter",
           email_marketing_consent: {
             state: "subscribed",
@@ -50,7 +59,8 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({success: true});
-  } catch {
+  } catch (error) {
+    console.error("Subscribe API error:", error);
     return NextResponse.json({error: "Unexpected error"}, {status: 500});
   }
 }

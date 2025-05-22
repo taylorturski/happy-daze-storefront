@@ -125,7 +125,7 @@ export async function GET(req: Request) {
   }
 }
 
-// DELETE: remove a line item from the cart
+// DELETE: remove a line item or clear entire cart
 export async function DELETE(req: Request) {
   const {cartId, lineId} = await req.json();
 
@@ -134,6 +134,36 @@ export async function DELETE(req: Request) {
       {error: "Missing cartId or lineId"},
       {status: 400, headers: noCacheHeaders}
     );
+  }
+
+  // Fetch all line IDs if we want to clear the whole cart
+  let lineIdsToRemove = [lineId];
+
+  if (lineId === "ALL") {
+    const fetchQuery = `
+      query GetCartLineIds($cartId: ID!) {
+        cart(id: $cartId) {
+          lines(first: 50) {
+            edges {
+              node {
+                id
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    try {
+      const res = await shopifyFetch(fetchQuery, {cartId});
+      const edges = res.cart?.lines?.edges || [];
+      lineIdsToRemove = edges.map((edge: {node: {id: string}}) => edge.node.id);
+    } catch {
+      return NextResponse.json(
+        {error: "Failed to fetch cart lines"},
+        {status: 500, headers: noCacheHeaders}
+      );
+    }
   }
 
   const mutation = `
@@ -185,7 +215,7 @@ export async function DELETE(req: Request) {
 
   const variables = {
     cartId,
-    lineIds: [lineId],
+    lineIds: lineIdsToRemove,
   };
 
   try {
@@ -195,7 +225,7 @@ export async function DELETE(req: Request) {
 
     if (!cart) {
       return NextResponse.json(
-        {error: error?.message || "Failed to remove item"},
+        {error: error?.message || "Failed to remove item(s)"},
         {status: 500, headers: noCacheHeaders}
       );
     }
@@ -246,7 +276,7 @@ export async function DELETE(req: Request) {
     );
   } catch {
     return NextResponse.json(
-      {error: "Failed to remove item"},
+      {error: "Failed to remove items"},
       {status: 500, headers: noCacheHeaders}
     );
   }

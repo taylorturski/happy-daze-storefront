@@ -27,8 +27,7 @@ export default function EmailSignup() {
   };
 
   return (
-    <div className="mt-4 md:pl-3 w-full">
-      <h3 className="text-lg font-bold uppercase">UNDERGROUND GC</h3>
+    <div className="mt-0 md:pl-3 w-full">
       <p className="text-sm font-bold animate-blink-green">
         Get a discount code :)
       </p>

@@ -34,7 +34,7 @@ export default function Sidebar() {
       </Link>
 
       <div className="md:pl-3">
-        <h3 className="mb-2 text-lg font-bold">MY CART</h3>
+        <h3 className="mb-0 text-lg font-bold">MY CART</h3>
         {!cart || cart.length === 0 ? (
           <p className="text-xs mb-2">No items yet.</p>
         ) : (
@@ -92,7 +92,7 @@ export default function Sidebar() {
       </div>
 
       <div className="md:pl-3">
-        <h3 className="mb-2 text-lg font-bold">CATEGORIES</h3>
+        <h3 className="mb-0 text-lg font-bold">CATEGORIES</h3>
         <nav aria-label="Sidebar navigation" className="flex flex-col gap-1">
           <Link
             href="/custom-putters"

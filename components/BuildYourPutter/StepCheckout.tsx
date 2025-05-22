@@ -1,9 +1,10 @@
 "use client";
 
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {BuildContext} from "./BuildContext";
 import {useCart} from "@/app/context/CartContext";
 import AddToCartButton from "@/components/AddToCartButton";
+import BuilderSubscribeModal from "./BuilderSubscribeModal";
 
 const REQUIRED_STEPS = [
   "material",
@@ -15,17 +16,23 @@ const REQUIRED_STEPS = [
 ] as const;
 
 export default function StepCheckout() {
-  const {selections} = useContext(BuildContext);
+  const {selections, subscribed} = useContext(BuildContext);
   const {fetchCart} = useCart();
 
+  const [hydrated, setHydrated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [added, setAdded] = useState(false);
   const [error, setError] = useState("");
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   const missingSteps = REQUIRED_STEPS.filter((step) => !selections[step]);
   const allStepsSelected = missingSteps.length === 0;
 
-  const handleAddToCart = async (e: React.MouseEvent) => {
+  const handleAddToCart = (e: React.MouseEvent) => {
     setError("");
 
     if (!allStepsSelected) {
@@ -38,17 +45,31 @@ export default function StepCheckout() {
       return;
     }
 
-    window.gtag?.("event", "builder_add_to_cart", {completed: true});
+    // Avoid popup flash by waiting for hydration
+    if (hydrated && !subscribed) {
+      setShowModal(true);
+      return;
+    }
+
+    proceedToAddToCart(e);
+  };
+
+  const proceedToAddToCart = async (e?: React.MouseEvent) => {
+    window.gtag?.("event", "builder_add_to_cart", {
+      completed: true,
+    });
 
     setLoading(true);
     setAdded(true);
 
-    const rect = (e.target as HTMLElement).getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top;
-    window.dispatchEvent(
-      new CustomEvent("add-to-cart-feedback", {detail: {x, y}})
-    );
+    if (e) {
+      const rect = (e.target as HTMLElement).getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top;
+      window.dispatchEvent(
+        new CustomEvent("add-to-cart-feedback", {detail: {x, y}})
+      );
+    }
 
     try {
       const cartId = localStorage.getItem("cartId");
@@ -71,12 +92,19 @@ export default function StepCheckout() {
       if (data.cartId) localStorage.setItem("cartId", data.cartId);
       if (data.url) localStorage.setItem("checkoutUrl", data.url);
 
+      await fetchCart();
+
       window.gtag?.("event", "builder_add_to_cart_success", {
         product_id: data.variantId,
         cart_id: data.cartId,
       });
 
-      await fetchCart();
+      setTimeout(() => {
+        window.gtag?.("event", "checkout_redirected", {
+          cart_id: data.cartId || "unknown",
+        });
+        setAdded(false);
+      }, 2000);
     } catch (err: unknown) {
       const errorMessage =
         err instanceof Error ? err.message : "Unexpected error.";
@@ -86,13 +114,14 @@ export default function StepCheckout() {
         error_message: errorMessage,
       });
     } finally {
-      setTimeout(() => setAdded(false), 2000);
       setLoading(false);
     }
   };
 
+  if (!hydrated) return null;
+
   return (
-    <div className="builder-footer-content w-full max-w-screen-lg mx-auto flex justify-end items-center">
+    <div className="w-full sm:w-auto max-w-[240px]">
       <AddToCartButton
         id="builder-temp-id"
         title="Custom Putter"
@@ -104,10 +133,24 @@ export default function StepCheckout() {
         disabled={loading || !allStepsSelected}
         added={added}
         loading={loading}
-        className="!mt-0"
       />
+
       {error && (
         <p className="text-red-500 mt-2 text-sm max-w-sm text-right">{error}</p>
+      )}
+
+      {showModal && (
+        <BuilderSubscribeModal
+          onClose={() => setShowModal(false)}
+          onSkipConfirm={() => {
+            setShowModal(false);
+            proceedToAddToCart();
+          }}
+          onSubscribeConfirm={() => {
+            setShowModal(false);
+            proceedToAddToCart();
+          }}
+        />
       )}
     </div>
   );

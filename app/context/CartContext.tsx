@@ -12,6 +12,8 @@ export type CartItem = {
   properties?: {
     [key: string]: string;
   };
+  originalPrice?: number;
+  discountedPrice?: number;
 };
 
 type CartContextType = {
@@ -59,11 +61,40 @@ export function CartProvider({children}: {children: ReactNode}) {
     }
 
     const res = await fetch("/api/cart?cartId=" + localCartId);
-    if (res.ok) {
-      const data = await res.json();
-      setCart(data.cart);
-      setTotal(data.total);
-    }
+    if (!res.ok) return;
+
+    const data = await res.json();
+
+    const isSubscribed =
+      localStorage.getItem("subscribed") === "true" ||
+      localStorage.getItem("emailSubscribed") === "true";
+
+    const discountPercent = parseFloat(
+      localStorage.getItem("discountPercent") ||
+        (localStorage.getItem("happyDazeDiscount") === "HAPPY10" ? "10" : "0")
+    );
+
+    const enhancedCart = data.cart.map((item: CartItem) => {
+      const originalPrice = item.price;
+      const discountedPrice = isSubscribed
+        ? Number((originalPrice * (1 - discountPercent / 100)).toFixed(2))
+        : originalPrice;
+
+      return {
+        ...item,
+        originalPrice: isSubscribed ? originalPrice : undefined,
+        discountedPrice,
+      };
+    });
+
+    const calculatedTotal = enhancedCart.reduce(
+      (sum: number, item: CartItem) =>
+        sum + (item.discountedPrice ?? item.price) * item.quantity,
+      0
+    );
+
+    setCart(enhancedCart);
+    setTotal(Number(calculatedTotal.toFixed(2)));
   };
 
   const addToCart = async (item: CartItem) => {

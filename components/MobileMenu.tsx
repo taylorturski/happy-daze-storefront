@@ -41,7 +41,6 @@ export default function MobileMenu() {
 
       {open && (
         <div className="fixed inset-0 bg-white text-black z-50 flex flex-col p-6 border-t-4 border-black font-pitch overflow-y-auto">
-          {/* Header row with logo and close button */}
           <div className="flex justify-between items-center mb-6">
             <Link
               href="/"
@@ -62,9 +61,7 @@ export default function MobileMenu() {
             </button>
           </div>
 
-          <nav
-            aria-label="Mobile navigation"
-            className="flex flex-col gap-4 text-lg font-bold uppercase mb-6">
+          <nav className="flex flex-col gap-4 text-lg font-bold uppercase mb-6">
             <Link href="/custom-putters" onClick={() => setOpen(false)}>
               Custom Putters
             </Link>
@@ -101,7 +98,21 @@ export default function MobileMenu() {
                   <div className="flex-1">
                     <p className="m-0 text-sm">{item.title}</p>
                     <p className="m-0 text-sm">
-                      ${Number(item.price).toFixed(2)} × {item.quantity}
+                      {item.originalPrice ? (
+                        <>
+                          <span className="line-through text-gray-500 mr-1">
+                            ${item.originalPrice.toFixed(2)}
+                          </span>
+                          <span className="text-black font-bold">
+                            ${item.discountedPrice?.toFixed(2)} ×{" "}
+                            {item.quantity}
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          ${item.price.toFixed(2)} × {item.quantity}
+                        </>
+                      )}
                     </p>
                   </div>
                   <button
@@ -126,6 +137,7 @@ export default function MobileMenu() {
               {cart.length === 0 ? "Add an item first" : "CHECK OUT"}
             </button>
           </div>
+
           <EmailSignup />
         </div>
       )}

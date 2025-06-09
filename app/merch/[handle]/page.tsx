@@ -11,6 +11,7 @@ import productDescriptions from "@/components/product/data/productDescriptions";
 
 const aliasMap: Record<string, string> = {
   "the-local-cap": "the-local-snapback",
+  "happy-canvas-head-cover": "happy-canvas-head-cover",
 };
 
 function triggerCartFeedback(e: React.MouseEvent) {

@@ -68,8 +68,22 @@ const productDescriptions: Record<string, ProductDescription> = {
         <li>Custom Happy Daze embroidery (by us, by hand, jk)</li>
         <li>Worn by at least 3 guys who claim to have shot 68 once</li>
       </ul>
-      <p><strong>Note:</strong> This is on pre-order. Hats are expected to ship in mid to late June!</p>
     `,
+  },
+  "happy-canvas-head-cover": {
+    title: "Happy Canvas Head Cover",
+    html: `
+    <p>
+    A canvas headcover with just enough attitude. It protects your putter and your reputation — assuming you still have both after the round.</p>
+    <ul>
+      <li>Sturdy canvas exterior with soft fleece lining</li>
+      <li>Magnetic closure that won’t quit (unlike your playing partner)</li>
+      <li>Fits blades and questionable decisions</li>
+      <li>Happy Daze logo embroidery — so you can flex when you miss 3-footers</li>
+      <li>Quietly screams “this guy knows what he’s doing”</li>
+    </ul>
+    <p><strong>Note:</strong> Built for durability, styled for chaos. Each one will pick up a little character the longer it rides in your bag.</p>
+  `,
   },
 };
 

@@ -28,7 +28,7 @@ export default async function JournalArticlePage(props: Params) {
           alt={article.image.altText || article.title}
           width={1000}
           height={430}
-          className="mb-6 w-full h-[450px] object-cover"
+          className="mb-6 w-full h-auto max-h-[450px] object-cover"
         />
       )}
       <h1 className="text-3xl font-bold mb-4">{article.title}</h1>

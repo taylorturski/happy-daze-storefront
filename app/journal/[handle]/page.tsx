@@ -1,6 +1,7 @@
 import {getBlogArticles, getBlogArticleByHandle} from "@/lib/shopify/blog";
 import {notFound} from "next/navigation";
 import Image from "next/image";
+import type {Metadata} from "next";
 
 type Params = {
   params: Promise<{
@@ -14,8 +15,50 @@ export async function generateStaticParams() {
     handle: article.handle,
   }));
 }
+
+export async function generateMetadata(props: Params): Promise<Metadata> {
+  const params = await props.params;
+  const article = await getBlogArticleByHandle(params.handle);
+
+  if (!article) return {};
+
+  return {
+    title: article.title,
+    description:
+      article.excerpt ||
+      "Stories from the Happy Daze garage. Building putters and a brand from the ground up.",
+    openGraph: {
+      title: article.title,
+      description:
+        article.excerpt ||
+        "Stories from the Happy Daze garage. Building putters and a brand from the ground up.",
+      url: `https://happydaze.golf/journal/${article.handle}`,
+      type: "article",
+      images: [
+        {
+          url:
+            article.image?.url || "https://happydaze.golf/og/default-blog.png",
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description:
+        article.excerpt ||
+        "Stories from the Happy Daze garage. Building putters and a brand from the ground up.",
+      images: [
+        article.image?.url || "https://happydaze.golf/og/default-blog.png",
+      ],
+    },
+  };
+}
+
 export default async function JournalArticlePage(props: Params) {
-  const params = await Promise.resolve(props.params); // satisfies Next.js static analyzer
+  const params = await props.params;
   const article = await getBlogArticleByHandle(params.handle);
 
   if (!article) return notFound();

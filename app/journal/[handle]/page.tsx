@@ -24,11 +24,12 @@ export default async function JournalArticlePage(props: Params) {
     <article className="max-w-4xl mx-auto px-4 sm:px-6 md:px-9 text-white">
       {article.image?.url && (
         <Image
+          unoptimized
           src={article.image.url}
           alt={article.image.altText || article.title}
-          width={1000}
-          height={430}
-          className="mb-6 w-full h-auto max-h-[450px] object-cover"
+          width={800}
+          height={600}
+          className="w-full h-auto mb-2"
         />
       )}
       <h1 className="text-3xl font-bold mb-4">{article.title}</h1>

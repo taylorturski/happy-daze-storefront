@@ -39,6 +39,7 @@ export default async function JournalPage() {
             className="border-2 border-black p-4 no-underline text-white hover:text-black font-pitch hover:bg-gray-100 transition">
             {article.image ? (
               <Image
+                unoptimized
                 src={article.image.url}
                 alt={article.image.altText || article.title}
                 width={800}

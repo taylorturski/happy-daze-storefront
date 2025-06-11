@@ -14,6 +14,8 @@ const REQUIRED_STEPS = [
   "face",
   "neck",
   "alignment",
+  "length",
+  "dexterity",
 ] as const;
 
 export default function StepCheckout() {
@@ -83,13 +85,21 @@ export default function StepCheckout() {
           "Content-Type": "application/json",
           ...(cartId ? {"x-cart-id": cartId} : {}),
         },
-        body: JSON.stringify(selections),
+        body: JSON.stringify(
+          Object.fromEntries(
+            Object.entries(selections).filter(
+              ([_, v]) => typeof v === "string" && v.trim() !== ""
+            )
+          )
+        ),
       });
       const data = await res.json();
       if (!res.ok || !data?.variantId) {
         throw new Error(data?.error || "Failed to match product.");
       }
       if (data.cartId) localStorage.setItem("cartId", data.cartId);
+      if (data.url) localStorage.setItem("checkoutUrl", data.url);
+
       await fetchCart();
 
       window.gtag?.("event", "builder_add_to_cart_success", {

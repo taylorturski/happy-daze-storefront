@@ -133,6 +133,43 @@ export default function StepSelector({step}: StepSelectorProps) {
             </div>
           ))}
         </div>
+
+        {step === "headshape" && (
+          <div className="px-3 mt-6 w-full">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="w-full sm:w-1/2">
+                <label className="block mb-1 text-sm text-white">
+                  Putter Length (inches)
+                </label>
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  step="0.25"
+                  min="30"
+                  max="37"
+                  value={selections.length || ""}
+                  onChange={(e) => setSelection("length", e.target.value)}
+                  className="w-full px-3 py-2 border-2 border-white bg-black text-white"
+                  placeholder="e.g. 33.5"
+                />
+              </div>
+
+              <div className="w-full sm:w-1/2">
+                <label className="block mb-1 text-sm text-white">
+                  Dexterity
+                </label>
+                <select
+                  value={selections.dexterity || ""}
+                  onChange={(e) => setSelection("dexterity", e.target.value)}
+                  className="w-full px-3 py-2 border-2 border-white bg-black text-white">
+                  <option value="">Select</option>
+                  <option value="Right">Right-handed</option>
+                  <option value="Left">Left-handed</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

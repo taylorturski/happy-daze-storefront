@@ -85,6 +85,23 @@ const productDescriptions: Record<string, ProductDescription> = {
     <p><strong>Note:</strong> Built for durability, styled for chaos. Each one will pick up a little character the longer it rides in your bag.</p>
   `,
   },
+  halifax: {
+    title: "Halifax",
+    html: `
+      <p>
+      The reigning champ. Our most popular headshape, and the cleanest look in the lineup. Halifax is everything we wanted in a modern blade — simple, sleek, and built to win.</p>
+      <ul>
+        <li>Basically a Wesley with more squared off edges</li>
+        <li>Stable through impact without looking like a spaceship</li>
+        <li>The go-to choice for players who want feel and forgiveness</li>
+        <li>Pairs with any neck — and earns respect in any group</li>
+        <li>If one shape had to represent the brand, this is it</li>
+      </ul>
+
+      <p><strong>Note:</strong><br />
+      Every putter ships <strong>fully built</strong> — cut to your length, with grip and headcover included.</p>
+    `,
+  },
 };
 
 export default productDescriptions;

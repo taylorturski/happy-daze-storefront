@@ -1,6 +1,7 @@
 "use client";
 
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
+import {useContext} from "react";
 import {BuildContext} from "./BuildContext";
 import {useCart} from "@/app/context/CartContext";
 import AddToCartButton from "@/components/AddToCartButton";
@@ -16,7 +17,7 @@ const REQUIRED_STEPS = [
 ] as const;
 
 export default function StepCheckout() {
-  const {selections, subscribed} = useContext(BuildContext);
+  const {selections} = useContext(BuildContext);
   const {fetchCart} = useCart();
 
   const [hydrated, setHydrated] = useState(false);
@@ -25,55 +26,57 @@ export default function StepCheckout() {
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
 
+  // Mark hydration for client-only logic
   useEffect(() => {
     setHydrated(true);
   }, []);
 
-  const missingSteps = REQUIRED_STEPS.filter((step) => !selections[step]);
+  // Check localStorage for subscription
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsSubscribed(localStorage.getItem("emailSubscribed") === "true");
+    }
+  }, []);
+
+  const missingSteps = REQUIRED_STEPS.filter((s) => !selections[s]);
   const allStepsSelected = missingSteps.length === 0;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     setError("");
-
     if (!allStepsSelected) {
-      const message =
+      setError(
         "Please complete: " +
-        missingSteps
-          .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-          .join(", ");
-      setError(message);
+          missingSteps
+            .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+            .join(", ")
+      );
       return;
     }
-
-    // Avoid popup flash by waiting for hydration
-    if (hydrated && !subscribed) {
+    // Show modal if not subscribed
+    if (hydrated && !isSubscribed) {
       setShowModal(true);
       return;
     }
-
     proceedToAddToCart(e);
   };
 
   const proceedToAddToCart = async (e?: React.MouseEvent) => {
-    window.gtag?.("event", "builder_add_to_cart", {
-      completed: true,
-    });
-
+    window.gtag?.("event", "builder_add_to_cart", {completed: true});
     setLoading(true);
     setAdded(true);
 
     if (e) {
       const rect = (e.target as HTMLElement).getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top;
       window.dispatchEvent(
-        new CustomEvent("add-to-cart-feedback", {detail: {x, y}})
+        new CustomEvent("add-to-cart-feedback", {
+          detail: {x: rect.left + rect.width / 2, y: rect.top},
+        })
       );
     }
 
     try {
       const cartId = localStorage.getItem("cartId");
-
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: {
@@ -82,16 +85,11 @@ export default function StepCheckout() {
         },
         body: JSON.stringify(selections),
       });
-
       const data = await res.json();
-
       if (!res.ok || !data?.variantId) {
         throw new Error(data?.error || "Failed to match product.");
       }
-
       if (data.cartId) localStorage.setItem("cartId", data.cartId);
-      if (data.url) localStorage.setItem("checkoutUrl", data.url);
-
       await fetchCart();
 
       window.gtag?.("event", "builder_add_to_cart_success", {
@@ -106,12 +104,10 @@ export default function StepCheckout() {
         setAdded(false);
       }, 2000);
     } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Unexpected error.";
-      setError(errorMessage);
-
+      const msg = err instanceof Error ? err.message : "Unexpected error.";
+      setError(msg);
       window.gtag?.("event", "builder_add_to_cart_error", {
-        error_message: errorMessage,
+        error_message: msg,
       });
     } finally {
       setLoading(false);
@@ -127,7 +123,6 @@ export default function StepCheckout() {
         title="Custom Putter"
         price={0}
         image=""
-        quantity={1}
         properties={selections}
         onClick={handleAddToCart}
         disabled={loading || !allStepsSelected}
@@ -135,19 +130,19 @@ export default function StepCheckout() {
         loading={loading}
       />
 
-      {error && (
-        <p className="text-red-500 mt-2 text-sm max-w-sm text-right">{error}</p>
-      )}
+      {error && <p className="text-red-500 mt-2 text-sm text-right">{error}</p>}
 
       {showModal && (
         <BuilderSubscribeModal
           onClose={() => setShowModal(false)}
           onSkipConfirm={() => {
             setShowModal(false);
+            setIsSubscribed(false);
             proceedToAddToCart();
           }}
           onSubscribeConfirm={() => {
             setShowModal(false);
+            setIsSubscribed(true);
             proceedToAddToCart();
           }}
         />

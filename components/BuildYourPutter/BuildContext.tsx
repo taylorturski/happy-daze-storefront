@@ -15,11 +15,14 @@ export type Step =
 
 type BuildSelections = {
   [key in Step]?: string;
+} & {
+  length?: string;
+  dexterity?: string;
 };
 
 export type BuildContextType = {
   selections: BuildSelections;
-  setSelection: (step: Step, value: string) => void;
+  setSelection: (step: keyof BuildSelections, value: string) => void;
   subscribed: boolean;
   setSubscribed: (v: boolean) => void;
 };
@@ -42,16 +45,13 @@ export function BuildProvider({children}: {children: React.ReactNode}) {
 
   const searchParams = useSearchParams();
 
-  const setSelection = (step: Step, value: string) => {
+  const setSelection = (step: keyof BuildSelections, value: string) => {
     setSelections((prev) => ({...prev, [step]: value}));
   };
 
   useEffect(() => {
-    // Restore subscribed flag on first mount
-    if (typeof window !== "undefined") {
-      const isSubbed = localStorage.getItem("subscribed") === "true";
-      setSubscribed(isSubbed);
-    }
+    const isSubbed = localStorage.getItem("subscribed") === "true";
+    setSubscribed(isSubbed);
   }, []);
 
   useEffect(() => {
@@ -59,7 +59,6 @@ export function BuildProvider({children}: {children: React.ReactNode}) {
     if (headshapeParam && !selections.headshape) {
       setSelection("headshape", headshapeParam);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   return (

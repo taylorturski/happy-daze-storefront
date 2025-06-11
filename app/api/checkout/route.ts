@@ -76,10 +76,12 @@ export async function POST(req: Request) {
           merchandiseId: id,
           quantity: totalQty,
           attributes: properties
-            ? Object.entries(properties).map(([key, value]) => ({
-                key: key.charAt(0).toUpperCase() + key.slice(1),
-                value: value || "N/A",
-              }))
+            ? Object.entries(properties)
+                .filter(([_, v]) => typeof v === "string" && v.trim() !== "")
+                .map(([k, v]) => ({
+                  key: k.charAt(0).toUpperCase() + k.slice(1),
+                  value: v,
+                }))
             : [],
         };
       });
@@ -96,6 +98,10 @@ export async function POST(req: Request) {
         const res = await shopifyFetch(cartCreateMutation, {
           input: {lines, discountCodes: ["HAPPY10"]},
         });
+        console.log(
+          "Shopify cartCreate response:",
+          JSON.stringify(res, null, 2)
+        );
 
         const newCart = res.cartCreate?.cart;
         const error = res.cartCreate?.userErrors?.[0];
@@ -175,23 +181,30 @@ export async function POST(req: Request) {
       );
     }
 
+    const attributes = Object.entries(selections)
+      .filter(([_, v]) => typeof v === "string" && v.trim() !== "")
+      .map(([k, v]) => ({
+        key: k.charAt(0).toUpperCase() + k.slice(1),
+        value: (v as string)
+          .replace(/-/g, " ")
+          .replace(/\b\w/g, (l) => l.toUpperCase()),
+      }));
+
     const lineItem = {
       merchandiseId: variant.id,
       quantity: 1,
-      attributes: Object.entries(selections).map(([key, value]) => ({
-        key: key.charAt(0).toUpperCase() + key.slice(1),
-        value: value || "N/A",
-      })),
+      attributes,
     };
 
     let finalCartId = cartId ?? null;
     let cart = null;
 
     if (finalCartId) {
-      await shopifyFetch(cartLinesAddMutation, {
+      const res = await shopifyFetch(cartLinesAddMutation, {
         cartId: finalCartId,
         lines: [lineItem],
       });
+
       cart = await fetchCart(ensureCartId(finalCartId));
     }
 

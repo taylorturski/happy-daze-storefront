@@ -25,6 +25,7 @@ export default function ProductPage() {
   const [activeImage, setActiveImage] = useState(0);
   const {addToCart} = useCart();
 
+  // Fetch product data
   useEffect(() => {
     async function fetchProduct() {
       const res = await fetch(`/api/products/${handle}`);
@@ -33,19 +34,12 @@ export default function ProductPage() {
       if (!data?.id) return;
       setProduct(data);
     }
-
     if (handle) fetchProduct();
   }, [handle]);
 
-  const goToBuilder = () => {
-    if (!product) return;
-    const shape = encodeURIComponent(product.title);
-    router.push(`/build-your-putter?headshape=${shape}`);
-  };
-
+  // Analytics: view_item
   useEffect(() => {
     if (!product) return;
-
     window.gtag?.("event", "view_item", {
       items: [
         {
@@ -58,9 +52,9 @@ export default function ProductPage() {
     });
   }, [product]);
 
+  // Add to cart
   const onAddToCart = async () => {
     if (!product) return;
-
     await addToCart({
       lineId: `${product.id}-${Date.now()}`,
       id: product.id,
@@ -69,18 +63,31 @@ export default function ProductPage() {
       image: product.images?.[0]?.url || "",
       quantity: 1,
     });
-
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
 
-  if (!product) return <p className="p-8 font-pitch">Loading...</p>;
+  if (!product) {
+    return <p className="p-8 font-pitch">Loading...</p>;
+  }
 
-  const customHTML = handle && productDescriptions[handle as string]?.html;
+  // Normalize the product title to match your description keys
+  const key = product.title.trim().toLowerCase().replace(/\s+/g, "-");
+
+  // Grab the HTML description if it exists
+  const customHTML = productDescriptions[key]?.html;
+
+  // Builder redirect for blanks
+  const goToBuilder = () => {
+    if (!product) return;
+    const shape = encodeURIComponent(product.title);
+    router.push(`/build-your-putter?headshape=${shape}`);
+  };
 
   return (
     <div className="font-pitch px-4 py-8">
       <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row gap-12">
+        {/* Images */}
         <div className="w-full lg:w-1/2 flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
             <Image
@@ -118,7 +125,7 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* Info section */}
+        {/* Info */}
         <div className="w-full lg:w-1/2 flex flex-col justify-start">
           <h1 className="text-2xl lg:text-3xl font-bold uppercase mb-1">
             {product.title}
@@ -128,14 +135,18 @@ export default function ProductPage() {
             {parseFloat(product.price).toFixed(2)}
           </p>
 
-          <div className="text-sm leading-relaxed mb-6 prose prose-invert max-w-none list-disc pl-4 marker:text-white">
-            {customHTML ? parse(customHTML) : null}
-          </div>
+          {/* Custom description */}
+          {customHTML && (
+            <div className="text-sm leading-relaxed mb-6 prose prose-invert max-w-none list-disc pl-4 marker:text-white">
+              {parse(customHTML)}
+            </div>
+          )}
 
+          {/* Button: customize or add to cart */}
           {product.tags?.includes("blanks") ? (
             <button
               onClick={goToBuilder}
-              className="border-2 font-vt uppercase tracking-wide font-md border-black mt-3 px-4 py-2 font-bold text-black bg-white w-fit">
+              className="border-2 font-vt uppercase tracking-wide border-black mt-3 px-4 py-2 font-bold text-black bg-white w-fit">
               Customize
             </button>
           ) : (
@@ -144,7 +155,9 @@ export default function ProductPage() {
                 triggerCartFeedback(e);
                 onAddToCart();
               }}
-              className="border-2 font-vt lowercase border-black mt-3 px-4 py-2 font-bold text-white bg-black w-fit">
+              className={`border-2 font-vt lowercase border-black mt-3 px-4 py-2 font-bold text-white bg-black w-fit ${
+                added ? "bg-[#ACFF9B] text-white border-[#ACFF9B]" : ""
+              }`}>
               {added ? "✓ Added" : "Add to Cart"}
             </button>
           )}

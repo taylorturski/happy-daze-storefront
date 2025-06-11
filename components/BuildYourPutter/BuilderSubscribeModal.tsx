@@ -1,7 +1,6 @@
 "use client";
 
-import {useContext, useState} from "react";
-import {BuildContext} from "./BuildContext";
+import {useState} from "react";
 
 export default function BuilderSubscribeModal({
   onClose,
@@ -10,9 +9,8 @@ export default function BuilderSubscribeModal({
 }: {
   onClose: () => void;
   onSkipConfirm: () => void;
-  onSubscribeConfirm: () => void; // 👈 ADD THIS
+  onSubscribeConfirm: () => void;
 }) {
-  const {selections, setSubscribed} = useContext(BuildContext);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,29 +29,35 @@ export default function BuilderSubscribeModal({
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({email, firstName, lastName, selections}),
+        body: JSON.stringify({email, firstName, lastName}),
       });
-
       if (!res.ok) throw new Error("Subscription failed");
 
       window.gtag?.("event", "builder_email_collected", {
         email,
         firstName,
         lastName,
-        headshape: selections.headshape || "none",
-        step: "post-cart",
       });
 
-      setSubscribed(true);
+      // Mark subscription in localStorage
       localStorage.setItem("emailSubscribed", "true");
       localStorage.setItem("happyDazeDiscount", "HAPPY10");
+
       onClose();
       onSubscribeConfirm();
-    } catch (err) {
+    } catch {
       setError("Something went wrong.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSkip = () => {
+    // Remove any discount/subscription flags
+    localStorage.removeItem("happyDazeDiscount");
+    localStorage.removeItem("emailSubscribed");
+    onClose();
+    onSkipConfirm();
   };
 
   return (
@@ -97,22 +101,9 @@ export default function BuilderSubscribeModal({
             {loading ? "Subscribing..." : "Claim 10% Off"}
           </button>
           <button
-            onClick={() => {
-              onClose();
-              onSkipConfirm();
-            }}
-            className="text-xs text-gray-600 hover:text-black text-right block self-end"
-            style={{
-              justifyContent: "flex-end",
-              lineHeight: 1.2,
-              paddingTop: 0,
-              paddingBottom: 0,
-              marginTop: 0,
-              marginBottom: 0,
-            }}>
-            <span
-              className="underline"
-              style={{display: "inline-block", lineHeight: 1.2}}>
+            onClick={handleSkip}
+            className="text-xs text-gray-600 hover:text-black self-end">
+            <span className="underline">
               No, thanks.
               <br />
               I’ll pay full price.
